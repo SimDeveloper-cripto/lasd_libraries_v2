@@ -1,7 +1,7 @@
 ### Work in Progress
 
 This is a continuation and completion of lasd_libraries: <br />
-What to do:
+What is left to do:
 
 - [ ] Implement a Double Linked List
 - [ ] Linked List
@@ -15,6 +15,10 @@ What to do:
   - [ ] Implement topological order 
   - [ ] Bfs: to make it complete should add dist[] and prev[]
   - [ ] Dfs: theoretically, via stack, we can implement PreOrderVisit() and PostOrderVisit()
+
+What is left to be fixed:
+
+- [ ] Resolve FIXME line 75, test.cpp
 
 ### Compile the project in Windows (PowerShell)
 

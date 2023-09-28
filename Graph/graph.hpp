@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <functional>
 
-// IMPLEMENTATION BY ADJACENCY LISTS
+// ORIENTED GRAPH: IMPLEMENTATION BY ADJACENCY LISTS
 
 namespace lasd {
     enum class Color { White, Gray, Black };
@@ -20,7 +20,7 @@ namespace lasd {
         Color color;
 
         Node()  = default;
-        ~Node() = default;
+        virtual ~Node() = default;
 
         Node(const Data& value) : key(value), color(Color::White) {}
     };
@@ -49,12 +49,13 @@ namespace lasd {
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit */
 
             // THIS DfsVisit allows us to detect a cycle inside the Graph.
-            bool DfsVisit(const Data& u) {
+            // Return true if cycle is detected.
+            bool DfsVisitAcyclic(const Data& u) {
                 Nodes[u].color = Color::Gray;
 
                 for (const Data& v : Adj[u]) {
                     if (Nodes[v].color == Color::White) {
-                        DfsVisit(v);
+                        DfsVisitAcyclic(v);
                     } else if (Nodes[v].color == Color::Gray) {
                         return true;
                     }
@@ -67,7 +68,7 @@ namespace lasd {
 
     public:
         Graph()  = default;
-        ~Graph() = default;
+        virtual ~Graph() = default;
 
         void Init();
         void addNode(const Data& key) noexcept;
@@ -89,12 +90,16 @@ namespace lasd {
         void Bfs(const Data& source) noexcept;
 
         // DEFAULT IMPLEMENTATION OF Dfs
+        void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
+
+        // DEFAULT IMPLEMENTATION OF Dfs BUT STARTING FROM A SPECIFIC VERTEX
         void Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
         // NOTE: Every functin declare inside here must be defined in "graph.cpp" (in the correct section).
 
-            bool isGraphCyclicDfs(const Data& source) noexcept; // Returns true if cycle is detected.
+            bool isGraphAcyclicDfs() noexcept;
+            // void isSubGraphAcyclicDfs(const Data& source) noexcept;
         /* [YOUR CODE ENDS HERE] */
     };
 }

@@ -46,25 +46,35 @@ namespace lasdtest {
 
         graph->addEdge(1, 2);
         graph->addEdge(1, 3);
-        graph->addEdge(3, 1); // you can comment this if you want
+        graph->addEdge(3, 1); // You can comment this if you want
         graph->addEdge(2, 3);
         graph->addEdge(3, 4);
+        graph->addEdge(5, 3);
+        // graph->addEdge(4, 5);
 
         // DEFAULT BFS    
         graph->Bfs(1);
 
         // DEFAULT DFS
+        std::cout << "Dfs's result: ";
         auto applyToNode = [](const int& node, void* other) {
             std::cout << node << " ";
         };
-        graph->Dfs(1, applyToNode, nullptr);
+        graph->Dfs(applyToNode, nullptr);
+
+        // Try Dfs but starting from a specific index
+        // graph->Dfs(1, applyToNode, nullptr);
 
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
-        if (graph->isGraphCyclicDfs(1)) {
-            std::cout << "\nThe Graph is cyclic." << std::endl;
+        if (graph->isGraphAcyclicDfs()) {
+            std::cout << "\nAcyclic test: the Graph is acyclic." << std::endl;
         } else {
-            std::cout << "\nThe Graph is acyclic." << std::endl;
+            std::cout << "\nAcyclic test: the Graph is cyclic." << std::endl;
         }
+
+        // FIXME: CUSTOM MADE DFS TO CHECK IF SUB-GRAPH IS CYCLIC
+        // int start_vertex = 3;
+        // graph->isSubGraphAcyclicDfs(start_vertex);
 
         std::cout << "[ OK ] GRAPH TEST ENDED." << std::endl;
         delete graph;

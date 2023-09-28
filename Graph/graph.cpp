@@ -49,6 +49,20 @@ namespace lasd {
         }
     }
 
+    // DEFAULT Dfs
+    template <typename Data>
+    void Graph<Data>::Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+
+        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
+            const Node<Data>& currNode = it->second; // Contains Node<Data> field
+            if (currNode.color == Color::White) {
+                DfsVisit(currNode.key, visit, other);
+            }
+        }
+    }
+
+    // DEFAULT Dfs: STARTING FROM A SPECIFIC VERTEX
     template <typename Data>
     void Graph<Data>::Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
@@ -58,12 +72,35 @@ namespace lasd {
     /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
 
         template <typename Data>
-        bool Graph<Data>::isGraphCyclicDfs(const Data& source) noexcept {
+        bool Graph<Data>::isGraphAcyclicDfs() noexcept {
             Init();
-            return DfsVisit(source); // It calls DfsVisit, the one that returns a boolean.
+
+            for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
+                const Node<Data>& currNode = it->second; // Contains Node<Data> field
+                if (currNode.color == Color::White) {
+                    bool ret = DfsVisitAcyclic(currNode.key); // It calls DfsVisit, the one that returns a boolean.
+                    if (ret)
+                        return false;
+                }
+            }
+            return true;
+            // NOTE: DfsVisit(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
+        }
+
+/*
+        template <typename Data>
+        void Graph<Data>::isSubGraphAcyclicDfs(const Data& source) noexcept {
+            Init();
+            
+            if (DfsVisitAcyclic(source)) { // Returns true if cycle is detected.
+                std::cout << "Sub-Graph Acyclic test, starting from " << source << ": the Graph is cyclic." << std::endl;
+            } else {
+                std::cout << "Sub-Graph Acyclic test, starting from " << source << ": the Graph is acyclic." << std::endl;
+            }
 
             // NOTE: DfsVisit(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
         }
+*/
 
     /* [YOUR CODE ENDS HERE] */
 
