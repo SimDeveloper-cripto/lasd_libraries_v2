@@ -1,19 +1,23 @@
-## Overview: work in progess
+### Work in Progress
+
 This is a continuation and completion of lasd_libraries: <br />
 What to do:
 
-* Linked List
-  * Add reverse()
-  * Add MapPreOrder()
-  * Add FoldPreOrder()
-* Graph
-  * Bfs: add DIST[] and PREV[] (make it complete)
-  * Implement transposed graph
-  * Implement topological order
-  * Theoretically, via stack, we can implement PreOrder() and PostOrder() Dfs
-* Implement a Double Linked List
+- [ ] Implement a Double Linked List
+- [ ] Linked List
+  - [ ] Add Reverse()
+  - [ ] Add MapPreOrder()
+  - [ ] Add FoldPreOrder()
+- [ ] Graph
+  - [ ] Add Move and Copy constructor, Move and Copy assignment, operator=, do not implement operator==
+  - [ ] Add FoldPreOrder()
+  - [ ] Implement transposed graph
+  - [ ] Implement topological order 
+  - [ ] Bfs: to make it complete should add dist[] and prev[]
+  - [ ] Dfs: theoretically, via stack, we can implement PreOrderVisit() and PostOrderVisit()
 
 ### Compile the project in Windows (PowerShell)
+
 ```bat
 .\compile_clang++.bat
 cd bin
