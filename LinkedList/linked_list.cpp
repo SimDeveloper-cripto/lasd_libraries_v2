@@ -222,6 +222,7 @@ namespace lasd {
     }
 
     template class List<int>;
+    template class List<float>;
     template class List<double>;
     template class List<std::string>;
 }

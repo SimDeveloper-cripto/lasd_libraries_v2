@@ -1,9 +1,17 @@
-## Overview
+## Overview: work in progess
 This is a continuation and completion of lasd_libraries: <br />
 What to do:
-- [] Linked List: must add reverse() method and also MapPreOrder() and FoldPreOrder()
-- [] Implement a double linked list
-- [] Implement a graph data structure (both kinds)
+
+* Linked List
+  * Add reverse()
+  * Add MapPreOrder()
+  * Add FoldPreOrder()
+* Graph
+  * Bfs: add DIST[] and PREV[] (make it complete)
+  * Implement transposed graph
+  * Implement topological order
+  * Theoretically, via stack, we can implement PreOrder() and PostOrder() Dfs
+* Implement a Double Linked List
 
 ### Compile the project in Windows (PowerShell)
 ```bat
