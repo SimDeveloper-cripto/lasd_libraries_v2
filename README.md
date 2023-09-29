@@ -12,13 +12,14 @@ What is left to do:
   - [ ] Add Move and Copy constructor, Move and Copy assignment, operator=, do not implement operator==
   - [ ] Add FoldPreOrder()
   - [ ] Implement transposed graph
-  - [ ] Implement topological order 
+  - [ ] Implement topological order
+  - [ ] Add the calculation and assignment of CFCs to the vertices
   - [ ] Bfs: to make it complete should add dist[] and prev[]
   - [ ] Dfs: theoretically, via stack, we can implement PreOrderVisit() and PostOrderVisit()
 
 What is left to be fixed:
 
-- [ ] Resolve FIXME line 75, test.cpp
+- [ ]
 
 ### Compile the project in Windows (PowerShell)
 

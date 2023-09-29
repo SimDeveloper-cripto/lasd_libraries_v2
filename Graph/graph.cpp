@@ -18,7 +18,6 @@ namespace lasd {
 
     template <typename Data>
     void Graph<Data>::addEdge(const Data& from, const Data& to) {
-        // Make sure the nodes exists
         if (Nodes.find(from) != Nodes.end() && Nodes.find(to) != Nodes.end()) {
             Adj[from].push_back(to);
         } else {
@@ -84,23 +83,8 @@ namespace lasd {
                 }
             }
             return true;
-            // NOTE: DfsVisit(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
+            // NOTE: DfsVisitAcyclic(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
         }
-
-/*
-        template <typename Data>
-        void Graph<Data>::isSubGraphAcyclicDfs(const Data& source) noexcept {
-            Init();
-            
-            if (DfsVisitAcyclic(source)) { // Returns true if cycle is detected.
-                std::cout << "Sub-Graph Acyclic test, starting from " << source << ": the Graph is cyclic." << std::endl;
-            } else {
-                std::cout << "Sub-Graph Acyclic test, starting from " << source << ": the Graph is acyclic." << std::endl;
-            }
-
-            // NOTE: DfsVisit(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
-        }
-*/
 
     /* [YOUR CODE ENDS HERE] */
 

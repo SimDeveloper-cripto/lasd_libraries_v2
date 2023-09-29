@@ -19,7 +19,7 @@ namespace lasd {
         Data key;
         Color color;
 
-        Node()  = default;
+        Node() = default;
         virtual ~Node() = default;
 
         Node(const Data& value) : key(value), color(Color::White) {}
@@ -48,8 +48,7 @@ namespace lasd {
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit */
 
-            // THIS DfsVisit allows us to detect a cycle inside the Graph.
-            // Return true if cycle is detected.
+            // THIS DfsVisit allows us to detect a cycle inside the Graph: it returns true if cycle is detected.
             bool DfsVisitAcyclic(const Data& u) {
                 Nodes[u].color = Color::Gray;
 
@@ -67,7 +66,7 @@ namespace lasd {
         /* [YOUR CODE ENDS HERE] */
 
     public:
-        Graph()  = default;
+        Graph() = default;
         virtual ~Graph() = default;
 
         void Init();
@@ -96,10 +95,9 @@ namespace lasd {
         void Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
-        // NOTE: Every functin declare inside here must be defined in "graph.cpp" (in the correct section).
+        // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).
 
             bool isGraphAcyclicDfs() noexcept;
-            // void isSubGraphAcyclicDfs(const Data& source) noexcept;
         /* [YOUR CODE ENDS HERE] */
     };
 }

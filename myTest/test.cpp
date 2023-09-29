@@ -18,17 +18,18 @@ namespace lasdtest {
         list->InsertAtFront(generate_random_number());
         list->InsertAtBack(generate_random_number());
 
-        std::cout << "Size: " << list->Size() << std::endl;
+        std::cout << "  Size: " << list->Size() << std::endl;
         
         if (list->Empty()) {
-            std::cout << "The list is empty!" << std::endl;
+            std::cout << "  The list is empty!" << std::endl;
         } else {
-            std::cout << "List's head element value: " << list->Front() << std::endl;
-            std::cout << "List's tail element value: " << list->Back() << std::endl;
+            std::cout << "  List's head element value: " << list->Front() << std::endl;
+            std::cout << "  List's tail element value: " << list->Back() << std::endl;
 
+            // You can also use a random int generator: it works just fine.
             unsigned long index = 0;
             assert((index >= 0) && (index <= (list->Size() - 1)));
-            std::cout << "List's element at index " << index << ": " << list->operator[](index) << std::endl;
+            std::cout << "  List's element at index " << index << ": " << list->operator[](index) << std::endl;
         }
 
         std::cout << "[ OK ] LINKED_LIST TEST ENDED." << std::endl;
@@ -43,38 +44,37 @@ namespace lasdtest {
         graph->addNode(3);
         graph->addNode(4);
         graph->addNode(5);
+        graph->addNode(6);
 
         graph->addEdge(1, 2);
         graph->addEdge(1, 3);
-        graph->addEdge(3, 1); // You can comment this if you want
+        // graph->addEdge(3, 1); // You can comment this if you want
         graph->addEdge(2, 3);
         graph->addEdge(3, 4);
-        graph->addEdge(5, 3);
+        // graph->addEdge(5, 6);
+        // graph->addEdge(5, 3);
         // graph->addEdge(4, 5);
 
         // DEFAULT BFS    
-        graph->Bfs(1);
+        graph->Bfs(1); // 1 2 3 4 [OK]
 
         // DEFAULT DFS
-        std::cout << "Dfs's result: ";
+        std::cout << "  Dfs's result: ";
         auto applyToNode = [](const int& node, void* other) {
             std::cout << node << " ";
         };
         graph->Dfs(applyToNode, nullptr);
 
         // Try Dfs but starting from a specific index
-        // graph->Dfs(1, applyToNode, nullptr);
+        std::cout << std::endl << "  Dfs's result (starting from node 5): ";
+        graph->Dfs(5, applyToNode, nullptr);
 
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
         if (graph->isGraphAcyclicDfs()) {
-            std::cout << "\nAcyclic test: the Graph is acyclic." << std::endl;
+            std::cout << std::endl << "  Acyclic test: the Graph is acyclic." << std::endl;
         } else {
-            std::cout << "\nAcyclic test: the Graph is cyclic." << std::endl;
+            std::cout << std::endl << "  Acyclic test: the Graph is cyclic." << std::endl;
         }
-
-        // FIXME: CUSTOM MADE DFS TO CHECK IF SUB-GRAPH IS CYCLIC
-        // int start_vertex = 3;
-        // graph->isSubGraphAcyclicDfs(start_vertex);
 
         std::cout << "[ OK ] GRAPH TEST ENDED." << std::endl;
         delete graph;
