@@ -1,12 +1,29 @@
 #include "test.hpp"
-#include <assert.h>
+// #include <assert.h>
 
 using namespace lasd;
+
+int generate_random_index(unsigned long size) {
+    std::default_random_engine generator(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, size-1);
+    return dist(generator);
+}
 
 int generate_random_number() {
     std::default_random_engine generator(std::random_device{}());
     std::uniform_int_distribution<int> dist(-200, 200);
     return dist(generator);
+}
+
+void Square (int& value, void* other) { value = value * value; };
+
+void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
+    if(value % *((int*) limit) == 0) {
+        *((int*) accumulator) = *((int*) accumulator) + value; 
+        std::cout << "      Accum. value: " << *((int*) accumulator) << std::endl; 
+    } else {
+        *((int*) accumulator) = *((int*) accumulator) + 0;
+    }
 }
 
 namespace lasdtest {
@@ -17,19 +34,35 @@ namespace lasdtest {
         list->InsertAtBack(generate_random_number());
         list->InsertAtFront(generate_random_number());
         list->InsertAtBack(generate_random_number());
+        list->InsertAtBack(generate_random_number());
+        list->InsertAtFront(generate_random_number());
 
         std::cout << "  Size: " << list->Size() << std::endl;
         
         if (list->Empty()) {
             std::cout << "  The list is empty!" << std::endl;
         } else {
+            list->PrintList();
+
             std::cout << "  List's head element value: " << list->Front() << std::endl;
             std::cout << "  List's tail element value: " << list->Back() << std::endl;
 
-            // You can also use a random int generator: it works just fine.
-            unsigned long index = 0;
-            assert((index >= 0) && (index <= (list->Size() - 1)));
+            unsigned long index = generate_random_index(list->Size());
             std::cout << "  List's element at index " << index << ": " << list->operator[](index) << std::endl;
+
+            list->Reverse();
+            list->PrintList();
+            std::cout << "  List's new head element value: " << list->Front() << std::endl;
+            std::cout << "  List's new tail element value: " << list->Back() << std::endl;
+
+            std::cout << "  List's values afer Map(): " << std::endl;
+            list->MapPreOrder(Square, nullptr);
+            std::cout << "  "; list->PrintList();
+
+            const int divide_by = 2; 
+            int start = 0;
+            std::cout << "  List's Fold() application: " << std::endl;
+            list->FoldPreOrder(SumEvenNumbers, &divide_by, &start);
         }
 
         std::cout << "[ OK ] LINKED_LIST TEST ENDED." << std::endl;

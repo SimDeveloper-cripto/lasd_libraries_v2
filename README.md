@@ -3,19 +3,16 @@
 This is a continuation and completion of lasd_libraries: <br />
 What is left to do:
 
-- [ ] Implement a Double Linked List
-- [ ] Linked List
-  - [ ] Add Reverse()
-  - [ ] Add MapPreOrder()
-  - [ ] Add FoldPreOrder()
-- [ ] Graph
+- [X] Implement a Double Linked List
+- [X] Linked List
+  - [ ] Add Exists()
+- [X] Graph
   - [ ] Add Move and Copy constructor, Move and Copy assignment, operator=, do not implement operator==
-  - [ ] Add FoldPreOrder()
+  - [ ] Add Map() and Fold(), both in PreOrder and PostOrder
   - [ ] Implement transposed graph
   - [ ] Implement topological order
   - [ ] Add the calculation and assignment of CFCs to the vertices
   - [ ] Bfs: to make it complete should add dist[] and prev[]
-  - [ ] Dfs: theoretically, via stack, we can implement PreOrderVisit() and PostOrderVisit()
 
 What is left to be fixed:
 

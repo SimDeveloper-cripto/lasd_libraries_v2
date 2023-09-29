@@ -5,10 +5,6 @@
 #include <stdbool.h>
 #include <functional>
 
-// TODO: MUST ADD MAP AND FOLD WITH FUNCTION POINTERS (PREORDER): SEE OLD IMPLEMENTATION
-// TODO: SHOULD WE PROVIDE AN ITERATOR?
-// TODO: MUST IMPLEMENT FUNCTION TO REVERSE THE LINKED LIST
-
 namespace lasd {
     template <typename Data>
     class List {
@@ -63,6 +59,16 @@ namespace lasd {
         void InsertAtBack(Data&&);               // Move of the value
 
         void Clear();
+        void Reverse() noexcept;
+        void PrintList() const noexcept;
+
+        /* ************************************************************************ */
+
+        typedef std::function<void(Data&, void*)> MapFunctor;
+        void MapPreOrder(MapFunctor, void*);
+
+        typedef std::function<void(const Data&, const void*, void*)> FoldFunctor;
+        void FoldPreOrder(FoldFunctor, const void*, void*) const;
 
         /* ************************************************************************ */
 

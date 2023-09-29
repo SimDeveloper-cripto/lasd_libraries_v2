@@ -191,6 +191,62 @@ namespace lasd {
         size = 0;
     }
 
+    template <typename Data>
+    void List<Data>::Reverse() noexcept {
+        if (this->Size() <= 1) return;
+
+        Node* current = head;
+        Node* prev    = nullptr;
+        Node* next    = nullptr;
+
+        while (current != nullptr) {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+
+        // At the end, swap head and tail pointers.
+        tail = head;
+        head = prev;
+    }
+
+    template <typename Data>
+    void List<Data>::PrintList() const noexcept {
+        Node* current = head;
+
+        std::cout << "  Here is the List: ";
+        while(current != nullptr) {
+            std::cout << current->element << " ";
+            current = current->next;
+        }
+        std::cout << std::endl;
+    }
+
+    /* ************************************************************************ */
+
+    template <typename Data>
+    void List<Data>::MapPreOrder(MapFunctor func, void* other) {
+        Node* current = head;
+
+        while (current != nullptr) {
+            func(current->element, other);
+            current = current->next;
+        }
+    }
+
+    template<typename Data>
+    void List<Data>::FoldPreOrder(FoldFunctor func, const void* par, void* acc) const {
+        Node* current = head;
+        
+        while (current != nullptr) {
+            func(current->element, par, acc);
+            current = current->next;
+        }
+    }
+
+    /* ************************************************************************ */
+
     template<typename Data>
     Data& List<Data>::Front() const {
         if(this->Size() == 0)
