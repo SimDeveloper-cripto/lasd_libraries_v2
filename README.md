@@ -38,9 +38,10 @@ cd bin
 
 ### Compile and Execute the project in Linux
 
-```sh
+```bash
 mkdir bin
-.\compile_clang++.bat
+chmod +x build.sh
+./build.sh
 cd bin
 .\main
 ```
