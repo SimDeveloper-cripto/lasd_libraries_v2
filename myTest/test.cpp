@@ -72,6 +72,7 @@ namespace lasdtest {
         std::cout << "[ OK ] GRAPH TEST STARTED." << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
+        // graph->addNode(0);
         graph->addNode(1);
         graph->addNode(2);
         graph->addNode(3);
@@ -79,16 +80,20 @@ namespace lasdtest {
         graph->addNode(5);
         graph->addNode(6);
 
+        // graph->addEdge(0, 6);
         graph->addEdge(1, 2);
         graph->addEdge(1, 3);
-        // graph->addEdge(3, 1); // You can comment this if you want
+        graph->addEdge(3, 1); // You can comment this if you want
         graph->addEdge(2, 3);
         graph->addEdge(3, 4);
         // graph->addEdge(5, 6);
         // graph->addEdge(5, 3);
-        // graph->addEdge(4, 5);
+        graph->addEdge(4, 5);
 
-        // DEFAULT BFS    
+        std::cout << "  Printing the Graph: " << std::endl;
+        graph->showGraph();
+
+        // DEFAULT BFS
         graph->Bfs(1); // 1 2 3 4 [OK]
 
         // DEFAULT DFS
@@ -108,6 +113,20 @@ namespace lasdtest {
         } else {
             std::cout << std::endl << "  Acyclic test: the Graph is cyclic." << std::endl;
         }
+        
+        std::cout << "  Topological-Order of the Graph: ";
+        std::stack<int> myOrder = graph->getTopologicalOrder();
+        
+        // 
+        while(!myOrder.empty()) {
+            std::cout << myOrder.top() << " ";
+            myOrder.pop();
+        }
+        std::cout << std::endl;
+
+        graph->Transpose();
+        std::cout << "  Printing the Transposed Graph: " << std::endl;
+        graph->showGraph();
 
         std::cout << "[ OK ] GRAPH TEST ENDED." << std::endl;
         delete graph;

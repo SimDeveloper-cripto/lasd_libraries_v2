@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <stack>
 #include <queue>
 #include <vector>
 #include <iostream>
@@ -62,7 +63,20 @@ namespace lasd {
                 Nodes[u].color = Color::Black;
                 return false;
             }
-        
+
+            void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalOrder) {
+                Nodes[u].color = Color::Gray;
+
+                for (const Data& v : Adj[u]) {
+                    if (Nodes[v].color == Color::White) {
+                        DfsVisitTopological(v, topologicalOrder);
+                    }
+                }
+
+                Nodes[u].color = Color::Black;
+                topologicalOrder.push(u);
+            }
+
         /* [YOUR CODE ENDS HERE] */
 
     public:
@@ -70,6 +84,7 @@ namespace lasd {
         virtual ~Graph() = default;
 
         void Init();
+        void Clear();
         void addNode(const Data& key) noexcept;
         void addEdge(const Data& from, const Data& to);
 
@@ -78,7 +93,7 @@ namespace lasd {
                 const Data& from = couple.first;
                 const std::vector<Data>& adjs = couple.second;
                 
-                std::cout << "Node " << from << " -> ";
+                std::cout << "      Node " << from << " -> ";
                 
                 for (const Data& to : adjs) { std::cout << to << " "; }
                 std::cout << std::endl;
@@ -93,6 +108,12 @@ namespace lasd {
 
         // DEFAULT IMPLEMENTATION OF Dfs BUT STARTING FROM A SPECIFIC VERTEX
         void Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+
+        // GET THE TRANSPOSED GRAPH (modifies it in-place)
+        void Transpose();
+
+        // GET TOPOLOGICAL ORDER OF THE GRAPH
+        std::stack<Data> getTopologicalOrder();
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
         // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).

@@ -9,6 +9,12 @@ namespace lasd {
     }
 
     template <typename Data>
+    void Graph<Data>::Clear() {
+        Nodes.clear();
+        Adj.clear();
+    }
+
+    template <typename Data>
     void Graph<Data>::addNode(const Data& key) noexcept {
         if (Nodes.find(key) == Nodes.end()) {
             Node<Data> node(key);
@@ -66,6 +72,34 @@ namespace lasd {
     void Graph<Data>::Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         DfsVisit(source, visit, other);
+    }
+
+    template <typename Data>
+    void Graph<Data>::Transpose() {
+        std::map<Data, std::vector<Data>> temp = Adj;
+        Adj.clear();
+
+        // Add Edges in reverse direction.
+        for (const auto& nPair : Nodes) {
+            const Data& from = nPair.first;
+            for (const Data& to : temp[from]) {
+                addEdge(to, from);
+            }
+        }
+    }
+
+    template <typename Data>
+    std::stack<Data> Graph<Data>::getTopologicalOrder() {
+        Init();
+        std::stack<Data> topologicalOrder {};
+
+        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
+            const Node<Data>& current = it->second; // Contains Node<Data> field
+            if (current.color == Color::White) {
+                DfsVisitTopological(current.key, topologicalOrder);
+            }
+        }
+        return topologicalOrder;
     }
 
     /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
