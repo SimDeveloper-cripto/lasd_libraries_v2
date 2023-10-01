@@ -223,8 +223,32 @@ namespace lasd {
         std::cout << std::endl;
     }
 
+    // Could be Recursive: that's an exercise for you! Implement bool Exists(Node*head, const Data value)
+    template <typename Data>
+    bool List<Data>::Exists(const Data value) const noexcept { // O(n)
+        Node* current = head;
+
+        while (current != nullptr) {
+            if (current->element == value) return true;
+            current = current->next;
+        }
+        
+        return false;
+    }
+
+    template <typename Data>
+    bool List<Data>::ChangeValueGivenIndex(unsigned long index, const Data new_value) { // Index = 0 indicates the first element!
+        if (index >= 0 && index <= Size() - 1) {
+            operator[](index) = new_value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /* ************************************************************************ */
 
+    // Could be Recursive: that's an exercise for you! Implement void MapPreOrder(Node*head, MapFunctor func, void* other)
     template <typename Data>
     void List<Data>::MapPreOrder(MapFunctor func, void* other) {
         Node* current = head;
@@ -235,6 +259,7 @@ namespace lasd {
         }
     }
 
+    // Could be Recursive: that's an exercise for you! Implement void MapPreOrder(Node*head, FoldFunctor func, const void* par, void* acc)
     template<typename Data>
     void List<Data>::FoldPreOrder(FoldFunctor func, const void* par, void* acc) const {
         Node* current = head;

@@ -48,6 +48,8 @@ namespace lasd {
 
         inline bool Empty() const { return (size == 0); }
 
+        bool Exists(const Data) const noexcept;
+
         inline virtual unsigned long Size() const noexcept { return size; }
 
         void InsertAtFront(const Data&);    // Copy of the value
@@ -61,6 +63,10 @@ namespace lasd {
         void Clear();
         void Reverse() noexcept;
         void PrintList() const noexcept;
+
+        /* ************************************************************************ */
+
+        bool ChangeValueGivenIndex(unsigned long, const Data); // Index = 0 indicates the first element!
 
         /* ************************************************************************ */
 

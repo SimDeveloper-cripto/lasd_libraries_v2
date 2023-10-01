@@ -2,6 +2,42 @@
 
 namespace lasd {
     template <typename Data>
+    Graph<Data>::Graph(const Graph& other) {
+        Adj = other.Adj;
+        Nodes = other.Nodes;
+    }
+
+    template <typename Data>
+    Graph<Data>::Graph(Graph&& other) noexcept {
+        std::swap(Adj, other.Adj);
+        std::swap(Nodes, other.Nodes);
+
+        // Adj = std::move(other.Adj);
+        // Nodes = std::move(other.Nodes);
+    }
+
+    template <typename Data>
+    Graph<Data>& Graph<Data>::operator=(const Graph& other) {
+        if (this != &other) {
+            Adj = other.Adj;
+            Nodes = other.Nodes;
+        }
+        return *this;
+    }
+
+    template <typename Data>
+    Graph<Data>& Graph<Data>::operator=(Graph&& other) noexcept {
+        if (this != &other) {
+            std::swap(Adj, other.Adj);
+            std::swap(Nodes, other.Nodes);
+            
+            // Adj = std::move(other.Adj);
+            // Nodes = std::move(other.Nodes);
+        }
+        return *this;
+    }
+
+    template <typename Data>
     void Graph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
@@ -15,10 +51,28 @@ namespace lasd {
     }
 
     template <typename Data>
+    void Graph<Data>::addNode(const Node<Data>& node) noexcept {
+        Data key = node.key;
+        if (Nodes.find(key) == Nodes.end()) {
+            Node<Data> new_node(key);
+            Nodes[key] = new_node;
+        }
+    }
+
+    template <typename Data>
     void Graph<Data>::addNode(const Data& key) noexcept {
         if (Nodes.find(key) == Nodes.end()) {
             Node<Data> node(key);
             Nodes[key] = node;
+        }
+    }
+
+    template <typename Data>
+    void Graph<Data>::addEdge(const Node<Data>& node_from, const Node<Data>& node_to) {
+        if (Nodes.find(node_from.key) != Nodes.end() && Nodes.find(node_to.key) != Nodes.end()) {
+            Adj[node_from.key].push_back(node_to.key);
+        } else {
+            throw std::runtime_error("ERROR: addEdge() -> at least one of the nodes provided do not exist.");
         }
     }
 

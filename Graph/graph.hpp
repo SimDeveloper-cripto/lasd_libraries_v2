@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <functional>
 
-// ORIENTED GRAPH: IMPLEMENTATION BY ADJACENCY LISTS
+// GRAPH: IMPLEMENTATION BY ADJACENCY LISTS
 
 namespace lasd {
     enum class Color { White, Gray, Black };
@@ -23,7 +23,12 @@ namespace lasd {
         Node() = default;
         virtual ~Node() = default;
 
+        bool operator==(const Node&) const noexcept = delete;
+        bool operator!=(const Node&) const noexcept = delete;
+
         Node(const Data& value) : key(value), color(Color::White) {}
+
+        // NOTE: A function to change node's color is not provided because only Graph (in theory) has to change colors.
     };
 
     template <typename Data>
@@ -81,13 +86,35 @@ namespace lasd {
 
     public:
         Graph() = default;
+        Graph(const Graph&);           // Copy Constructor
+        Graph(Graph&& other) noexcept; // Move Constructor
+
         virtual ~Graph() = default;
 
+        Graph& operator=(const Graph& other);     // Copy Assignment
+        Graph& operator=(Graph&& other) noexcept; // Move Assignment
+
+        // There is nothing special that led me to this conclusion: I just decided to do it like this
+        bool operator==(const Graph&) const noexcept = delete;
+        bool operator!=(const Graph&) const noexcept = delete;
+
+        /* ************************************************************************ */
+
+        // INITIALIZE NODE'S COLORS (AT LEAST FOR NOW)
         void Init();
+
+        // CLEAR THE STRUCTURE
         void Clear();
+
+        // ADD A NODE TO THE GRAPH
+        void addNode(const Node<Data>& node) noexcept; // Since Node<Data> is public ...
         void addNode(const Data& key) noexcept;
+
+        // ADD EDGE BETWEEN TO NODES
+        void addEdge(const Node<Data>& node_from, const Node<Data>& node_to); // Since Node<Data> is public ...
         void addEdge(const Data& from, const Data& to);
 
+        // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
         void showGraph() const noexcept {
             if (Nodes.empty() && Adj.empty()) {
                 std::cout << " Graph is empty." << std::endl;
@@ -109,17 +136,19 @@ namespace lasd {
         // DEFAULT IMPLEMENTATION OF Bfs
         void Bfs(const Data& source) noexcept;
 
-        // DEFAULT IMPLEMENTATION OF Dfs
+        // DEFAULT IMPLEMENTATION OF Dfs, this could also be considered as Map()
         void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
-        // DEFAULT IMPLEMENTATION OF Dfs BUT STARTING FROM A SPECIFIC VERTEX
+        // DEFAULT IMPLEMENTATION OF Dfs BUT STARTING FROM A SPECIFIC VERTEX, this could also be considered as Map()
         void Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
         // GET THE TRANSPOSED GRAPH (modifies it in-place)
-        void Transpose();
+        void Transpose(); // Returns a new instance of the Graph but Transposed.
 
         // GET TOPOLOGICAL ORDER OF THE GRAPH
         std::stack<Data> getTopologicalOrder();
+
+        /* ************************************************************************ */
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
         // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).

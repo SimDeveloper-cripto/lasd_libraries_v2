@@ -3,22 +3,16 @@
 This is a continuation and completion of lasd_libraries: <br />
 What is left to do:
 
-- [ ] Implement a Double Linked List
-- [X] Linked List
-  - [ ] Add Exists()
-- [X] Graph
-  - [ ] Add Move and Copy constructor, Move and Copy assignment, operator=, do not implement operator==
+- Graph
   - [ ] Add the calculation and assignment of CFCs to the vertices
-
-What is left to be fixed:
-
-- [ ] Graph: make sure getTopologicalOrder() works fine
 
 Coming soon:
 
-- [X] Graph
-  - [ ] I would like to add Map and Fold (PostOrder visit)
+- Graph
+  - [ ] I would like to add MapPostOrder (just like I did with Dfs)
+  - [ ] I would like to add Fold (PreOrder and PostOrder, similarly to Map with Dfs)
   - [ ] To complete Bfs algorithm I should add dist[] and prev[]
+- Implement a Double Linked List
 
 ### Compile and Execute the project in Windows (PowerShell)
 
