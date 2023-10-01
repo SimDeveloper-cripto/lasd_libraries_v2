@@ -47,6 +47,19 @@ namespace lasd {
             Nodes[u].color = Color::Black;
         }
 
+        void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalOrder) {
+            Nodes[u].color = Color::Gray;
+
+            for (const Data& v : Adj[u]) {
+                if (Nodes[v].color == Color::White) {
+                    DfsVisitTopological(v, topologicalOrder);
+                }
+            }
+
+            Nodes[u].color = Color::Black;
+            topologicalOrder.push(u);
+        }
+
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit */
 
             // THIS DfsVisit allows us to detect a cycle inside the Graph: it returns true if cycle is detected.
@@ -64,19 +77,6 @@ namespace lasd {
                 return false;
             }
 
-            void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalOrder) {
-                Nodes[u].color = Color::Gray;
-
-                for (const Data& v : Adj[u]) {
-                    if (Nodes[v].color == Color::White) {
-                        DfsVisitTopological(v, topologicalOrder);
-                    }
-                }
-
-                Nodes[u].color = Color::Black;
-                topologicalOrder.push(u);
-            }
-
         /* [YOUR CODE ENDS HERE] */
 
     public:
@@ -89,14 +89,20 @@ namespace lasd {
         void addEdge(const Data& from, const Data& to);
 
         void showGraph() const noexcept {
-            for (const auto& couple : Adj) {
-                const Data& from = couple.first;
-                const std::vector<Data>& adjs = couple.second;
+            if (Nodes.empty() && Adj.empty()) {
+                std::cout << " Graph is empty." << std::endl;
+            } else if (Adj.empty()) {
+                std::cout << " Graph is free." << std::endl;
+            } else {
+                for (const auto& couple : Adj) {
+                    const Data& from = couple.first;
+                    const std::vector<Data>& adjs = couple.second;
                 
-                std::cout << "      Node " << from << " -> ";
+                    std::cout << "      Node " << from << " -> ";
                 
-                for (const Data& to : adjs) { std::cout << to << " "; }
-                std::cout << std::endl;
+                    for (const Data& to : adjs) { std::cout << to << " "; }
+                    std::cout << std::endl;
+                }
             }
         }
 

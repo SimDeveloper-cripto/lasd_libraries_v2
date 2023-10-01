@@ -27,7 +27,7 @@ void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
 }
 
 namespace lasdtest {
-    void run_test() {
+    void run_personal_linked_list_test() {
         std::cout << "[ OK ] LINKED_LIST TEST STARTED." << std::endl;
 
         List<int>* list = new List<int>();
@@ -67,9 +67,10 @@ namespace lasdtest {
 
         std::cout << "[ OK ] LINKED_LIST TEST ENDED." << std::endl;
         delete list;
-        std::cout << "-------------------------------------------------------" << std::endl;
+    }
 
-        std::cout << "[ OK ] GRAPH TEST STARTED." << std::endl;
+    void run_personal_graph_test() {
+                std::cout << "[ OK ] GRAPH TEST STARTED." << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
         // graph->addNode(0);
@@ -130,8 +131,26 @@ namespace lasdtest {
 
         std::cout << "[ OK ] GRAPH TEST ENDED." << std::endl;
         delete graph;
+    }
+
+    void run_test() {
+        run_personal_linked_list_test();
+        std::cout << "-------------------------------------------------------" << std::endl;
+        
+        run_personal_graph_test();
         std::cout << "-------------------------------------------------------" << std::endl;
 
         // ...
     }
 }
+
+/* [YOUR CODE STARTS HERE] HERE CREATE YOUR PERSONAL TEST */
+
+namespace usertest {
+    // MODIFY THIS AS YOU LIKE
+    void run_test() {
+        std::cout << "[TODO] To be implemented!" << std::endl;
+    }
+}
+
+/* [YOUR CODE ENDS HERE] */
