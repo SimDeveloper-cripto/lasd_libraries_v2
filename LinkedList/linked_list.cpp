@@ -215,7 +215,7 @@ namespace lasd {
     void List<Data>::PrintList() const noexcept {
         Node* current = head;
 
-        std::cout << "  Here is the List: ";
+        std::cout << "Here is the List: ";
         while(current != nullptr) {
             std::cout << current->element << " ";
             current = current->next;

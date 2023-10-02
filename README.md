@@ -9,9 +9,8 @@ What is left to do:
 Coming soon:
 
 - Graph
-  - [ ] I would like to add MapPostOrder (just like I did with Dfs)
-  - [ ] I would like to add Fold (PreOrder and PostOrder, similarly to Map with Dfs)
-  - [ ] To complete Bfs algorithm I should add dist[] and prev[]
+  - [ ] I would like to add MapPostOrder and FoldPostOrder
+  - [ ] To complete Bfs algorithm I should add dist[] and prev[] so that I can calculate Minimum paths
 - Implement a Double Linked List
 
 ### Compile and Execute the project in Windows (PowerShell)

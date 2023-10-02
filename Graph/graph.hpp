@@ -28,7 +28,7 @@ namespace lasd {
 
         Node(const Data& value) : key(value), color(Color::White) {}
 
-        // NOTE: A function to change node's color is not provided because only Graph (in theory) has to change colors.
+        // NOTE: A function to change node's color is not provided because Node<Data> is public.
     };
 
     template <typename Data>
@@ -40,6 +40,8 @@ namespace lasd {
         /* NOTE: DEFAULT IMPLEMENTATION OF DfsVisit
             The function pointer is provided just in case there is something you want to try and apply to each graph's node.
         */
+
+        // Map()
         void DfsVisit(const Data& u, std::function<void(const Data&, void* other)> visit, void* other) {
             Nodes[u].color = Color::Gray;
             visit(u, other);
@@ -47,6 +49,19 @@ namespace lasd {
             for (const Data& v : Adj[u]) {
                 if (Nodes[v].color == Color::White) {
                     DfsVisit(v, visit, other);
+                }
+            }
+            Nodes[u].color = Color::Black;
+        }
+
+        // Fold()
+        void DfsVisit(const Data& u, std::function<void(const Data&, const void*, void*)> visit, const void* par, void* acc) {
+            Nodes[u].color = Color::Gray;
+            visit(u, par, acc);
+
+            for (const Data& v : Adj[u]) {
+                if (Nodes[v].color == Color::White) {
+                    DfsVisit(v, visit, par, acc);
                 }
             }
             Nodes[u].color = Color::Black;
@@ -65,7 +80,7 @@ namespace lasd {
             topologicalOrder.push(u);
         }
 
-        /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit */
+        /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit or everything else */
 
             // THIS DfsVisit allows us to detect a cycle inside the Graph: it returns true if cycle is detected.
             bool DfsVisitAcyclic(const Data& u) {
@@ -94,7 +109,6 @@ namespace lasd {
         Graph& operator=(const Graph& other);     // Copy Assignment
         Graph& operator=(Graph&& other) noexcept; // Move Assignment
 
-        // There is nothing special that led me to this conclusion: I just decided to do it like this
         bool operator==(const Graph&) const noexcept = delete;
         bool operator!=(const Graph&) const noexcept = delete;
 
@@ -125,7 +139,7 @@ namespace lasd {
                     const Data& from = couple.first;
                     const std::vector<Data>& adjs = couple.second;
                 
-                    std::cout << "      Node " << from << " -> ";
+                    std::cout << "  Node " << from << " -> ";
                 
                     for (const Data& to : adjs) { std::cout << to << " "; }
                     std::cout << std::endl;
@@ -133,19 +147,27 @@ namespace lasd {
             }
         }
 
-        // DEFAULT IMPLEMENTATION OF Bfs
-        void Bfs(const Data& source) noexcept;
+        /* ************************************************************************ */
 
-        // DEFAULT IMPLEMENTATION OF Dfs, this could also be considered as Map()
-        void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        /* Bfs, Dfs section ( Map() in PreOrder implementation ) */
+        
+        void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;              // Default implementation of Dfs
+        void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept; // Dfs starting from specific vertex
+        void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept; // Default implementation of Bfs
+        
+        /* Bfs, Dfs section ( Fold() in PreOrder implementation is provided ) */
+        typedef std::function<void(const Data&, const void*, void*)> FoldFunctor;
+        
+        void Dfs(FoldFunctor, const void*, void*) noexcept;              // Default implementation of Fold() using Dfs
+        void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept; // Fold() using Dfs starting from specific vertex
+        void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept; // Default implementation of Fold() using Bfs
 
-        // DEFAULT IMPLEMENTATION OF Dfs BUT STARTING FROM A SPECIFIC VERTEX, this could also be considered as Map()
-        void Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        /* ************************************************************************ */
 
-        // GET THE TRANSPOSED GRAPH (modifies it in-place)
-        void Transpose(); // Returns a new instance of the Graph but Transposed.
+        // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
+        void Transpose();
 
-        // GET TOPOLOGICAL ORDER OF THE GRAPH
+        // GET TOPOLOGICAL ORDER/SORT OF THE GRAPH: in italian we call it topological-order
         std::stack<Data> getTopologicalOrder();
 
         /* ************************************************************************ */
@@ -154,6 +176,7 @@ namespace lasd {
         // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).
 
             bool isGraphAcyclicDfs() noexcept;
+            // ...
         /* [YOUR CODE ENDS HERE] */
     };
 }

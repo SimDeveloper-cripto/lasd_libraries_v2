@@ -15,12 +15,14 @@ int generate_random_number() {
     return dist(generator);
 }
 
+// List's Map function to apply
 void Square (int& value, void* other) { value = value * value; };
 
+// List's Fold function to apply
 void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
     if(value % *((int*) limit) == 0) {
-        *((int*) accumulator) = *((int*) accumulator) + value; 
-        std::cout << "      Accum. value: " << *((int*) accumulator) << std::endl; 
+        *((int*) accumulator) = *((int*) accumulator) + value;
+        std::cout << "  Accumulated value: " << *((int*) accumulator) << std::endl;
     } else {
         *((int*) accumulator) = *((int*) accumulator) + 0;
     }
@@ -28,7 +30,7 @@ void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
 
 namespace lasdtest {
     void run_personal_linked_list_test() {
-        std::cout << "[ OK ] LINKED_LIST TEST STARTED." << std::endl;
+        std::cout << std::endl << "[ OK ] LINKED_LIST TEST STARTED." << std::endl;
 
         List<int>* list = new List<int>();
         list->InsertAtFront(generate_random_number());
@@ -42,54 +44,54 @@ namespace lasdtest {
 
         int new_val = generate_random_number();
 
-        std::cout << "  Size: " << list->Size() << std::endl;
+        std::cout << "Generated List with Size: " << list->Size() << std::endl;
         
         if (list->Empty()) {
-            std::cout << "  The list is empty!" << std::endl;
+            std::cout << "The list is empty!" << std::endl;
         } else {
             list->PrintList();
 
-            std::cout << "  List's head element value: " << list->Front() << std::endl;
-            std::cout << "  List's tail element value: " << list->Back() << std::endl;
+            std::cout << "List's head element value: " << list->Front() << std::endl;
+            std::cout << "List's tail element value: " << list->Back() << std::endl;
 
             unsigned long index = generate_random_index(list->Size());
-            std::cout << "  List's element at index " << index << ": " << list->operator[](index) << std::endl;
+            std::cout << "List's element at index " << index << ": " << list->operator[](index) << std::endl;
 
-            std::cout << "  List's Exists(" << val << ") test: " << std::endl;
-            (list->Exists(val)) ? std::cout << "      Elemento presente!" << std::endl : std::cout << "       Elemento non presente!" << std::endl;
+            std::cout << "List's Exists(" << val << ") test: ";
+            (list->Exists(val)) ? std::cout << "    Yes, element is present." << std::endl : std::cout << "   No, element is not present." << std::endl;
 
-            std::cout << "  List's Exists(" << new_val << ") test: " << std::endl;
-            (list->Exists(new_val)) ? std::cout << "      Elemento presente!" << std::endl : std::cout << "       Elemento non presente!" << std::endl;
+            std::cout << "List's Exists(" << new_val << ") test: ";
+            (list->Exists(new_val)) ? std::cout << "    Yes, element is present." << std::endl : std::cout << "   No, element is not present." << std::endl;
 
-            unsigned long change_index = 3; // This is silly but hey, I do what I want. Its the test that has only 5 or 6 elements, it could be worse than that.
+            unsigned long change_index = 3; // List's test has only 5 or 6 elements, it could be worse than that.
             int subtitute = 1;
-            std::cout << "  List's ChangeValueGivenIndex(" << change_index << ", "<< subtitute <<") test: " << std::endl;
+            std::cout << "List's ChangeValueGivenIndex( index: " << change_index << ", new_value: " << subtitute << ") test: " << std::endl;
             list->ChangeValueGivenIndex(change_index, subtitute); // Remember: the function returns a boolean.
             std::cout << "  "; list->PrintList();
 
-            std::cout << "  Reversed List:" << std::endl;
+            std::cout << "The List has been Reversed:" << std::endl;
             list->Reverse();
             std::cout << "  "; list->PrintList();
             
-            std::cout << "  List's new head element value: " << list->Front() << std::endl;
-            std::cout << "  List's new tail element value: " << list->Back() << std::endl;
+            std::cout << "List's new head element value: " << list->Front() << std::endl;
+            std::cout << "List's new tail element value: " << list->Back() << std::endl;
 
-            std::cout << "  List's values afer Map(): " << std::endl;
+            std::cout << "List's values afer Map(): " << std::endl;
             list->MapPreOrder(Square, nullptr);
             std::cout << "  "; list->PrintList();
 
             const int divide_by = 2; 
             int start = 0;
-            std::cout << "  List's Fold() application: " << std::endl;
+            std::cout << "List's Fold() application: " << std::endl;
             list->FoldPreOrder(SumEvenNumbers, &divide_by, &start);
         }
 
-        std::cout << "[ OK ] LINKED_LIST TEST ENDED." << std::endl;
+        std::cout << std::endl;
         delete list;
     }
 
     void run_personal_graph_test() {
-                std::cout << "[ OK ] GRAPH TEST STARTED." << std::endl;
+        std::cout << std::endl << "[ OK ] GRAPH TEST STARTED." << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
         // graph->addNode(0);
@@ -103,40 +105,47 @@ namespace lasdtest {
         // graph->addEdge(0, 6);
         graph->addEdge(1, 2);
         graph->addEdge(1, 3);
-        graph->addEdge(3, 1); // You can comment this if you want
+        graph->addEdge(3, 1); // (Add a cycle) You can comment this if you want
         graph->addEdge(2, 3);
         graph->addEdge(3, 4);
         // graph->addEdge(5, 6);
         // graph->addEdge(5, 3);
         graph->addEdge(4, 5);
 
-        std::cout << "  Printing the Graph: " << std::endl;
+        /** Map functions applied to both Bfs and Dfs
+            That is basically our way to apply Map() to Graph's nodes
+        */
+        auto applyToNodeBfs = [](const int& node, void* other) {
+            std::cout << "  [QUEUE HEAD] Visiting: " << node << std::endl; // const int&, insted of printing we could modify the values.
+        };
+        
+        auto applyToNodeDfs = [](const int& node, void* other) {
+            std::cout << node << " "; // const int&, insted of printing we could modify the values.
+        };
+
+        std::cout << "Printing the Graph: " << std::endl;
         graph->showGraph();
 
         // DEFAULT BFS
-        graph->Bfs(1); // 1 2 3 4 [OK]
+        std::cout << "Bfs's result: " << std::endl;
+        graph->Bfs(1, applyToNodeBfs, nullptr);
 
         // DEFAULT DFS
-        std::cout << "  Dfs's result: ";
-
-        /* That is basically our way to apply Map() to Graph's nodes */
-        auto applyToNode = [](const int& node, void* other) {
-            std::cout << node << " "; // const int&, insted of printing we could modify the values. I would be fun.
-        };
-        graph->Dfs(applyToNode, nullptr);
+        std::cout << "Dfs's result: ";
+        graph->Dfs(applyToNodeDfs, nullptr);
 
         // Try Dfs but starting from a specific index
-        std::cout << std::endl << "  Dfs's result (starting from node 5): ";
-        graph->Dfs(5, applyToNode, nullptr);
+        std::cout << std::endl << "Dfs's result (starting from node 5): ";
+        graph->Dfs(5, applyToNodeDfs, nullptr);
 
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
         if (graph->isGraphAcyclicDfs()) {
-            std::cout << std::endl << "  Acyclic test: the Graph is acyclic." << std::endl;
+            std::cout << std::endl << "Acyclic test: the Graph is acyclic." << std::endl;
         } else {
-            std::cout << std::endl << "  Acyclic test: the Graph is cyclic." << std::endl;
+            std::cout << std::endl << "Acyclic test: the Graph is cyclic." << std::endl;
         }
         
-        std::cout << "  Topological-Order of the Graph: ";
+        std::cout << "Topological-Order of the Graph: ";
         std::stack<int> myOrder = graph->getTopologicalOrder();
         
         while(!myOrder.empty()) {
@@ -146,7 +155,7 @@ namespace lasdtest {
         std::cout << std::endl;
 
         graph->Transpose();
-        std::cout << "  Printing the Transposed Graph: " << std::endl;
+        std::cout << "Printing the Transposed Graph: " << std::endl;
         graph->showGraph();
 
         /* ************************************************************************ */
@@ -155,7 +164,7 @@ namespace lasdtest {
         node1.key = 10, node2.key = 11;
         node1.color = Color::White, node2.color = Color::White;
 
-        std::cout << std::endl << "  Added new Node to Graph, called addNode(const Node<Data>&)" << std::endl;
+        std::cout << "Added new Node to Graph, addNode(const Node<Data>&) called:" << std::endl;
         graph->addNode(node1);
         graph->addNode(node2);
         graph->addEdge(node1, node2);
@@ -163,29 +172,62 @@ namespace lasdtest {
         graph->addEdge(5, node2.key);
         graph->showGraph();
 
-        std::cout << std::endl << "  Dfs's result (starting from new node "<< node1.key << "): ";
-        graph->Dfs(node1.key, applyToNode, nullptr); // applyToNode is defined above.
+        std::cout << "Dfs's result (starting from new node " << node1.key << "): ";
+        graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is defined above.
 
         if (graph->isGraphAcyclicDfs()) {
-            std::cout << std::endl << "  Acyclic test: the new Graph is acyclic." << std::endl;
+            std::cout << std::endl << "Acyclic test: the new Graph is acyclic." << std::endl;
         } else {
-            std::cout << std::endl << "  Acyclic test: the new Graph is cyclic." << std::endl;
+            std::cout << std::endl << "Acyclic test: the new Graph is cyclic." << std::endl;
         }
 
         /* ************************************************************************ */
 
-        std::cout << "[ OK ] GRAPH TEST ENDED." << std::endl;
+        /** Fold function applied to both Bfs and Dfs
+            That is basically our way to apply Fold() to Graph's nodes
+        */
+        auto applyFoldToNode = [](const int& node, const void* limit, void* accumulator) {
+            // Sum values >= limit
+            if(node >= *((int*) limit)) {
+                *((int*) accumulator) = *((int*) accumulator) + node;
+                std::cout << "  Accumulated value: " << *((int*) accumulator) << std::endl;
+            } else {
+                *((int*) accumulator) = *((int*) accumulator) + 0;
+            }
+       };
+
+        /* Apply Fold() to the Transposed Graph */
+        int start = 2, accum = 0;
+
+        std::cout << "Bfs's Fold application result: " << std::endl;
+        graph->Bfs(1, applyFoldToNode, &start, &accum);
+
+        accum = 0;
+        // std::cout << "Dfs's Fold application result (starting from 1): " << std::endl;
+        // graph->Dfs(1, applyFoldToNode, &start, &accum);
+        std::cout << "Dfs's Fold application result: " << std::endl;
+        graph->Dfs(applyFoldToNode, &start, &accum);
+
+        /* ************************************************************************ */
+
+        // TODO: Like most of the exercises try to solve one of those including two Dfs:
+            // One Dfs the other on Transposed (There is a barrier between nodes ...)
+
+        /* ************************************************************************ */
+
+        std::cout << std::endl;
         delete graph;
     }
 
     void run_test() {
         run_personal_linked_list_test();
-        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
         
         run_personal_graph_test();
-        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
 
         // ...
+        // TODO: Create a Graph<std::string> and test it.
     }
 }
 
@@ -194,7 +236,7 @@ namespace lasdtest {
 namespace usertest {
     // MODIFY THIS AS YOU LIKE
     void run_test() {
-        std::cout << "[TODO] To be implemented!" << std::endl;
+        std::cout << "[TODO] There is no user's implementation yet." << std::endl;
     }
 }
 

@@ -85,8 +85,11 @@ namespace lasd {
         }
     }
 
+    /* ************************************************************************ */
+
+    // Default implementation of Map() using Bfs
     template <typename Data>
-    void Graph<Data>::Bfs(const Data& source) noexcept {
+    void Graph<Data>::Bfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
 
         std::queue<Data> my_queue;
@@ -96,7 +99,7 @@ namespace lasd {
         while (!my_queue.empty()) {
             Data head = my_queue.front();
             my_queue.pop();
-            std::cout << "[QUEUE HEAD] Visiting: " << Nodes[head].key << std::endl;
+            visit(head, other);
 
             for (const Data& v : Adj[head]) {
                 if (Nodes[v].color == Color::White) {
@@ -108,7 +111,7 @@ namespace lasd {
         }
     }
 
-    // DEFAULT Dfs
+    // Default implementation of Map() using Dfs
     template <typename Data>
     void Graph<Data>::Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
@@ -121,12 +124,60 @@ namespace lasd {
         }
     }
 
-    // DEFAULT Dfs: STARTING FROM A SPECIFIC VERTEX
+    // Default implementation of Map() using Dfs, starting from a specific vertex
     template <typename Data>
     void Graph<Data>::Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         DfsVisit(source, visit, other);
     }
+
+    /* ************************************************************************ */
+
+    // Default implementation of Fold() using Bfs
+    template <typename Data>
+    void Graph<Data>::Bfs(const Data& source, FoldFunctor func, const void* par, void* acc) noexcept {
+        Init();
+
+        std::queue<Data> my_queue;
+        my_queue.push(source);
+        Nodes[source].color = Color::Gray;
+
+        while (!my_queue.empty()) {
+            Data head = my_queue.front();
+            my_queue.pop();
+            func(head, par, acc);
+
+            for (const Data& v : Adj[head]) {
+                if (Nodes[v].color == Color::White) {
+                    Nodes[v].color = Color::Gray;
+                    my_queue.push(v);
+                }
+            }
+            Nodes[head].color = Color::Black;
+        }
+    }
+
+    // Default implementation of Fold() using Dfs
+    template <typename Data>
+    void Graph<Data>::Dfs(FoldFunctor func, const void* par, void* acc) noexcept {
+        Init();
+
+        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
+            const Node<Data>& currNode = it->second; // Contains Node<Data> field
+            if (currNode.color == Color::White) {
+                DfsVisit(currNode.key, func, par, acc);
+            }
+        }
+    }
+
+    // Default implementation of Fold() using Dfs, starting from a specific vertex
+    template <typename Data>
+    void Graph<Data>::Dfs(const Data& source, FoldFunctor func, const void* par, void* acc) noexcept {
+        Init();
+        DfsVisit(source, func, par, acc);
+    }
+
+    /* ************************************************************************ */
 
     template <typename Data>
     void Graph<Data>::Transpose() {
