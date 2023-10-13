@@ -1,4 +1,5 @@
 #include "graph.hpp"
+#include <assert.h>
 
 namespace lasd {
     template <typename Data>
@@ -195,6 +196,9 @@ namespace lasd {
 
     template <typename Data>
     std::stack<Data> Graph<Data>::getTopologicalOrder() {
+        // If Graph is cyclic you can't calculate Topological-Order
+        assert(isGraphAcyclicDfs() == true && "The Graph is cyclic! You cannot calculate Topological-Order.");
+
         Init();
         std::stack<Data> topologicalOrder {};
 
