@@ -196,8 +196,8 @@ namespace lasd {
 
     template <typename Data>
     std::stack<Data> Graph<Data>::getTopologicalOrder() {
-        // If Graph is cyclic you can't calculate Topological-Order
-        assert(isGraphAcyclicDfs() == true && "The Graph is cyclic! You cannot calculate Topological-Order.");
+        /* If Graph is cyclic, Topological-Order is a partial order. */
+        if (!isGraphAcyclicDfs()) std::cout << "\n  The Graph is cyclic! The calculated order is partial: ";
 
         Init();
         std::stack<Data> topologicalOrder {};

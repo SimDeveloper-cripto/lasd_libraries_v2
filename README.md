@@ -4,6 +4,7 @@ This is a continuation and completion of lasd_libraries: <br />
 What is left to do:
 
 - Graph
+  - [ ] Define Topologial Order using "incoming grade" algorithm (Note: if the graph is cyclic you cannot do it!)
   - [ ] Add the calculation and assignment of CFCs to the vertices
 
 Coming soon:

@@ -105,7 +105,7 @@ namespace lasdtest {
         // graph->addEdge(0, 6);
         graph->addEdge(1, 2);
         graph->addEdge(1, 3);
-        graph->addEdge(3, 1); // (Add a cycle) You can comment this if you want
+        // graph->addEdge(3, 1); // (Add a cycle) You can comment this if you want
         graph->addEdge(2, 3);
         graph->addEdge(3, 4);
         // graph->addEdge(5, 6);
