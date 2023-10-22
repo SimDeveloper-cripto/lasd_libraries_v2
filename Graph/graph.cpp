@@ -211,6 +211,52 @@ namespace lasd {
         return topologicalOrder;
     }
 
+    template <typename Data>
+    std::vector<Data> Graph<Data>::getTopologicalOrderUsingIncomingGrade() {
+        assert(isGraphAcyclicDfs() == true && "The Graph is cyclic! You can't calculate Topological Order!");
+
+        std::map<Data, int> incomingGrades;
+        
+        /* [START] CALCULATE INCOMING GRADE FOR EACH NODE */
+
+        for (const auto& node : Nodes) {
+            const Data& key = node.first;
+            incomingGrades[key] = 0;
+        }
+
+        for (const auto& node : Nodes) {
+            const Data& key = node.first;
+            for (const Data& neighbor : Adj[key]) {
+                incomingGrades[neighbor]++;
+            }
+        }
+
+        /* [END] */
+
+        std::queue<Data> order_queue;
+        std::vector<Data> result; // This is what gets returned
+
+        for (const auto& node : Nodes) {
+            const Data& key = node.first;
+            if (incomingGrades[key] == 0) { order_queue.push(key); }
+        }    
+
+        // Perform sorting
+        while (!order_queue.empty()) {
+            Data current_node = order_queue.front();
+
+            order_queue.pop();
+            result.insert(result.begin(), current_node);
+
+            for (const Data& neighbor : Adj[current_node]) {
+                incomingGrades[neighbor]--;
+                if (incomingGrades[neighbor] == 0) { order_queue.push(neighbor); }
+            }
+        }
+
+        return result;
+    }
+
     /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
 
         template <typename Data>

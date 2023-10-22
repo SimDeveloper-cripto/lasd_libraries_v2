@@ -82,7 +82,7 @@ namespace lasdtest {
 
             const int divide_by = 2; 
             int start = 0;
-            std::cout << "List's Fold() application: " << std::endl;
+            std::cout << "List's Fold() application (SumEvenNumbers): " << std::endl;
             list->FoldPreOrder(SumEvenNumbers, &divide_by, &start);
         }
 
@@ -154,6 +154,12 @@ namespace lasdtest {
         }
         std::cout << std::endl;
 
+        std::cout << "Topological-Order of the Graph using Incoming Grade: ";
+        std::vector<int> myOrder2 = graph->getTopologicalOrderUsingIncomingGrade();
+
+       for (const int elem : myOrder2) std::cout << elem << " ";
+       std::cout << std::endl;
+
         graph->Transpose();
         std::cout << "Printing the Transposed Graph: " << std::endl;
         graph->showGraph();
@@ -211,7 +217,7 @@ namespace lasdtest {
         /* ************************************************************************ */
 
         // TODO: Like most of the exercises try to solve one of those including two Dfs:
-            // One Dfs the other on Transposed (There is a barrier between nodes ...)
+            // One Dfs starting fro a vertex, the other on the Transposed (There is a barrier between nodes ...)
 
         /* ************************************************************************ */
 
@@ -227,14 +233,13 @@ namespace lasdtest {
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
 
         // ...
-        // TODO: Create a Graph<std::string> and test it.
+        // TODO: Create a Graph<std::float> and Graph<std::string> to test.
     }
 }
 
 /* [YOUR CODE STARTS HERE] HERE CREATE YOUR PERSONAL TEST */
 
 namespace usertest {
-    // MODIFY THIS AS YOU LIKE
     void run_test() {
         std::cout << "[TODO] There is no user's implementation yet." << std::endl;
     }

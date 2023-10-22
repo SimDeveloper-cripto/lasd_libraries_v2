@@ -164,11 +164,22 @@ namespace lasd {
 
         /* ************************************************************************ */
 
+        /* Bfs, Dfs section ( Map() in PostOrder implementation ) */
+
+        // ...
+
+        /* Bfs, Dfs section ( Fold() in PostOrder implementation ) */
+
+        // ...
+
+        /* ************************************************************************ */
+
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
         void Transpose();
 
         // GET TOPOLOGICAL ORDER/SORT OF THE GRAPH: in italian we call it topological-order
         std::stack<Data> getTopologicalOrder();
+        std::vector<Data> getTopologicalOrderUsingIncomingGrade();
 
         /* ************************************************************************ */
 
