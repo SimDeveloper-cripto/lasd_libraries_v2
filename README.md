@@ -6,7 +6,7 @@ This is my first ever try in implementing something like this so any help is wel
 Keep in mind this is still a work in progess, there are some things I need to finish. <br />
 
 - Graph
-  - [ ] Add the calculation of SCC
+  - [X] Add the calculation of SCC
   - [ ] To complete Bfs algorithm I should add dist[] and prev[] so that the user can calculate Minimum paths
 
 Coming soon:

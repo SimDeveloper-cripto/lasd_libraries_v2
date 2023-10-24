@@ -195,9 +195,10 @@ namespace lasd {
     }
 
     template <typename Data>
-    std::stack<Data> Graph<Data>::getTopologicalOrder() {
+    std::stack<Data> Graph<Data>::getTopologicalOrder(bool print_message) {
         /* If Graph is cyclic, Topological-Order is a partial order. */
-        if (!isGraphAcyclicDfs()) std::cout << "\n  The Graph is cyclic! The calculated order is partial: ";
+        if (print_message)
+            if (!isGraphAcyclicDfs()) std::cout << "\n  The Graph is cyclic! The calculated order is partial: ";
 
         Init();
         std::stack<Data> topologicalOrder {};
@@ -257,6 +258,35 @@ namespace lasd {
         return result;
     }
 
+    // KOSARAJU'S ALGORITHM
+    template <typename Data>
+    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() {
+        std::stack<Data> topologicalOrder = getTopologicalOrder(false);
+        std::vector<std::vector<Data>> sccs; // For each SCC, we store the vertices
+
+        Transpose();
+        Init();
+        while (!topologicalOrder.empty()) {
+            Data vertex = topologicalOrder.top();
+            topologicalOrder.pop();
+
+            if (Nodes[vertex].color == Color::White) {
+                std::vector<Data> component; // Elements inside the SCC
+
+                DfsVisit(vertex, [&component](const Data& data, void* other) {
+                    std::vector<Data>& comp = *static_cast<std::vector<Data>*>(other);
+                    comp.push_back(data);
+                }, &component);
+
+                if (!component.empty()) sccs.push_back(component);
+            }
+        }
+
+        Transpose(); // Back to previous 
+        Init();
+        return sccs;
+    }
+
     /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
 
         template <typename Data>
@@ -280,5 +310,4 @@ namespace lasd {
     template class Graph<int>;
     template class Graph<float>;
     template class Graph<double>;
-    template class Graph<std::string>;
 }

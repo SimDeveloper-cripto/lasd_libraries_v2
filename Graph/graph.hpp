@@ -8,6 +8,7 @@
 #include <exception>
 #include <stdbool.h>
 #include <functional>
+#include <unordered_set>
 
 // GRAPH: IMPLEMENTATION BY ADJACENCY LISTS
 
@@ -88,7 +89,8 @@ namespace lasd {
 
                 for (const Data& v : Adj[u]) {
                     if (Nodes[v].color == Color::White) {
-                        DfsVisitAcyclic(v);
+                        bool ret = DfsVisitAcyclic(v);
+                        if (ret) return true;
                     } else if (Nodes[v].color == Color::Gray) {
                         return true;
                     }
@@ -178,8 +180,12 @@ namespace lasd {
         void Transpose();
 
         // GET TOPOLOGICAL ORDER/SORT OF THE GRAPH: in italian we call it topological-order
-        std::stack<Data> getTopologicalOrder();
+        std::stack<Data> getTopologicalOrder(bool print_message);
         std::vector<Data> getTopologicalOrderUsingIncomingGrade();
+
+        /* ************************************************************************ */
+
+        std::vector<std::vector<Data>> CalculateStronglyConnectedComponents();
 
         /* ************************************************************************ */
 

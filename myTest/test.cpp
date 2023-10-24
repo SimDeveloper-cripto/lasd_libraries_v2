@@ -94,7 +94,7 @@ namespace lasdtest {
         std::cout << std::endl << "[ OK ] GRAPH TEST STARTED." << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
-        // graph->addNode(0);
+        graph->addNode(0);
         graph->addNode(1);
         graph->addNode(2);
         graph->addNode(3);
@@ -102,15 +102,19 @@ namespace lasdtest {
         graph->addNode(5);
         graph->addNode(6);
 
-        // graph->addEdge(0, 6);
+        graph->addEdge(0, 1);
+        graph->addEdge(1, 0);
+        graph->addEdge(3, 1);
         graph->addEdge(1, 2);
-        graph->addEdge(1, 3);
-        // graph->addEdge(3, 1); // (Add a cycle) You can comment this if you want
         graph->addEdge(2, 3);
-        graph->addEdge(3, 4);
-        // graph->addEdge(5, 6);
-        // graph->addEdge(5, 3);
+        graph->addEdge(1, 4);
         graph->addEdge(4, 5);
+        graph->addEdge(5, 6);
+        graph->addEdge(6, 4);
+
+        /*
+            SCCs MUST BE: 0 1 3 2 | 4 5 6
+        */
 
         /** Map functions applied to both Bfs and Dfs
             That is basically our way to apply Map() to Graph's nodes
@@ -139,14 +143,16 @@ namespace lasdtest {
         graph->Dfs(5, applyToNodeDfs, nullptr);
 
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
+        bool do_incoming_grade = true;
         if (graph->isGraphAcyclicDfs()) {
             std::cout << std::endl << "Acyclic test: the Graph is acyclic." << std::endl;
         } else {
             std::cout << std::endl << "Acyclic test: the Graph is cyclic." << std::endl;
+            do_incoming_grade = false;
         }
         
         std::cout << "Topological-Order of the Graph: ";
-        std::stack<int> myOrder = graph->getTopologicalOrder();
+        std::stack<int> myOrder = graph->getTopologicalOrder(true);
         
         while(!myOrder.empty()) {
             std::cout << myOrder.top() << " ";
@@ -154,14 +160,30 @@ namespace lasdtest {
         }
         std::cout << std::endl;
 
-        std::cout << "Topological-Order of the Graph using Incoming Grade: ";
-        std::vector<int> myOrder2 = graph->getTopologicalOrderUsingIncomingGrade();
+        if (do_incoming_grade) {
+            std::cout << "Topological-Order of the Graph using Incoming Grade: ";
+            std::vector<int> myOrder2 = graph->getTopologicalOrderUsingIncomingGrade();
+            
+            for (const int elem : myOrder2) std::cout << elem << " ";
+            std::cout << std::endl;
+        }
 
-       for (const int elem : myOrder2) std::cout << elem << " ";
-       std::cout << std::endl;
+        { /* [SCC TEST] START */
+            std::cout << std::endl;
+            std::cout << "SCC CALCULATION: " << std::endl;
+            std::vector<std::vector<int>> sccs = graph->CalculateStronglyConnectedComponents();
+
+            for (const std::vector<int>& scc : sccs) {
+                std::cout << "  Component: ";
+                for (const int& elem : scc) {
+                    std::cout << elem << " ";
+                }
+                std::cout << std::endl;
+            }
+        } /* [SCC TEST] END */
 
         graph->Transpose();
-        std::cout << "Printing the Transposed Graph: " << std::endl;
+        std::cout << std::endl << "Printing the Transposed Graph: " << std::endl;
         graph->showGraph();
 
         /* ************************************************************************ */
@@ -216,8 +238,7 @@ namespace lasdtest {
 
         /* ************************************************************************ */
 
-        // TODO: Like most of the exercises try to solve one of those including two Dfs:
-            // One Dfs starting fro a vertex, the other on the Transposed (There is a barrier between nodes ...)
+        // TODO: Solve one of ASD's problems: the ones where a barrier between nodes is formed
 
         /* ************************************************************************ */
 
@@ -232,8 +253,7 @@ namespace lasdtest {
         run_personal_graph_test();
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
 
-        // ...
-        // TODO: Create a Graph<std::float> and Graph<std::string> to test.
+        // TODO: CREATE A FLOAT TEST FOR GRAPH
     }
 }
 
