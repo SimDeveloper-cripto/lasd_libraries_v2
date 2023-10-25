@@ -1,6 +1,6 @@
 @echo off
 
-clang++ -o3 -o bin/main LinkedList/linked_list.cpp Graph/graph.cpp myTest/test.cpp main.cpp
+clang++ -o3 -o bin/main -Wall LinkedList/linked_list.cpp Graph/graph.cpp myTest/test.cpp main.cpp
 
 if %ERRORLEVEL% EQU 0 (
     echo [ OK ] Compilation successful. Executable generated in /bin folder.

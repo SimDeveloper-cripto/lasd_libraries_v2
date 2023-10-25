@@ -20,7 +20,7 @@ namespace lasd {
     template <typename Data>
     bool List<Data>::Node::operator==(const Node& node) const noexcept {
         return (element == node.element) \
-            && ((next == nullptr && node.next == nullptr) || (next != nullptr && node.next != nullptr) && (*next == *node.next));
+            && ((next == nullptr && node.next == nullptr) || ((next != nullptr && node.next != nullptr) && (*next == *node.next)));
     }
 
     template <typename Data>

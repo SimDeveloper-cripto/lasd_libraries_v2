@@ -42,6 +42,8 @@ namespace lasd {
     void Graph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
+            my_pair.second.distance = -1;
+            my_pair.second.predecessor = Data();
         }
     }
 
@@ -96,6 +98,7 @@ namespace lasd {
         std::queue<Data> my_queue;
         my_queue.push(source);
         Nodes[source].color = Color::Gray;
+        Nodes[source].distance = 0;
 
         while (!my_queue.empty()) {
             Data head = my_queue.front();
@@ -105,6 +108,8 @@ namespace lasd {
             for (const Data& v : Adj[head]) {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
+                    Nodes[v].distance = Nodes[head].distance + 1;
+                    Nodes[v].predecessor = head;
                     my_queue.push(v);
                 }
             }
@@ -142,6 +147,7 @@ namespace lasd {
         std::queue<Data> my_queue;
         my_queue.push(source);
         Nodes[source].color = Color::Gray;
+        Nodes[source].distance = 0;
 
         while (!my_queue.empty()) {
             Data head = my_queue.front();
@@ -151,6 +157,8 @@ namespace lasd {
             for (const Data& v : Adj[head]) {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
+                    Nodes[v].distance = Nodes[head].distance + 1;
+                    Nodes[v].predecessor = head;
                     my_queue.push(v);
                 }
             }
@@ -179,6 +187,29 @@ namespace lasd {
     }
 
     /* ************************************************************************ */
+
+    template <typename Data>
+    std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
+        std::vector<Data> path;
+        // FIXME: THIS DOSEN'T WORK
+/*
+        if (Nodes.find(source) == Nodes.end() || Nodes.find(destination) == Nodes.end()) return path; // Return empty path
+
+        Data current = destination;
+        while (current != source) {
+            if (Nodes.find(current) == Nodes.end() || Nodes[current].predecessor == Data()) break;
+            
+            path.push_back(current);
+            current = Nodes[current].predecessor;
+        }
+
+        if (current != source) path.push_back(Nodes[source].predecessor);
+
+        path.push_back(source);
+        std::reverse(path.begin(), path.end());
+*/
+        return path;
+    }
 
     template <typename Data>
     void Graph<Data>::Transpose() {
@@ -260,7 +291,7 @@ namespace lasd {
 
     // KOSARAJU'S ALGORITHM
     template <typename Data>
-    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() {
+    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() noexcept {
         std::stack<Data> topologicalOrder = getTopologicalOrder(false);
         std::vector<std::vector<Data>> sccs; // For each SCC, we store the vertices
 
@@ -273,7 +304,7 @@ namespace lasd {
             if (Nodes[vertex].color == Color::White) {
                 std::vector<Data> component; // Elements inside the SCC
 
-                DfsVisit(vertex, [&component](const Data& data, void* other) {
+                DfsVisit(vertex, [] (const Data& data, void* other) {
                     std::vector<Data>& comp = *static_cast<std::vector<Data>*>(other);
                     comp.push_back(data);
                 }, &component);
@@ -308,6 +339,4 @@ namespace lasd {
     /* [YOUR CODE ENDS HERE] */
 
     template class Graph<int>;
-    template class Graph<float>;
-    template class Graph<double>;
 }

@@ -102,8 +102,8 @@ namespace lasdtest {
         graph->addNode(5);
         graph->addNode(6);
 
-        graph->addEdge(0, 1);
-        graph->addEdge(1, 0);
+        // graph->addEdge(0, 1);
+        // graph->addEdge(1, 0);
         graph->addEdge(3, 1);
         graph->addEdge(1, 2);
         graph->addEdge(2, 3);
@@ -113,7 +113,7 @@ namespace lasdtest {
         graph->addEdge(6, 4);
 
         /*
-            SCCs MUST BE: 0 1 3 2 | 4 5 6
+            SCCs MUST BE: 0 | 1 3 2 | 4 5 6
         */
 
         /** Map functions applied to both Bfs and Dfs
@@ -133,6 +133,17 @@ namespace lasdtest {
         // DEFAULT BFS
         std::cout << "Bfs's result: " << std::endl;
         graph->Bfs(1, applyToNodeBfs, nullptr);
+
+        { /* [MIN PATH TEST] START */
+            Node<int> start, end;
+            start.key = 2, end.key = 5;
+
+            std::cout << std::endl;
+            std::cout << "MINIMUM PATH TEST BETWEEN NODES " << start.key << " AND " << end.key << ": ";
+
+            for (const int& vertex : graph->GetMinimumPath(start.key, end.key)) std::cout << vertex << " ";
+            std::cout << std::endl << std::endl;
+        } /* [MIN PATH TEST] END */
 
         // DEFAULT DFS
         std::cout << "Dfs's result: ";
@@ -252,8 +263,6 @@ namespace lasdtest {
         
         run_personal_graph_test();
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
-
-        // TODO: CREATE A FLOAT TEST FOR GRAPH
     }
 }
 

@@ -20,6 +20,8 @@ namespace lasd {
     public:
         Data key;
         Color color;
+        unsigned long distance;
+        Data predecessor; // Predecessor Node
 
         Node() = default;
         virtual ~Node() = default;
@@ -179,13 +181,16 @@ namespace lasd {
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
         void Transpose();
 
+        // GET MINIMUM PATH BETWEEN TWO NODES
+        std::vector<Data> GetMinimumPath(const Data& source, const Data& destination) noexcept;
+
         // GET TOPOLOGICAL ORDER/SORT OF THE GRAPH: in italian we call it topological-order
         std::stack<Data> getTopologicalOrder(bool print_message);
         std::vector<Data> getTopologicalOrderUsingIncomingGrade();
 
         /* ************************************************************************ */
 
-        std::vector<std::vector<Data>> CalculateStronglyConnectedComponents();
+        std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept;
 
         /* ************************************************************************ */
 
