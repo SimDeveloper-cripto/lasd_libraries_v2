@@ -42,8 +42,8 @@ namespace lasd {
     void Graph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
-            my_pair.second.distance = -1;
-            my_pair.second.predecessor = Data();
+            my_pair.second.distance = 0;
+            my_pair.second.predecessor = nullptr;
         }
     }
 
@@ -51,6 +51,7 @@ namespace lasd {
     void Graph<Data>::Clear() {
         Nodes.clear();
         Adj.clear();
+        Init();
     }
 
     template <typename Data>
@@ -98,7 +99,6 @@ namespace lasd {
         std::queue<Data> my_queue;
         my_queue.push(source);
         Nodes[source].color = Color::Gray;
-        Nodes[source].distance = 0;
 
         while (!my_queue.empty()) {
             Data head = my_queue.front();
@@ -109,7 +109,7 @@ namespace lasd {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
                     Nodes[v].distance = Nodes[head].distance + 1;
-                    Nodes[v].predecessor = head;
+                    Nodes[v].predecessor = &Nodes[head];
                     my_queue.push(v);
                 }
             }
@@ -147,7 +147,6 @@ namespace lasd {
         std::queue<Data> my_queue;
         my_queue.push(source);
         Nodes[source].color = Color::Gray;
-        Nodes[source].distance = 0;
 
         while (!my_queue.empty()) {
             Data head = my_queue.front();
@@ -158,7 +157,7 @@ namespace lasd {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
                     Nodes[v].distance = Nodes[head].distance + 1;
-                    Nodes[v].predecessor = head;
+                    Nodes[v].predecessor = &Nodes[head];
                     my_queue.push(v);
                 }
             }
@@ -191,23 +190,18 @@ namespace lasd {
     template <typename Data>
     std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
         std::vector<Data> path;
-        // FIXME: THIS DOSEN'T WORK
-/*
-        if (Nodes.find(source) == Nodes.end() || Nodes.find(destination) == Nodes.end()) return path; // Return empty path
+        if (Nodes.find(source) == Nodes.end() || Nodes.find(destination) == Nodes.end()) return path;
 
-        Data current = destination;
-        while (current != source) {
-            if (Nodes.find(current) == Nodes.end() || Nodes[current].predecessor == Data()) break;
-            
-            path.push_back(current);
-            current = Nodes[current].predecessor;
+        Node<Data>* current = &Nodes[destination];
+        while (current && current->key != source) {
+            path.push_back(current->key);
+            current = current->predecessor;
         }
 
-        if (current != source) path.push_back(Nodes[source].predecessor);
+        if (current && current->key == source)
+            path.push_back(current->key);
 
-        path.push_back(source);
         std::reverse(path.begin(), path.end());
-*/
         return path;
     }
 
@@ -334,6 +328,20 @@ namespace lasd {
             }
             return true;
             // NOTE: DfsVisitAcyclic(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
+        }
+
+        template <typename Data>
+        void Graph<Data>::printForEachNodeItsPredecessor() noexcept {
+            for (const auto& node : Nodes) {
+                const Data& key = node.first;
+                const Node<Data>& curr = node.second;
+                const Node<Data>* pred = curr.predecessor;
+                std::cout << "  Node: " << key;
+                if (pred) 
+                    std::cout << ", Predecessor: " << pred->key << std::endl;
+                else
+                    std::cout << ", Predecessor: nullptr" << std::endl;                    
+            }
         }
 
     /* [YOUR CODE ENDS HERE] */

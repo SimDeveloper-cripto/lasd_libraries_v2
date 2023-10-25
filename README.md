@@ -2,14 +2,11 @@
 
 This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries> <br />
 What I have focused my work on the most is the Graph data structure, which is implemented by adjacency lists. <br />
+The Graph can be oriented as well as non-oriented. <br />
+I used this library for the examination of algorithms and data structures. <br />
 This is my first ever try in implementing something like this so any help is well accepted! <br />
-Keep in mind this is still a work in progess, there are some things I need to finish. <br />
 
-- Graph
-  - [X] Add the calculation of SCC
-  - [ ] To complete Bfs algorithm I should add dist[] and prev[] so that the user can calculate Minimum paths
-
-Coming soon:
+Things I want to add in the future:
 
 - Double Linked List
 - Graph: PostOrder Map() and Fold()

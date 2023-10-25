@@ -30,7 +30,7 @@ void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
 
 namespace lasdtest {
     void run_personal_linked_list_test() {
-        std::cout << std::endl << "[ OK ] LINKED_LIST TEST STARTED." << std::endl;
+        std::cout << std::endl << "[ OK ] LINKED_LIST<int> TEST STARTED" << std::endl;
 
         List<int>* list = new List<int>();
         list->InsertAtFront(generate_random_number());
@@ -58,21 +58,22 @@ namespace lasdtest {
             std::cout << "List's element at index " << index << ": " << list->operator[](index) << std::endl;
 
             std::cout << "List's Exists(" << val << ") test: ";
-            (list->Exists(val)) ? std::cout << "    Yes, element is present." << std::endl : std::cout << "   No, element is not present." << std::endl;
+            (list->Exists(val)) ? std::cout << "Yes, element is present." << std::endl : std::cout << "No, element is not present." << std::endl;
 
             std::cout << "List's Exists(" << new_val << ") test: ";
-            (list->Exists(new_val)) ? std::cout << "    Yes, element is present." << std::endl : std::cout << "   No, element is not present." << std::endl;
+            (list->Exists(new_val)) ? std::cout << "Yes, element is present." << std::endl : std::cout << "No, element is not present." << std::endl;
 
-            unsigned long change_index = 3; // List's test has only 5 or 6 elements, it could be worse than that.
+            unsigned long change_index = 2; // List's test has only 5 or 6 elements, it could be worse than that.
             int subtitute = 1;
-            std::cout << "List's ChangeValueGivenIndex( index: " << change_index << ", new_value: " << subtitute << ") test: " << std::endl;
+            std::cout << "List's ChangeValueGivenIndex(index: " << change_index << ", new_value: " << subtitute << ") test: " << std::endl;
             list->ChangeValueGivenIndex(change_index, subtitute); // Remember: the function returns a boolean.
             std::cout << "  "; list->PrintList();
 
-            std::cout << "The List has been Reversed:" << std::endl;
+            std::cout << std::endl << "The List has been Reversed:" << std::endl;
             list->Reverse();
             std::cout << "  "; list->PrintList();
             
+            std::cout << std::endl;
             std::cout << "List's new head element value: " << list->Front() << std::endl;
             std::cout << "List's new tail element value: " << list->Back() << std::endl;
 
@@ -80,18 +81,17 @@ namespace lasdtest {
             list->MapPreOrder(Square, nullptr);
             std::cout << "  "; list->PrintList();
 
-            const int divide_by = 2; 
+            const int divide_by = 2;
             int start = 0;
             std::cout << "List's Fold() application (SumEvenNumbers): " << std::endl;
             list->FoldPreOrder(SumEvenNumbers, &divide_by, &start);
         }
 
-        std::cout << std::endl;
         delete list;
     }
 
     void run_personal_graph_test() {
-        std::cout << std::endl << "[ OK ] GRAPH TEST STARTED." << std::endl;
+        std::cout << std::endl << "[ OK ] GRAPH<int> TEST STARTED." << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
         graph->addNode(0);
@@ -112,10 +112,6 @@ namespace lasdtest {
         graph->addEdge(5, 6);
         graph->addEdge(6, 4);
 
-        /*
-            SCCs MUST BE: 0 | 1 3 2 | 4 5 6
-        */
-
         /** Map functions applied to both Bfs and Dfs
             That is basically our way to apply Map() to Graph's nodes
         */
@@ -131,17 +127,22 @@ namespace lasdtest {
         graph->showGraph();
 
         // DEFAULT BFS
-        std::cout << "Bfs's result: " << std::endl;
+        std::cout << "Bfs's result, starting from 1: " << std::endl;
         graph->Bfs(1, applyToNodeBfs, nullptr);
 
+        // std::cout << "For each node, its predecessor:" << std::endl;
+        // graph->printForEachNodeItsPredecessor();
+
         { /* [MIN PATH TEST] START */
-            Node<int> start, end;
-            start.key = 2, end.key = 5;
+            int start = 1, end = 4;
 
             std::cout << std::endl;
-            std::cout << "MINIMUM PATH TEST BETWEEN NODES " << start.key << " AND " << end.key << ": ";
+            std::cout << "Minimum path between nodes " << start << " and " << end << ":" << std::endl;
 
-            for (const int& vertex : graph->GetMinimumPath(start.key, end.key)) std::cout << vertex << " ";
+            std::cout << "   Starting from " << start << ": ";
+            for (const int vertex : graph->GetMinimumPath(start, end))
+                std::cout << vertex << " ";
+            
             std::cout << std::endl << std::endl;
         } /* [MIN PATH TEST] END */
 
@@ -150,8 +151,8 @@ namespace lasdtest {
         graph->Dfs(applyToNodeDfs, nullptr);
 
         // Try Dfs but starting from a specific index
-        std::cout << std::endl << "Dfs's result (starting from node 5): ";
-        graph->Dfs(5, applyToNodeDfs, nullptr);
+        std::cout << std::endl << "Dfs's result (starting from node 4): ";
+        graph->Dfs(4, applyToNodeDfs, nullptr); // Works even if the node dosen't exists
 
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
         bool do_incoming_grade = true;
@@ -161,10 +162,10 @@ namespace lasdtest {
             std::cout << std::endl << "Acyclic test: the Graph is cyclic." << std::endl;
             do_incoming_grade = false;
         }
-        
-        std::cout << "Topological-Order of the Graph: ";
+ 
+        std::cout << "Topological-Order of the Graph (Dfs): ";
         std::stack<int> myOrder = graph->getTopologicalOrder(true);
-        
+
         while(!myOrder.empty()) {
             std::cout << myOrder.top() << " ";
             myOrder.pop();
@@ -211,7 +212,7 @@ namespace lasdtest {
         graph->addEdge(5, node2.key);
         graph->showGraph();
 
-        std::cout << "Dfs's result (starting from new node " << node1.key << "): ";
+        std::cout << std::endl << "Dfs's result (starting from new node " << node1.key << "): ";
         graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is defined above.
 
         if (graph->isGraphAcyclicDfs()) {
@@ -249,16 +250,16 @@ namespace lasdtest {
 
         /* ************************************************************************ */
 
-        // TODO: Solve one of ASD's problems: the ones where a barrier between nodes is formed
+        // TODO "Solve ASD assignment problem"
+            // Solve one of those where a barrier between nodes is formed and you need to use two color functions
 
         /* ************************************************************************ */
 
-        std::cout << std::endl;
         delete graph;
     }
 
     void run_test() {
-        run_personal_linked_list_test();
+        run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
         
         run_personal_graph_test();

@@ -21,7 +21,7 @@ namespace lasd {
         Data key;
         Color color;
         unsigned long distance;
-        Data predecessor; // Predecessor Node
+        Node* predecessor;
 
         Node() = default;
         virtual ~Node() = default;
@@ -134,18 +134,17 @@ namespace lasd {
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
         void showGraph() const noexcept {
-            if (Nodes.empty() && Adj.empty()) {
-                std::cout << " Graph is empty." << std::endl;
-            } else if (Adj.empty()) {
-                std::cout << " Graph is free." << std::endl;
+            if (Nodes.empty()) {
+                std::cout << "  Graph is empty." << std::endl;
             } else {
-                for (const auto& couple : Adj) {
-                    const Data& from = couple.first;
-                    const std::vector<Data>& adjs = couple.second;
-                
-                    std::cout << "  Node " << from << " -> ";
-                
-                    for (const Data& to : adjs) { std::cout << to << " "; }
+                for (const auto& node_pair : Nodes) {
+                    const Data& curr_key = node_pair.first;
+                    std::cout << "  Node " << curr_key << " -> ";
+
+                    if (Adj.find(curr_key) != Adj.end()) {
+                        const std::vector<Data>& adjs = Adj.at(curr_key);
+                        for (const Data& to : adjs) std::cout << to << " ";
+                    }
                     std::cout << std::endl;
                 }
             }
@@ -198,7 +197,9 @@ namespace lasd {
         // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).
 
             bool isGraphAcyclicDfs() noexcept;
+            void printForEachNodeItsPredecessor() noexcept;
             // ...
+
         /* [YOUR CODE ENDS HERE] */
     };
 }
