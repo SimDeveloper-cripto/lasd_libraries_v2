@@ -17,11 +17,13 @@ namespace lasd {
 
     template <typename Data>
     class Node {
+    private:
+        unsigned long distance;
+        Node* predecessor;
+
     public:
         Data key;
         Color color;
-        unsigned long distance;
-        Node* predecessor;
 
         Node() = default;
         virtual ~Node() = default;
@@ -30,6 +32,22 @@ namespace lasd {
         bool operator!=(const Node&) const noexcept = delete;
 
         Node(const Data& value) : key(value), color(Color::White) {}
+
+        inline void setDistance(unsigned long distance) {
+            this->distance = distance;
+        }
+
+        inline unsigned long getDistance() {
+            return this->distance;
+        }
+
+        inline void setPredecessor(Node* predecessor) {
+            this->predecessor = predecessor;
+        }
+        
+        inline Node* getPredecessor() const {
+            return this->predecessor;
+        }
 
         // NOTE: A function to change node's color is not provided because Node<Data> is public.
     };

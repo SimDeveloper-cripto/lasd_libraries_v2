@@ -42,8 +42,8 @@ namespace lasd {
     void Graph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
-            my_pair.second.distance = 0;
-            my_pair.second.predecessor = nullptr;
+            my_pair.second.setDistance(0);
+            my_pair.second.setPredecessor(nullptr);
         }
     }
 
@@ -108,8 +108,8 @@ namespace lasd {
             for (const Data& v : Adj[head]) {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
-                    Nodes[v].distance = Nodes[head].distance + 1;
-                    Nodes[v].predecessor = &Nodes[head];
+                    Nodes[v].setDistance(Nodes[head].getDistance()+ 1);
+                    Nodes[v].setPredecessor(&Nodes[head]);
                     my_queue.push(v);
                 }
             }
@@ -156,8 +156,8 @@ namespace lasd {
             for (const Data& v : Adj[head]) {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
-                    Nodes[v].distance = Nodes[head].distance + 1;
-                    Nodes[v].predecessor = &Nodes[head];
+                    Nodes[v].setDistance(Nodes[head].getDistance()+ 1);
+                    Nodes[v].setPredecessor(&Nodes[head]);
                     my_queue.push(v);
                 }
             }
@@ -195,7 +195,7 @@ namespace lasd {
         Node<Data>* current = &Nodes[destination];
         while (current && current->key != source) {
             path.push_back(current->key);
-            current = current->predecessor;
+            current = current->getPredecessor();
         }
 
         if (current && current->key == source)
@@ -335,7 +335,7 @@ namespace lasd {
             for (const auto& node : Nodes) {
                 const Data& key = node.first;
                 const Node<Data>& curr = node.second;
-                const Node<Data>* pred = curr.predecessor;
+                const Node<Data>* pred = curr.getPredecessor();
                 std::cout << "  Node: " << key;
                 if (pred) 
                     std::cout << ", Predecessor: " << pred->key << std::endl;

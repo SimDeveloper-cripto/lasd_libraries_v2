@@ -248,13 +248,6 @@ namespace lasdtest {
         std::cout << "Dfs's Fold application result: " << std::endl;
         graph->Dfs(applyFoldToNode, &start, &accum);
 
-        /* ************************************************************************ */
-
-        // TODO "Solve ASD assignment problem"
-            // Solve one of those where a barrier between nodes is formed and you need to use two color functions
-
-        /* ************************************************************************ */
-
         delete graph;
     }
 

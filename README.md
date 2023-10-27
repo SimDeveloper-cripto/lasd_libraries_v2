@@ -9,7 +9,7 @@ This is my first ever try in implementing something like this so any help is wel
 Things I want to add in the future:
 
 - Double Linked List
-- Graph: PostOrder Map() and Fold()
+- Graph: PostOrder Map() and Fold() (both Bfs and Dfs)
 
 ## Tutorial: Code your personal test
 
