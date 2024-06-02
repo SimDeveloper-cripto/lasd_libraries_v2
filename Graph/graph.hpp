@@ -10,7 +10,7 @@
 #include <functional>
 #include <unordered_set>
 
-// GRAPH: IMPLEMENTATION BY ADJACENCY LISTS
+// WORK DONE: ORIENTED GRAPH IMPLEMENTED BY ADJACENCY LISTS
 
 namespace lasd {
     enum class Color { White, Gray, Black };
