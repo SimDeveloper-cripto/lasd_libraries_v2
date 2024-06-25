@@ -7,6 +7,7 @@ This is my first ever try in implementing something like this so any help is wel
 
 Things I want to add in the future:
 
+- Weighted Graph + Dijkstra's Algorithm (Probably a new implementation)
 - Oriented Graph: PostOrder Map() and Fold() (both Bfs and Dfs)
 - Double Linked List
 - Non-Oriented Graph
