@@ -102,15 +102,15 @@ namespace lasdtest {
         graph->addNode(5);
         graph->addNode(6);
 
-        // graph->addEdge(0, 1);
-        // graph->addEdge(1, 0);
-        graph->addEdge(3, 1);
-        graph->addEdge(1, 2);
-        graph->addEdge(2, 3);
-        graph->addEdge(1, 4);
-        graph->addEdge(4, 5);
-        graph->addEdge(5, 6);
-        graph->addEdge(6, 4);
+        // graph->addEdge(0, 1, 0.0);
+        // graph->addEdge(1, 0, 0.0);
+        graph->addEdge(3, 1, 1.0); // 3rd parameter is edge-weight
+        graph->addEdge(1, 2, 1.0);
+        graph->addEdge(2, 3, 2.0);
+        graph->addEdge(1, 4, 3.0);
+        graph->addEdge(4, 5, 3.0);
+        graph->addEdge(5, 6, 4.0);
+        graph->addEdge(6, 4, 1.0);
 
         /** Map functions applied to both Bfs and Dfs
             That is basically our way to apply Map() to Graph's nodes
@@ -130,9 +130,6 @@ namespace lasdtest {
         std::cout << "Bfs's result, starting from 1: " << std::endl;
         graph->Bfs(1, applyToNodeBfs, nullptr);
 
-        // std::cout << "For each node, its predecessor:" << std::endl;
-        // graph->printForEachNodeItsPredecessor();
-
         { /* [MIN PATH TEST] START */
             int start = 1, end = 4;
 
@@ -143,6 +140,8 @@ namespace lasdtest {
             for (const int vertex : graph->GetMinimumPath(start, end))
                 std::cout << vertex << " ";
             
+            /* OUTPUT: DIRECT PATH FROM 1 TO 4 (WEIGHT 3.0) */
+
             std::cout << std::endl << std::endl;
         } /* [MIN PATH TEST] END */
 
@@ -207,13 +206,13 @@ namespace lasdtest {
         std::cout << "Added new Node to Graph, addNode(const Node<Data>&) called:" << std::endl;
         graph->addNode(node1);
         graph->addNode(node2);
-        graph->addEdge(node1, node2);
-        graph->addEdge(node2, node1);
-        graph->addEdge(5, node2.key);
+        graph->addEdge(node1, node2, 7.0);
+        graph->addEdge(node2, node1, 2.0);
+        graph->addEdge(5, node2.key, 2.0);
         graph->showGraph();
 
         std::cout << std::endl << "Dfs's result (starting from new node " << node1.key << "): ";
-        graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is defined above.
+        graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is Defined Above.
 
         if (graph->isGraphAcyclicDfs()) {
             std::cout << std::endl << "Acyclic test: the new Graph is acyclic." << std::endl;
@@ -243,11 +242,8 @@ namespace lasdtest {
         graph->Bfs(1, applyFoldToNode, &start, &accum);
 
         accum = 0;
-        // std::cout << "Dfs's Fold application result (starting from 1): " << std::endl;
-        // graph->Dfs(1, applyFoldToNode, &start, &accum);
         std::cout << "Dfs's Fold application result: " << std::endl;
         graph->Dfs(applyFoldToNode, &start, &accum);
-
         delete graph;
     }
 

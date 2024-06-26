@@ -4,7 +4,7 @@
 namespace lasd {
     template <typename Data>
     Graph<Data>::Graph(const Graph& other) {
-        Adj = other.Adj;
+        Adj   = other.Adj;
         Nodes = other.Nodes;
     }
 
@@ -12,15 +12,12 @@ namespace lasd {
     Graph<Data>::Graph(Graph&& other) noexcept {
         std::swap(Adj, other.Adj);
         std::swap(Nodes, other.Nodes);
-
-        // Adj = std::move(other.Adj);
-        // Nodes = std::move(other.Nodes);
     }
 
     template <typename Data>
     Graph<Data>& Graph<Data>::operator=(const Graph& other) {
         if (this != &other) {
-            Adj = other.Adj;
+            Adj   = other.Adj;
             Nodes = other.Nodes;
         }
         return *this;
@@ -31,9 +28,6 @@ namespace lasd {
         if (this != &other) {
             std::swap(Adj, other.Adj);
             std::swap(Nodes, other.Nodes);
-            
-            // Adj = std::move(other.Adj);
-            // Nodes = std::move(other.Nodes);
         }
         return *this;
     }
@@ -42,7 +36,7 @@ namespace lasd {
     void Graph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
-            my_pair.second.setDistance(0);
+            my_pair.second.setDistance(std::numeric_limits<unsigned long>::max());
             my_pair.second.setPredecessor(nullptr);
         }
     }
@@ -72,121 +66,130 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::addEdge(const Node<Data>& node_from, const Node<Data>& node_to) {
+    void Graph<Data>::addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight) {
         if (Nodes.find(node_from.key) != Nodes.end() && Nodes.find(node_to.key) != Nodes.end()) {
-            Adj[node_from.key].push_back(node_to.key);
+            Adj[node_from.key].emplace_back(node_to.key, weight);
         } else {
-            throw std::runtime_error("ERROR: addEdge() -> at least one of the nodes provided do not exist.");
+            throw std::runtime_error("ERROR: addEdge() -> At least one of the nodes provided does not exist.");
         }
     }
 
     template <typename Data>
-    void Graph<Data>::addEdge(const Data& from, const Data& to) {
+    void Graph<Data>::addEdge(const Data& from, const Data& to, double weight) {
         if (Nodes.find(from) != Nodes.end() && Nodes.find(to) != Nodes.end()) {
-            Adj[from].push_back(to);
+            Adj[from].emplace_back(to, weight);
         } else {
-            throw std::runtime_error("ERROR: addEdge() -> at least one of the nodes provided do not exist.");
+            throw std::runtime_error("ERROR: addEdge() -> At least one of the nodes provided does not exist.");
         }
     }
 
-    /* ************************************************************************ */
-
-    // Default implementation of Map() using Bfs
     template <typename Data>
-    void Graph<Data>::Bfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
-        Init();
-
-        std::queue<Data> my_queue;
-        my_queue.push(source);
-        Nodes[source].color = Color::Gray;
-
-        while (!my_queue.empty()) {
-            Data head = my_queue.front();
-            my_queue.pop();
-            visit(head, other);
-
-            for (const Data& v : Adj[head]) {
-                if (Nodes[v].color == Color::White) {
-                    Nodes[v].color = Color::Gray;
-                    Nodes[v].setDistance(Nodes[head].getDistance()+ 1);
-                    Nodes[v].setPredecessor(&Nodes[head]);
-                    my_queue.push(v);
+    void Graph<Data>::showGraph() const noexcept {
+        for (const auto& node : Nodes) {
+            std::cout << "Node: " << node.first << " -> ";
+            auto adjIt = Adj.find(node.first);
+            if (adjIt != Adj.end()) {
+                for (const auto& edge : Adj.at(node.first)) {
+                    std::cout << edge.to << " (Weight: " << edge.weight << ") ";
                 }
             }
-            Nodes[head].color = Color::Black;
+            std::cout << std::endl;
         }
     }
 
-    // Default implementation of Map() using Dfs
     template <typename Data>
     void Graph<Data>::Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
-
-        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
-            const Node<Data>& currNode = it->second; // Contains Node<Data> field
-            if (currNode.color == Color::White) {
-                DfsVisit(currNode.key, visit, other);
+        for (auto& my_pair : Nodes) {
+            if (my_pair.second.color == Color::White) {
+                DfsVisit(my_pair.first, visit, other);
             }
         }
     }
 
-    // Default implementation of Map() using Dfs, starting from a specific vertex
     template <typename Data>
-    void Graph<Data>::Dfs(const Data& source, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+    void Graph<Data>::Dfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
-        DfsVisit(source, visit, other);
+        DfsVisit(u, visit, other);
     }
 
-    /* ************************************************************************ */
-
-    // Default implementation of Fold() using Bfs
     template <typename Data>
-    void Graph<Data>::Bfs(const Data& source, FoldFunctor func, const void* par, void* acc) noexcept {
+    void Graph<Data>::Bfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
+        Nodes[u].setDistance(0);
+        std::queue<Data> queue;
+        queue.push(u);
 
-        std::queue<Data> my_queue;
-        my_queue.push(source);
-        Nodes[source].color = Color::Gray;
+        while (!queue.empty()) {
+            Data current = queue.front();
+            queue.pop();
+            visit(current, other);
 
-        while (!my_queue.empty()) {
-            Data head = my_queue.front();
-            my_queue.pop();
-            func(head, par, acc);
-
-            for (const Data& v : Adj[head]) {
+            for (const Edge<Data>& edge : Adj[current]) {
+                const Data& v = edge.to;
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
-                    Nodes[v].setDistance(Nodes[head].getDistance()+ 1);
-                    Nodes[v].setPredecessor(&Nodes[head]);
-                    my_queue.push(v);
+                    Nodes[v].setDistance(Nodes[current].getDistance() + 1);
+                    queue.push(v);
                 }
             }
-            Nodes[head].color = Color::Black;
+            Nodes[current].color = Color::Black;
         }
     }
 
-    // Default implementation of Fold() using Dfs
     template <typename Data>
-    void Graph<Data>::Dfs(FoldFunctor func, const void* par, void* acc) noexcept {
+    void Graph<Data>::Dfs(FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
-
-        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
-            const Node<Data>& currNode = it->second; // Contains Node<Data> field
-            if (currNode.color == Color::White) {
-                DfsVisit(currNode.key, func, par, acc);
+        for (auto& my_pair : Nodes) {
+            if (my_pair.second.color == Color::White) {
+                DfsVisit(my_pair.first, visit, par, acc);
             }
         }
     }
 
-    // Default implementation of Fold() using Dfs, starting from a specific vertex
     template <typename Data>
-    void Graph<Data>::Dfs(const Data& source, FoldFunctor func, const void* par, void* acc) noexcept {
+    void Graph<Data>::Dfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
-        DfsVisit(source, func, par, acc);
+        DfsVisit(u, visit, par, acc);
     }
 
-    /* ************************************************************************ */
+    template <typename Data>
+    void Graph<Data>::Bfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
+        Init();
+        Nodes[u].setDistance(0);
+        std::queue<Data> queue;
+        queue.push(u);
 
+        while (!queue.empty()) {
+            Data current = queue.front();
+            queue.pop();
+            visit(current, par, acc);
+
+            for (const Edge<Data>& edge : Adj[current]) {
+                const Data& v = edge.to;
+                if (Nodes[v].color == Color::White) {
+                    Nodes[v].color = Color::Gray;
+                    Nodes[v].setDistance(Nodes[current].getDistance() + 1);
+                    queue.push(v);
+                }
+            }
+            Nodes[current].color = Color::Black;
+        }
+    }
+
+    template <typename Data>
+    void Graph<Data>::Transpose() {
+        std::map<Data, std::vector<Edge<Data>>> newAdj;
+        for (const auto& [from, edges] : Adj) {
+            for (const auto& edge : edges) {
+                newAdj[edge.to].emplace_back(from, edge.weight);
+            }
+        }
+        Adj = newAdj;
+    }
+
+// [OLD IMPLEMENTATION]
+/* // THIS IS BEFORE USING WEIGHTS
     template <typename Data>
     std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
         std::vector<Data> path;
@@ -204,147 +207,177 @@ namespace lasd {
         std::reverse(path.begin(), path.end());
         return path;
     }
+*/
 
     template <typename Data>
-    void Graph<Data>::Transpose() {
-        std::map<Data, std::vector<Data>> temp = Adj;
-        Adj.clear();
-
-        // Add Edges in reverse direction.
-        for (const auto& nPair : Nodes) {
-            const Data& from = nPair.first;
-            for (const Data& to : temp[from]) {
-                addEdge(to, from);
-            }
-        }
+    std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
+        // Dijkstra's Algorithm Implementation for Weighted Graphs
+        return Dijkstra(source, destination);
     }
 
     template <typename Data>
     std::stack<Data> Graph<Data>::getTopologicalOrder(bool print_message) {
-        /* If Graph is cyclic, Topological-Order is a partial order. */
-        if (print_message)
-            if (!isGraphAcyclicDfs()) std::cout << "\n  The Graph is cyclic! The calculated order is partial: ";
-
+        std::stack<Data> topologicalOrder;
         Init();
-        std::stack<Data> topologicalOrder {};
-
-        for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
-            const Node<Data>& current = it->second; // Contains Node<Data> field
-            if (current.color == Color::White) {
-                DfsVisitTopological(current.key, topologicalOrder);
+        for (auto& my_pair : Nodes) {
+            if (my_pair.second.color == Color::White) {
+                DfsVisitTopological(my_pair.first, topologicalOrder);
             }
         }
+
+        if (print_message) {
+            std::cout << "Topological order: ";
+            std::stack<Data> temp = topologicalOrder;
+            while (!temp.empty()) {
+                std::cout << temp.top() << " ";
+                temp.pop();
+            }
+            std::cout << std::endl;
+        }
+
         return topologicalOrder;
     }
 
     template <typename Data>
     std::vector<Data> Graph<Data>::getTopologicalOrderUsingIncomingGrade() {
-        assert(isGraphAcyclicDfs() == true && "The Graph is cyclic! You can't calculate Topological Order!");
-
-        std::map<Data, int> incomingGrades;
-        
-        /* [START] CALCULATE INCOMING GRADE FOR EACH NODE */
-
+        // This function calculates the topological order using the Incoming Grade (Kahn's Algorithm)
+        std::map<Data, int> inDegree;
         for (const auto& node : Nodes) {
-            const Data& key = node.first;
-            incomingGrades[key] = 0;
+            inDegree[node.first] = 0;
         }
 
-        for (const auto& node : Nodes) {
-            const Data& key = node.first;
-            for (const Data& neighbor : Adj[key]) {
-                incomingGrades[neighbor]++;
+        for (const auto& [from, edges] : Adj) {
+            for (const auto& edge : edges) {
+                inDegree[edge.to]++;
             }
         }
 
-        /* [END] */
-
-        std::queue<Data> order_queue;
-        std::vector<Data> result; // This is what gets returned
-
-        for (const auto& node : Nodes) {
-            const Data& key = node.first;
-            if (incomingGrades[key] == 0) { order_queue.push(key); }
-        }    
-
-        // Perform sorting
-        while (!order_queue.empty()) {
-            Data current_node = order_queue.front();
-
-            order_queue.pop();
-            result.insert(result.begin(), current_node);
-
-            for (const Data& neighbor : Adj[current_node]) {
-                incomingGrades[neighbor]--;
-                if (incomingGrades[neighbor] == 0) { order_queue.push(neighbor); }
+        std::queue<Data> zeroInDegreeQueue;
+        for (const auto& [node, degree] : inDegree) {
+            if (degree == 0) {
+                zeroInDegreeQueue.push(node);
             }
         }
 
-        return result;
+        std::vector<Data> topologicalOrder;
+        while (!zeroInDegreeQueue.empty()) {
+            Data current = zeroInDegreeQueue.front();
+            zeroInDegreeQueue.pop();
+            topologicalOrder.push_back(current);
+
+            for (const Edge<Data>& edge : Adj[current]) {
+                inDegree[edge.to]--;
+                if (inDegree[edge.to] == 0) {
+                    zeroInDegreeQueue.push(edge.to);
+                }
+            }
+        }
+
+        if (topologicalOrder.size() != Nodes.size()) {
+            throw std::runtime_error("ERROR: The graph is not a DAG, it has at least one cycle.");
+        }
+
+        return topologicalOrder;
     }
 
-    // KOSARAJU'S ALGORITHM
+    // O((log V * (V + E)))
     template <typename Data>
-    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() noexcept {
-        std::stack<Data> topologicalOrder = getTopologicalOrder(false);
-        std::vector<std::vector<Data>> sccs; // For each SCC, we store the vertices
+    std::vector<Data> Graph<Data>::Dijkstra(const Data& source, const Data& destination) {
+        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq;
+        std::unordered_map<Data, double> distances;
+        std::unordered_map<Data, Data> predecessors;
 
-        Transpose();
-        Init();
-        while (!topologicalOrder.empty()) {
-            Data vertex = topologicalOrder.top();
-            topologicalOrder.pop();
+        for (const auto& node : Nodes) {
+            distances[node.first] = std::numeric_limits<double>::max();
+        }
+        distances[source] = 0;
+        pq.emplace(0, source);
 
-            if (Nodes[vertex].color == Color::White) {
-                std::vector<Data> component; // Elements inside the SCC
+        while (!pq.empty()) {
+            Data current = pq.top().second;
+            pq.pop();
 
-                DfsVisit(vertex, [] (const Data& data, void* other) {
-                    std::vector<Data>& comp = *static_cast<std::vector<Data>*>(other);
-                    comp.push_back(data);
-                }, &component);
+            if (current == destination) {
+                break;
+            }
 
-                if (!component.empty()) sccs.push_back(component);
+            for (const Edge<Data>& edge : Adj[current]) {
+                double newDist = distances[current] + edge.weight;
+                if (newDist < distances[edge.to]) {
+                    distances[edge.to] = newDist;
+                    predecessors[edge.to] = current;
+                    pq.emplace(newDist, edge.to);
+                }
             }
         }
 
-        Transpose(); // Back to previous 
+        std::vector<Data> path;
+        for (Data at = destination; at != source; at = predecessors[at]) {
+            path.push_back(at);
+        }
+        path.push_back(source);
+        std::reverse(path.begin(), path.end());
+        return path;
+    }
+
+    template <typename Data>
+    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() noexcept {
+        std::stack<Data> stack;
         Init();
+
+        for (const auto& node : Nodes) {
+            if (node.second.color == Color::White) {
+                DfsVisitTopological(node.first, stack);
+            }
+        }
+
+        Graph<Data> transposedGraph = *this;
+        transposedGraph.Transpose();
+        transposedGraph.Init();
+
+        std::vector<std::vector<Data>> sccs;
+        while (!stack.empty()) {
+            Data current = stack.top();
+            stack.pop();
+
+            if (transposedGraph.Nodes[current].color == Color::White) {
+                std::vector<Data> scc;
+                transposedGraph.Dfs(current, [&scc](const Data& node, void*) {
+                    scc.push_back(node);
+                }, nullptr);
+                sccs.push_back(scc);
+            }
+        }
         return sccs;
     }
 
-    /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
-
-        template <typename Data>
-        bool Graph<Data>::isGraphAcyclicDfs() noexcept {
-            Init();
-
-            for (typename std::map<Data, Node<Data>>::const_iterator it = Nodes.begin(); it != Nodes.end(); it++) {
-                const Node<Data>& currNode = it->second; // Contains Node<Data> field
-                if (currNode.color == Color::White) {
-                    bool ret = DfsVisitAcyclic(currNode.key); // It calls DfsVisit, the one that returns a boolean.
-                    if (ret)
-                        return false;
+    template <typename Data>
+    bool Graph<Data>::isGraphAcyclicDfs() noexcept {
+        Init();
+        for (auto& my_pair : Nodes) {
+            if (my_pair.second.color == Color::White) {
+                if (DfsVisitAcyclic(my_pair.first)) {
+                    return false;
                 }
             }
-            return true;
-            // NOTE: DfsVisitAcyclic(const Data& source) is defined inside the private scope of Graph, "graph.hpp".
         }
+        return true;
+    }
 
-        template <typename Data>
-        void Graph<Data>::printForEachNodeItsPredecessor() noexcept {
-            for (const auto& node : Nodes) {
-                const Data& key = node.first;
-                const Node<Data>& curr = node.second;
-                const Node<Data>* pred = curr.getPredecessor();
-                std::cout << "  Node: " << key;
-                if (pred) 
-                    std::cout << ", Predecessor: " << pred->key << std::endl;
-                else
-                    std::cout << ", Predecessor: nullptr" << std::endl;                    
+    template <typename Data>
+    void Graph<Data>::printForEachNodeItsPredecessor() noexcept {
+        for (const auto& node : Nodes) {
+            std::cout << "Node " << node.first << " predecessor: ";
+            if (node.second.getPredecessor()) {
+                std::cout << node.second.getPredecessor()->key;
+            } else {
+                std::cout << "None";
             }
+            std::cout << std::endl;
         }
-
-    /* [YOUR CODE ENDS HERE] */
+    }
 
     template class Graph<int>;
+    template class Graph<char>;
+    template class Graph<std::string>;
 }

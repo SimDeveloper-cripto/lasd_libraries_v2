@@ -3,6 +3,7 @@
 #include <map>
 #include <stack>
 #include <queue>
+#include <limits>
 #include <vector>
 #include <iostream>
 #include <exception>
@@ -10,7 +11,7 @@
 #include <functional>
 #include <unordered_set>
 
-// WORK DONE: ORIENTED GRAPH IMPLEMENTED BY ADJACENCY LISTS
+// WORK DONE: ORIENTED WEIGHTED GRAPH IMPLEMENTED BY ADJACENCY LISTS
 
 namespace lasd {
     enum class Color { White, Gray, Black };
@@ -37,7 +38,7 @@ namespace lasd {
             this->distance = distance;
         }
 
-        inline unsigned long getDistance() {
+        inline unsigned long getDistance() const {
             return this->distance;
         }
 
@@ -53,21 +54,27 @@ namespace lasd {
     };
 
     template <typename Data>
+    class Edge {
+    public:
+        Data to;
+        double weight;
+
+        Edge(const Data& to, double weight) : to(to), weight(weight) {}
+    };
+
+    template <typename Data>
     class Graph {
     private:
         std::map<Data, Node<Data>> Nodes;
-        std::map<Data, std::vector<Data>> Adj;
+        std::map<Data, std::vector<Edge<Data>>> Adj;
 
-        /* NOTE: DEFAULT IMPLEMENTATION OF DfsVisit
-            The function pointer is provided just in case there is something you want to try and apply to each graph's node.
-        */
-
-        // Map()
+        // DFS MAP()
         void DfsVisit(const Data& u, std::function<void(const Data&, void* other)> visit, void* other) {
             Nodes[u].color = Color::Gray;
             visit(u, other);
 
-            for (const Data& v : Adj[u]) {
+            for (const Edge<Data>& edge : Adj[u]) {
+                const Data& v = edge.to;
                 if (Nodes[v].color == Color::White) {
                     DfsVisit(v, visit, other);
                 }
@@ -75,12 +82,13 @@ namespace lasd {
             Nodes[u].color = Color::Black;
         }
 
-        // Fold()
+        // DFS FOLD()
         void DfsVisit(const Data& u, std::function<void(const Data&, const void*, void*)> visit, const void* par, void* acc) {
             Nodes[u].color = Color::Gray;
             visit(u, par, acc);
 
-            for (const Data& v : Adj[u]) {
+            for (const Edge<Data>& edge : Adj[u]) {
+                const Data& v = edge.to;
                 if (Nodes[v].color == Color::White) {
                     DfsVisit(v, visit, par, acc);
                 }
@@ -91,7 +99,8 @@ namespace lasd {
         void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalOrder) {
             Nodes[u].color = Color::Gray;
 
-            for (const Data& v : Adj[u]) {
+            for (const Edge<Data>& edge : Adj[u]) {
+                const Data& v = edge.to;
                 if (Nodes[v].color == Color::White) {
                     DfsVisitTopological(v, topologicalOrder);
                 }
@@ -101,25 +110,21 @@ namespace lasd {
             topologicalOrder.push(u);
         }
 
-        /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM DfsVisit or everything else */
+        bool DfsVisitAcyclic(const Data& u) {
+            Nodes[u].color = Color::Gray;
 
-            // THIS DfsVisit allows us to detect a cycle inside the Graph: it returns true if cycle is detected.
-            bool DfsVisitAcyclic(const Data& u) {
-                Nodes[u].color = Color::Gray;
-
-                for (const Data& v : Adj[u]) {
-                    if (Nodes[v].color == Color::White) {
-                        bool ret = DfsVisitAcyclic(v);
-                        if (ret) return true;
-                    } else if (Nodes[v].color == Color::Gray) {
-                        return true;
-                    }
+            for (const Edge<Data>& edge : Adj[u]) {
+                const Data& v = edge.to;
+                if (Nodes[v].color == Color::White) {
+                    bool ret = DfsVisitAcyclic(v);
+                    if (ret) return true;
+                } else if (Nodes[v].color == Color::Gray) {
+                    return true;
                 }
-                Nodes[u].color = Color::Black;
-                return false;
             }
-
-        /* [YOUR CODE ENDS HERE] */
+            Nodes[u].color = Color::Black;
+            return false;
+        }
 
     public:
         Graph() = default;
@@ -134,66 +139,33 @@ namespace lasd {
         bool operator==(const Graph&) const noexcept = delete;
         bool operator!=(const Graph&) const noexcept = delete;
 
-        /* ************************************************************************ */
-
-        // INITIALIZE NODE'S COLORS (AT LEAST FOR NOW)
         void Init();
 
         // CLEAR THE STRUCTURE
         void Clear();
 
         // ADD A NODE TO THE GRAPH
-        void addNode(const Node<Data>& node) noexcept; // Since Node<Data> is public ...
+        void addNode(const Node<Data>& node) noexcept;
         void addNode(const Data& key) noexcept;
 
         // ADD EDGE BETWEEN TO NODES
-        void addEdge(const Node<Data>& node_from, const Node<Data>& node_to); // Since Node<Data> is public ...
-        void addEdge(const Data& from, const Data& to);
+        void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
+        void addEdge(const Data& from, const Data& to, double weight);
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
-        void showGraph() const noexcept {
-            if (Nodes.empty()) {
-                std::cout << "  Graph is empty." << std::endl;
-            } else {
-                for (const auto& node_pair : Nodes) {
-                    const Data& curr_key = node_pair.first;
-                    std::cout << "  Node " << curr_key << " -> ";
+        void showGraph() const noexcept;
 
-                    if (Adj.find(curr_key) != Adj.end()) {
-                        const std::vector<Data>& adjs = Adj.at(curr_key);
-                        for (const Data& to : adjs) std::cout << to << " ";
-                    }
-                    std::cout << std::endl;
-                }
-            }
-        }
+        // Bfs, Dfs section ( Map() in PreOrder implementation )
+        void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
-        /* ************************************************************************ */
-
-        /* Bfs, Dfs section ( Map() in PreOrder implementation ) */
-        
-        void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;              // Default implementation of Dfs
-        void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept; // Dfs starting from specific vertex
-        void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept; // Default implementation of Bfs
-        
-        /* Bfs, Dfs section ( Fold() in PreOrder implementation is provided ) */
+        // Bfs, Dfs section ( Fold() in PreOrder implementation is provided )
         typedef std::function<void(const Data&, const void*, void*)> FoldFunctor;
         
-        void Dfs(FoldFunctor, const void*, void*) noexcept;              // Default implementation of Fold() using Dfs
-        void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept; // Fold() using Dfs starting from specific vertex
-        void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept; // Default implementation of Fold() using Bfs
-
-        /* ************************************************************************ */
-
-        /* Bfs, Dfs section ( Map() in PostOrder implementation ) */
-
-        // ...
-
-        /* Bfs, Dfs section ( Fold() in PostOrder implementation ) */
-
-        // ...
-
-        /* ************************************************************************ */
+        void Dfs(FoldFunctor, const void*, void*) noexcept;
+        void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept;
+        void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept;
 
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
         void Transpose();
@@ -205,11 +177,10 @@ namespace lasd {
         std::stack<Data> getTopologicalOrder(bool print_message);
         std::vector<Data> getTopologicalOrderUsingIncomingGrade();
 
-        /* ************************************************************************ */
+        // Dijkstra's algorithm
+        std::vector<Data> Dijkstra(const Data& source, const Data& destination);
 
         std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept;
-
-        /* ************************************************************************ */
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
         // NOTE: Every function declared inside here must be defined in "graph.cpp" (in the correct section).

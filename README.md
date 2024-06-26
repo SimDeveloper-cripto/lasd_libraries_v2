@@ -1,16 +1,15 @@
 # Overview
 
 This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries> <br />
-What I have focused my work on the most is the Oriented Graph data structure, which is implemented by adjacency lists. <br />
+What I have focused my work on the most is the Weigthed and Oriented Graph data structure, which is implemented by adjacency lists. <br />
 I used this library for the examination of algorithms and data structures. <br />
 This is my first ever try in implementing something like this so any help is well accepted! <br />
 
 Things I want to add in the future:
 
-- Weighted Graph + Dijkstra's Algorithm (Probably a new implementation)
+- A* Search Algorithm
 - Oriented Graph: PostOrder Map() and Fold() (both Bfs and Dfs)
 - Double Linked List
-- Non-Oriented Graph
 
 ## Tutorial: Code your personal test
 
