@@ -173,7 +173,10 @@ namespace lasd {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
                     Nodes[v].setDistance(Nodes[current].getDistance() + 1);
+                    Nodes[v].addPredecessor(&Nodes[current]);
                     queue.push(v);
+                } else if (Nodes[v].getDistance() == Nodes[current].getDistance() + 1) {
+                    Nodes[v].addPredecessor(&Nodes[current]);
                 }
             }
             Nodes[current].color = Color::Black;
