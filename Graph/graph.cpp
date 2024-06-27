@@ -37,7 +37,7 @@ namespace lasd {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
             my_pair.second.setDistance(std::numeric_limits<unsigned long>::max());
-            my_pair.second.setPredecessor(nullptr);
+            my_pair.second.getPredecessors().clear();
         }
     }
 
@@ -130,7 +130,10 @@ namespace lasd {
                 if (Nodes[v].color == Color::White) {
                     Nodes[v].color = Color::Gray;
                     Nodes[v].setDistance(Nodes[current].getDistance() + 1);
+                    Nodes[v].addPredecessor(&Nodes[current]);
                     queue.push(v);
+                } else if (Nodes[v].getDistance() == Nodes[current].getDistance() + 1) {
+                    Nodes[v].addPredecessor(&Nodes[current]);
                 }
             }
             Nodes[current].color = Color::Black;
@@ -368,8 +371,11 @@ namespace lasd {
     void Graph<Data>::printForEachNodeItsPredecessor() noexcept {
         for (const auto& node : Nodes) {
             std::cout << "Node " << node.first << " predecessor: ";
-            if (node.second.getPredecessor()) {
-                std::cout << node.second.getPredecessor()->key;
+            const auto& predecessors = node.second.getPredecessors();
+            if (!predecessors.empty()) {
+                for (const auto& pred : predecessors) {
+                    std::cout << pred->key << " ";
+                }
             } else {
                 std::cout << "None";
             }

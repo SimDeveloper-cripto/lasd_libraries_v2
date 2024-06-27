@@ -20,7 +20,45 @@ namespace lasd {
     class Node {
     private:
         unsigned long distance;
-        Node* predecessor;
+        std::vector<Node*> predecessors;
+        // Node* predecessor;
+
+        /* [COMMENT SECTION]
+            - Topic: print for each node its predecessors (every node has only one Node*)
+            How would you do that? Using BFS.
+
+            Graph<int>* graph = new lasd::Graph<int>();
+            graph->addNode(0);
+            graph->addNode(1);
+            graph->addNode(2);
+            graph->addNode(3);
+            graph->addNode(4);
+
+            graph->addEdge(0, 1, 1.0);
+            graph->addEdge(0, 2, 1.0);
+            graph->addEdge(1, 3, 1.0);
+            graph->addEdge(2, 3, 1.0);
+            graph->addEdge(3, 4, 1.0);
+            graph->addEdge(4, 0, 1.0);
+
+            // BFS FROM 0 to update Predecessors
+            graph->Bfs(0, [](const int&, void*){}, nullptr);
+            graph->printForEachNodeItsPredecessor();
+
+            OUTPUT:
+                Node 0 predecessor: None
+                Node 1 predecessor: 0
+                Node 2 predecessor: 0
+                Node 3 predecessor: 1
+                Node 4 predecessor: 3
+
+                That is correct because:
+                    - From node 2 we try to visit node 3, but since it has already been visited we don't update its predecessor.
+                    - Same thing from node 4 to node 0.
+            delete graph;
+
+            That doesn't make any sense. Each node can have multiple incoming edges!
+        */
 
     public:
         Data key;
@@ -42,15 +80,27 @@ namespace lasd {
             return this->distance;
         }
 
-        inline void setPredecessor(Node* predecessor) {
-            this->predecessor = predecessor;
-        }
+        // inline void setPredecessor(Node* predecessor) {
+        //     this->predecessor = predecessor;
+        // }
         
-        inline Node* getPredecessor() const {
-            return this->predecessor;
+        // inline Node* getPredecessor() const {
+        //     return this->predecessor;
+        // }
+
+        inline void addPredecessor(Node* predecessor) {
+            this->predecessors.push_back(predecessor);
         }
 
-        // NOTE: A function to change node's color is not provided because Node<Data> is public.
+        std::vector<Node<Data>*>& getPredecessors() {
+            return predecessors;
+        }
+
+        const std::vector<Node<Data>*>& getPredecessors() const {
+            return predecessors;
+        }
+
+        // NOTE: A function to change Node's Color is not provided because Node<Data> is public.
     };
 
     template <typename Data>

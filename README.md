@@ -5,10 +5,13 @@ What I have focused my work on the most is the Weigthed and Oriented Graph data 
 I used this library for the examination of algorithms and data structures. <br />
 This is my first ever try in implementing something like this so any help is well accepted! <br />
 
-Things I want to add in the future:
+Things I want to add in the future for the Graph:
 
 - A* Search Algorithm
-- Oriented Graph: PostOrder Map() and Fold() (both Bfs and Dfs)
+- PostOrder Map() and Fold() (both Bfs and Dfs)
+
+New Data Structures I want to add:
+
 - Double Linked List
 
 ## Tutorial: Code your personal test

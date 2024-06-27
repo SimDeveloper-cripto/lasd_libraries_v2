@@ -245,6 +245,27 @@ namespace lasdtest {
         std::cout << "Dfs's Fold application result: " << std::endl;
         graph->Dfs(applyFoldToNode, &start, &accum);
         delete graph;
+
+
+        std::cout << std::endl << "FOR EACH NODE EVERY PREDECESSOR: " << std::endl;
+        Graph<int>* new_g = new lasd::Graph<int>();
+        new_g->addNode(0);
+        new_g->addNode(1);
+        new_g->addNode(2);
+        new_g->addNode(3);
+        new_g->addNode(4);
+
+        new_g->addEdge(0, 1, 1.0);
+        new_g->addEdge(0, 2, 1.0);
+        new_g->addEdge(1, 3, 1.0);
+        new_g->addEdge(2, 3, 1.0);
+        new_g->addEdge(3, 4, 1.0);
+        new_g->addEdge(4, 0, 1.0);
+
+        // BFS starting from 0 to update the vector of predecessors
+        new_g->Bfs(0, [](const int&, void*){}, nullptr);
+        new_g->printForEachNodeItsPredecessor();
+        delete new_g;
     }
 
     void run_test() {
