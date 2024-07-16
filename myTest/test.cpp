@@ -1,5 +1,6 @@
 #include "test.hpp"
-// #include <assert.h>
+#include <cmath>
+#include <assert.h>
 
 using namespace lasd;
 
@@ -27,6 +28,11 @@ void SumEvenNumbers(const int& value, const void* limit, void* accumulator) {
         *((int*) accumulator) = *((int*) accumulator) + 0;
     }
 }
+
+// Heuristic Example (A* Search)
+double Heuristic (const int& source, const int& dest) {
+    return std::abs(source - dest);
+};
 
 namespace lasdtest {
     void run_personal_linked_list_test() {
@@ -266,6 +272,34 @@ namespace lasdtest {
         new_g->Bfs(0, [](const int&, void*){}, nullptr);
         new_g->printForEachNodeItsPredecessor();
         delete new_g;
+
+        // TODO: IMPLEMENT ALSO FOR "GRAPH OF COORDINATES" {X, Y} (std::pair<Data, Data> to be specific).
+        // For now {X, Y} is a single value.
+        Graph<int> new_g2;
+        for (int i = 0; i < 6; i++) new_g2.addNode(i);
+
+        new_g2.addEdge(0, 1, 2.5);
+        new_g2.addEdge(0, 4, 3.0);
+        new_g2.addEdge(1, 2, 1.5);
+        new_g2.addEdge(1, 3, 2.0);
+        new_g2.addEdge(0, 4, 1.7);
+        new_g2.addEdge(2, 3, 5.0);
+        new_g2.addEdge(3, 4, 1.5);
+        new_g2.addEdge(3, 5, 2.5);
+        new_g2.addEdge(4, 5, 3.0);
+
+        std::vector<int> path = new_g2.AStar(0, 5, Heuristic);
+
+        std::cout << std::endl << "NEW GRAPH OF COORDINATES HAS BEEN CREATED!" << std::endl;
+        std::cout << "[A* SEARCH ALGORITHM FROM 0 TO 5] RESULT: ";
+        for (const auto& node : path) {
+            std::cout << node << " ";
+        }
+        std::cout << std::endl;
+
+        // ASSERT CORRECT PATH
+        std::vector<int> expectedPath = {0, 4, 5};
+        assert(path == expectedPath);
     }
 
     void run_test() {

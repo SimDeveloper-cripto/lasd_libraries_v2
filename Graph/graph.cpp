@@ -289,7 +289,7 @@ namespace lasd {
     // O((log V * (V + E)))
     template <typename Data>
     std::vector<Data> Graph<Data>::Dijkstra(const Data& source, const Data& destination) {
-        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq;
+        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq; // MIN-HEAP
         std::unordered_map<Data, double> distances;
         std::unordered_map<Data, Data> predecessors;
 
@@ -326,6 +326,60 @@ namespace lasd {
         return path;
     }
 
+    // A* Search
+    template <typename Data>
+    std::vector<Data> Graph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
+        // TODO: SHOULD I IMPLEMENT INIT() HERE?
+        std::map<Data, double> gScore, fScore;
+        std::unordered_map<Data, Data> cameFrom;
+        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<std::pair<double, Data>>> pq; // MIN-HEAP
+
+        /*
+            - gScore: The cost of the shortest path from the source node to the current node as calculated so far by the algorithm.
+            - fScore: The estimated total cost from the source node to the destination node if the path goes through the current node.
+        */
+
+        for (const auto& node : Nodes) {
+            gScore[node.first] = std::numeric_limits<double>::max();
+            fScore[node.first] = std::numeric_limits<double>::max();
+        }
+
+        gScore[source] = 0;
+        fScore[source] = Heuristic(source, destination);
+        pq.emplace(fScore[source], source);
+
+        while (!pq.empty()) {
+            Data current = pq.top().second;
+            pq.pop();
+
+            if (current == destination) {
+                std::vector<Data> path;
+                for (Data at = destination; at != source; at = cameFrom[at]) {
+                    path.push_back(at);
+                }
+                path.push_back(source);
+                std::reverse(path.begin(), path.end());
+                return path;
+            }
+
+            for (const auto& edge : Adj[current]) {
+                Data neighbor = edge.to;
+                double temp_gScore = gScore[current] + edge.weight;
+
+                // For each neighbor, calculate the tentative gScore.
+                // If it is lower than the current gScore for the neighbor, update the neighbor's gScore, fScore, and record the path in cameFrom MAP.
+                if (temp_gScore < gScore[neighbor]) {
+                    cameFrom[neighbor] = current;
+                    gScore[neighbor] = temp_gScore;
+                    fScore[neighbor] = gScore[neighbor] + Heuristic(neighbor, destination);
+                    pq.emplace(fScore[neighbor], neighbor);
+                }
+            }
+        }
+
+        return {}; // If no path is found, return an empty vector.
+    }
+    
     template <typename Data>
     std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() noexcept {
         std::stack<Data> stack;

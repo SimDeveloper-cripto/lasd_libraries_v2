@@ -7,7 +7,7 @@ This is my first ever try in implementing something like this so any help is wel
 
 Things I want to add in the future for the Graph:
 
-- A* Search Algorithm
+- A* Search Algorithm for std::pair<>
 - PostOrder Map() and Fold() (both Bfs and Dfs)
 
 New Data Structures I want to add:

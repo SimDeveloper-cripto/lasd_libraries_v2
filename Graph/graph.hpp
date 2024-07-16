@@ -1,11 +1,14 @@
 #pragma once
 
+#include <set>
 #include <map>
+#include <cmath>
 #include <stack>
 #include <queue>
 #include <limits>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <exception>
 #include <stdbool.h>
 #include <functional>
@@ -197,10 +200,12 @@ namespace lasd {
         // ADD A NODE TO THE GRAPH
         void addNode(const Node<Data>& node) noexcept;
         void addNode(const Data& key) noexcept;
+        void addNodeAsPair(const Data& node) noexcept;
 
         // ADD EDGE BETWEEN TO NODES
         void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
         void addEdge(const Data& from, const Data& to, double weight);
+        void addEdgeAsPair(const Data& from, const Data& to, double weight);
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
         void showGraph() const noexcept;
@@ -230,6 +235,9 @@ namespace lasd {
         // Dijkstra's algorithm
         std::vector<Data> Dijkstra(const Data& source, const Data& destination);
 
+        /* [ A* Search ] */
+        std::vector<Data> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic);
+
         std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept;
 
         /* [YOUR CODE STARTS HERE] HERE INSERT YOUR CUSTOM Dfs */
@@ -238,6 +246,13 @@ namespace lasd {
             bool isGraphAcyclicDfs() noexcept;
             void printForEachNodeItsPredecessor() noexcept;
             // ...
+
+            // Euclidean Distance Heuristic Example
+            double EuclideanDistance(const std::pair<int, int>& Node, const std::pair<int, int>& Destination) {
+                int dx = Node.first  - Destination.first;
+                int dy = Node.second - Destination.second;
+                return std::sqrt((dx * dx) + (dy * dy));
+            }
 
         /* [YOUR CODE ENDS HERE] */
     };
