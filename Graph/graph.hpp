@@ -200,12 +200,10 @@ namespace lasd {
         // ADD A NODE TO THE GRAPH
         void addNode(const Node<Data>& node) noexcept;
         void addNode(const Data& key) noexcept;
-        void addNodeAsPair(const Data& node) noexcept;
 
         // ADD EDGE BETWEEN TO NODES
         void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
         void addEdge(const Data& from, const Data& to, double weight);
-        void addEdgeAsPair(const Data& from, const Data& to, double weight);
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
         void showGraph() const noexcept;
