@@ -288,17 +288,17 @@ namespace lasdtest {
         new_g2.addEdge(3, 5, 2.5);
         new_g2.addEdge(4, 5, 3.0);
 
-        std::vector<int> path = new_g2.AStar(0, 5, Heuristic);
+        std::vector<std::pair<int, double>> path = new_g2.AStar(0, 5, Heuristic);
 
         std::cout << std::endl << "NEW GRAPH OF COORDINATES HAS BEEN CREATED!" << std::endl;
         std::cout << "[A* SEARCH ALGORITHM FROM 0 TO 5] RESULT: ";
-        for (const auto& node : path) {
-            std::cout << node << " ";
+        for (const auto& [node, fScore] : path) {
+            std::cout << "{ Node: " << node << ", Heuristic: " << fScore << "} ";
         }
         std::cout << std::endl;
 
         // ASSERT CORRECT PATH
-        std::vector<int> expectedPath = {0, 4, 5};
+        std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath);
     }
 

@@ -328,7 +328,7 @@ namespace lasd {
 
     // A* Search
     template <typename Data>
-    std::vector<Data> Graph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
+    std::vector<std::pair<Data, double>> Graph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
         // TODO: SHOULD I IMPLEMENT INIT() HERE?
         std::map<Data, double> gScore, fScore;
         std::unordered_map<Data, Data> cameFrom;
@@ -337,6 +337,8 @@ namespace lasd {
         /*
             - gScore: The cost of the shortest path from the source node to the current node as calculated so far by the algorithm.
             - fScore: The estimated total cost from the source node to the destination node if the path goes through the current node.
+                -- The fScore is used as priority criteria (Queue).
+                -- The priority queue always extracts the node with the lowest fScore, i.e. the node that appears to be closest to the destination in terms of estimated total cost.
         */
 
         for (const auto& node : Nodes) {
@@ -353,11 +355,11 @@ namespace lasd {
             pq.pop();
 
             if (current == destination) {
-                std::vector<Data> path;
+                std::vector<std::pair<Data, double>> path;
                 for (Data at = destination; at != source; at = cameFrom[at]) {
-                    path.push_back(at);
+                    path.emplace_back(at, fScore[at]);
                 }
-                path.push_back(source);
+                path.emplace_back(source, fScore[source]);
                 std::reverse(path.begin(), path.end());
                 return path;
             }

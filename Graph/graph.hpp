@@ -234,7 +234,9 @@ namespace lasd {
         std::vector<Data> Dijkstra(const Data& source, const Data& destination);
 
         /* [ A* Search ] */
-        std::vector<Data> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic);
+        // Data  : Node Value
+        // double: Heuristic
+        std::vector<std::pair<Data, double>> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic);
 
         std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept;
 
