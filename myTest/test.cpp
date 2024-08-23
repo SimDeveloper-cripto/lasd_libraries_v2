@@ -300,6 +300,9 @@ namespace lasdtest {
         // ASSERT CORRECT PATH
         std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath);
+
+        // TODO: TRY TO SOLVE ONE ASD EXERCISE
+        // Note: use std::unordered_map<Data, Color> Graph<Data>::GetCurrentColors() const;
     }
 
     void run_test() {

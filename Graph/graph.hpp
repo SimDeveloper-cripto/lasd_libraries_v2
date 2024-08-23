@@ -8,6 +8,7 @@
 #include <limits>
 #include <vector>
 #include <iostream>
+#include <stdexcept>
 #include <algorithm>
 #include <exception>
 #include <stdbool.h>
@@ -121,6 +122,10 @@ namespace lasd {
         std::map<Data, Node<Data>> Nodes;
         std::map<Data, std::vector<Edge<Data>>> Adj;
 
+        Color GetColor(const Data& node) const;
+        std::vector<Node<Data>> GetAllNodes() const;
+        std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const;
+
         // DFS MAP()
         void DfsVisit(const Data& u, std::function<void(const Data&, void* other)> visit, void* other) {
             Nodes[u].color = Color::Gray;
@@ -204,6 +209,9 @@ namespace lasd {
         // ADD EDGE BETWEEN TO NODES
         void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
         void addEdge(const Data& from, const Data& to, double weight);
+
+	    // GET CURRENT STATE OF THE COLORS OF ALL THE NODES
+	    std::unordered_map<Data, Color> GetCurrentColors() const;
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
         void showGraph() const noexcept;

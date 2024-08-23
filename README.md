@@ -12,7 +12,8 @@ Things I want to add in the future for the Graph:
 
 New Data Structures I want to add:
 
-- Double Linked List
+- Doubly Linked List
+- Priority Queue
 
 ## Tutorial: Code your personal test
 

@@ -84,6 +84,43 @@ namespace lasd {
     }
 
     template <typename Data>
+    Color Graph<Data>::GetColor(const Data& node_key) const {
+        auto it = Nodes.find(node_key);
+        if (it != Nodes.end()) {
+            return it->second.color;
+        } else {
+            throw std::invalid_argument("ERROR: Key value provided for GetColor() does not exist in Graph!");
+        }
+    }
+
+    template <typename Data>
+    std::vector<Node<Data>*> Graph<Data>::GetAdjacentNodes(const Data& node) const {
+        if (Adj.find(node) == Adj.end()) throw std::invalid_argument("Node provided for GetAdjacentNodes() does not exist in the Graph! :(");
+
+        std::vector<Node<Data>*> adjs;
+        for (const Edge<Data>& edge : Adj.at(node)) adjs.push_back(const_cast<Node<Data>*>(&Nodes.at(edge.to)));
+
+        return adjs;
+    }
+
+    template <typename Data>
+    std::vector<Node<Data>> Graph<Data>::GetAllNodes() const {
+        std::vector<Node<Data>> nodes;
+        if (Nodes.empty()) return {};
+        for (auto& pair : Nodes) nodes.emplace_back(pair.second);
+        return nodes;
+    }
+
+    template <typename Data>
+    std::unordered_map<Data, Color> Graph<Data>::GetCurrentColors() const {
+        std::unordered_map<Data, Color> c_map;
+        for (const auto& node: Nodes) {
+            c_map[node.first] = node.second.color;
+        }
+        return c_map;
+    }
+
+    template <typename Data>
     void Graph<Data>::showGraph() const noexcept {
         for (const auto& node : Nodes) {
             std::cout << "Node: " << node.first << " -> ";
