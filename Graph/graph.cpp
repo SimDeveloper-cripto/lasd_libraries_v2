@@ -145,6 +145,18 @@ namespace lasd {
     }
 
     template <typename Data>
+    void Graph<Data>::DfsFromSet(const std::set<Data>& nodes, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+        for (auto& key : nodes) {
+            auto it = Nodes.find(key);
+            if (it != Nodes.end()) {
+                // TODO: I KNOW I SHOULD WORRY ABOUT THE NODE COLOR. I KNOW SORRY! :(
+                DfsVisit(key, visit, other);
+            }
+        }
+    }
+
+    template <typename Data>
     void Graph<Data>::Dfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         DfsVisit(u, visit, other);

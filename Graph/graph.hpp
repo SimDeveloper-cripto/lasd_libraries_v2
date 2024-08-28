@@ -123,7 +123,6 @@ namespace lasd {
         std::map<Data, std::vector<Edge<Data>>> Adj;
 
         Color GetColor(const Data& node) const;
-        std::vector<Node<Data>> GetAllNodes() const;
         std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const;
 
         // DFS MAP()
@@ -210,6 +209,8 @@ namespace lasd {
         void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
         void addEdge(const Data& from, const Data& to, double weight);
 
+        std::vector<Node<Data>> GetAllNodes() const;
+
 	    // GET CURRENT STATE OF THE COLORS OF ALL THE NODES
 	    std::unordered_map<Data, Color> GetCurrentColors() const;
 
@@ -220,6 +221,9 @@ namespace lasd {
         void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+
+        // TODO: ADD BFS AND FOLD FOR THIS
+        void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
         // Bfs, Dfs section ( Fold() in PreOrder implementation is provided )
         typedef std::function<void(const Data&, const void*, void*)> FoldFunctor;

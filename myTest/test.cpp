@@ -129,6 +129,9 @@ namespace lasdtest {
             std::cout << node << " "; // const int&, insted of printing we could modify the values.
         };
 
+        // DO NOT USE THIS ONE! 
+        auto fastMapDfs = [] (const int& node, void* other) {};
+
         std::cout << "Printing the Graph: " << std::endl;
         graph->showGraph();
 
@@ -295,14 +298,55 @@ namespace lasdtest {
         for (const auto& [node, fScore] : path) {
             std::cout << "{ Node: " << node << ", Heuristic: " << fScore << "} ";
         }
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl;
 
         // ASSERT CORRECT PATH
         std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath);
 
-        // TODO: TRY TO SOLVE ONE ASD EXERCISE
-        // Note: use std::unordered_map<Data, Color> Graph<Data>::GetCurrentColors() const;
+        /* SOLVE ONE ASD EXAM [SEPTEMBER 2019, LOOK AT YOUR SOLUTION] */
+        // TODO: MAKE SURE THAT EVERY SINGLE NODE GETS VISITED AND CHECKED TO BE PUSHED ONTO THE STACK
+        Graph<int> new_g3;
+        for (int i = 0; i < 7; i++) new_g3.addNode(i);
+
+        new_g3.addEdge(1, 0, 1.0);
+        new_g3.addEdge(0, 5, 1.0);
+        new_g3.addEdge(5, 6, 1.0);
+        new_g3.addEdge(3, 6, 1.0);
+        new_g3.addEdge(1, 4, 1.0);
+        new_g3.addEdge(4, 2, 1.0);
+        new_g3.addEdge(4, 3, 1.0);
+        new_g3.addEdge(2, 3, 1.0);
+        new_g3.addEdge(2, 1, 1.0);
+
+        std::set<int> ASet; // Use a Set to get O(log(n)) as search complexity.
+        std::vector<int> S;
+        
+        ASet.insert(0);
+        ASet.insert(2);
+        ASet.insert(3);
+        
+        new_g3.Dfs(fastMapDfs, nullptr);
+
+        std::cout << "--- #1 DFS SET" << std::endl;
+        new_g3.DfsFromSet(ASet, fastMapDfs, nullptr);
+        std::unordered_map<int, Color> color_map_v1 = new_g3.GetCurrentColors();
+        new_g3.Transpose();
+        std::cout << "--- #2 TRANSPOSE DFS SET" << std::endl;
+        new_g3.DfsFromSet(ASet, fastMapDfs, nullptr);
+
+        std::cout << std::endl;
+        for (auto& node : new_g3.GetAllNodes()) {
+            auto value = node.key;
+            std::unordered_map<int, Color>::iterator it = color_map_v1.find(value);
+            
+            if (it != color_map_v1.end()) {
+                if (ASet.find(value) == ASet.end()  && (it->second == Color::White || node.color == Color::White)) {
+                    S.push_back(value);
+                    std::cout << "Found: " << value << std::endl;
+                }
+            }
+        }
     }
 
     void run_test() {
