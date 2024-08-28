@@ -304,19 +304,18 @@ namespace lasdtest {
         assert(path == expectedPath);
 
         /* SOLVE ONE ASD EXAM [SEPTEMBER 2019, LOOK AT YOUR SOLUTION] */
-        // TODO: MAKE SURE THAT EVERY SINGLE NODE GETS VISITED AND CHECKED TO BE PUSHED ONTO THE STACK
         Graph<int> new_g3;
         for (int i = 0; i < 7; i++) new_g3.addNode(i);
 
         new_g3.addEdge(1, 0, 1.0);
-        new_g3.addEdge(0, 5, 1.0);
-        new_g3.addEdge(5, 6, 1.0);
-        new_g3.addEdge(3, 6, 1.0);
-        new_g3.addEdge(1, 4, 1.0);
+        new_g3.addEdge(0, 6, 1.0);
+        new_g3.addEdge(6, 5, 1.0);
+        new_g3.addEdge(5, 0, 1.0);
+        new_g3.addEdge(0, 1, 1.0);
         new_g3.addEdge(4, 2, 1.0);
         new_g3.addEdge(4, 3, 1.0);
-        new_g3.addEdge(2, 3, 1.0);
-        new_g3.addEdge(2, 1, 1.0);
+        new_g3.addEdge(2, 0, 1.0);
+        new_g3.addEdge(3, 6, 1.0);
 
         std::set<int> ASet; // Use a Set to get O(log(n)) as search complexity.
         std::vector<int> S;
@@ -325,8 +324,6 @@ namespace lasdtest {
         ASet.insert(2);
         ASet.insert(3);
         
-        new_g3.Dfs(fastMapDfs, nullptr);
-
         std::cout << "--- #1 DFS SET" << std::endl;
         new_g3.DfsFromSet(ASet, fastMapDfs, nullptr);
         std::unordered_map<int, Color> color_map_v1 = new_g3.GetCurrentColors();
@@ -338,14 +335,17 @@ namespace lasdtest {
         for (auto& node : new_g3.GetAllNodes()) {
             auto value = node.key;
             std::unordered_map<int, Color>::iterator it = color_map_v1.find(value);
-            
             if (it != color_map_v1.end()) {
-                if (ASet.find(value) == ASet.end()  && (it->second == Color::White || node.color == Color::White)) {
+                // We only check the nodes which aren't inside the Set.
+                if (ASet.find(value) == ASet.end() && (it->second == Color::White || node.color == Color::White)) {
                     S.push_back(value);
-                    std::cout << "Found: " << value << std::endl;
+                    std::cout << "Found: " << value << std::endl; // Will print "Found: 4".
                 }
             }
         }
+
+        // ASSERT CORRECT STACK SIZE
+        assert(S.size() == 1);
     }
 
     void run_test() {

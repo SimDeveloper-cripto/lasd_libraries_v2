@@ -9,11 +9,16 @@ Things I want to add in the future for the Graph:
 
 - A* Search Algorithm for std::pair<>
 - PostOrder Map() and Fold() (both Bfs and Dfs)
+- Bfs starting from a std::set<> (both Map and Fold)
 
 New Data Structures I want to add:
 
 - Doubly Linked List
 - Priority Queue
+
+Todo:
+
+- For now, the library does not Init() the Graph before applying the A* Search.
 
 ## Tutorial: Code your personal test
 

@@ -156,6 +156,17 @@ namespace lasd {
     }
 
     template <typename Data>
+    void Graph<Data>::DfsFromSet(const std::set<Data>&, FoldFunctor visit, const void* par, void* acc) noexcept {
+        Init();
+        for (auto& key : nodes) {
+            auto it = Nodes.find(key);
+            if (it != Nodes.end()) {
+                if (it->second.color == Color::White) DfsVisit(key, visit, par, acc);
+            }
+        }
+    }
+
+    template <typename Data>
     void Graph<Data>::Dfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         DfsVisit(u, visit, other);
@@ -377,7 +388,6 @@ namespace lasd {
     // A* Search
     template <typename Data>
     std::vector<std::pair<Data, double>> Graph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
-        // TODO: SHOULD I IMPLEMENT INIT() HERE?
         std::map<Data, double> gScore, fScore;
         std::unordered_map<Data, Data> cameFrom;
         std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<std::pair<double, Data>>> pq; // MIN-HEAP

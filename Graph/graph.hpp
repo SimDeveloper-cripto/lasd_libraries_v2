@@ -222,15 +222,19 @@ namespace lasd {
         void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
-        // TODO: IMPLEMENT BFS AND ALSO DFS/BFS FOLD
-        void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
-
         // Bfs, Dfs section ( Fold() in PreOrder implementation is provided )
         typedef std::function<void(const Data&, const void*, void*)> FoldFunctor;
         
         void Dfs(FoldFunctor, const void*, void*) noexcept;
         void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept;
         void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept;
+
+        // SET RELATED DFS (MAP & FOLD)
+        void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
+        
+        // SET RELATED BFS (MAP & FOLD)
+        // ...
 
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
         void Transpose();
