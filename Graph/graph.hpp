@@ -222,7 +222,7 @@ namespace lasd {
         void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
-        // TODO: ADD BFS AND FOLD FOR THIS
+        // TODO: IMPLEMENT BFS AND ALSO DFS/BFS FOLD
         void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
 
         // Bfs, Dfs section ( Fold() in PreOrder implementation is provided )

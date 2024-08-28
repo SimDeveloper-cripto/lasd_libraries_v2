@@ -276,7 +276,6 @@ namespace lasdtest {
         new_g->printForEachNodeItsPredecessor();
         delete new_g;
 
-        // TODO: IMPLEMENT ALSO FOR "GRAPH OF COORDINATES" {X, Y} (std::pair<Data, Data> to be specific).
         // For now {X, Y} is a single value.
         Graph<int> new_g2;
         for (int i = 0; i < 6; i++) new_g2.addNode(i);

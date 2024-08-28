@@ -150,8 +150,7 @@ namespace lasd {
         for (auto& key : nodes) {
             auto it = Nodes.find(key);
             if (it != Nodes.end()) {
-                // TODO: I KNOW I SHOULD WORRY ABOUT THE NODE COLOR. I KNOW SORRY! :(
-                DfsVisit(key, visit, other);
+                if (it->second.color == Color::White) DfsVisit(key, visit, other);
             }
         }
     }
