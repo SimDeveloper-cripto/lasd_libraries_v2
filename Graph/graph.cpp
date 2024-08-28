@@ -156,7 +156,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::DfsFromSet(const std::set<Data>&, FoldFunctor visit, const void* par, void* acc) noexcept {
+    void Graph<Data>::DfsFromSet(const std::set<Data>& nodes, FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
         for (auto& key : nodes) {
             auto it = Nodes.find(key);
