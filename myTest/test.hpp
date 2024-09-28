@@ -5,10 +5,14 @@
 #include "../LinkedList/linked_list.hpp"
 #include "../Graph/graph.hpp"
 
+#include "../NeuralNetwork/layer.hpp"
+#include "../NeuralNetwork/neuron.hpp"
+
 namespace lasdtest {
     void run_test();
     void run_personal_linked_list_test();
     void run_personal_graph_test();
+    void run_personal_neural_network_test();
 }
 
 // USER'S NAMESPACE SO THAT CAN DECLARE PERSONAL TEST

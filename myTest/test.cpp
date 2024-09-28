@@ -3,6 +3,7 @@
 #include <assert.h>
 
 using namespace lasd;
+using namespace NNDL;
 
 int generate_random_index(unsigned long size) {
     std::default_random_engine generator(std::random_device{}());
@@ -348,11 +349,36 @@ namespace lasdtest {
         assert(S.size() == 1);
     }
 
+    void run_personal_neural_network_test() {
+        std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
+
+        Neuron neuron1(3); // First neuron has 3 inputs
+        neuron1.setWeights({0.2, 0.4, 0.6});
+        neuron1.setBias(0.1);
+
+        Neuron neuron2(1); // Second neuron has only 1 input: the output of the first one
+        neuron1.setWeights({0.5});
+        neuron1.setBias(0.2);
+
+        // First Neuron input
+        std::vector<double> inputs = {1.0, 0.5, 0.2};
+        double neuron1_output = neuron1.Compute(inputs);
+        std::cout << "First Neuron Output: " << neuron1_output << std::endl;
+
+        // First Neuron Output as Input to the Second Neuron
+        std::vector<double> inputs2 = {neuron1_output};
+        double neuron2_output = neuron2.Compute(inputs2);
+        std::cout << "Second Neuron Output: " << neuron2_output << std::endl;
+    }
+
     void run_test() {
         run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
         
         run_personal_graph_test();
+        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+
+        run_personal_neural_network_test();
         std::cout << "-----------------------------------------------------------------------------------" << std::endl;
     }
 }

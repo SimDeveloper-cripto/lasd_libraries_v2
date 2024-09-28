@@ -15,10 +15,16 @@ New Data Structures I want to add:
 
 - Doubly Linked List
 - Priority Queue
+- Min Heap
 
 Todo:
 
+- Test Compute() function of the Neuron class.
 - For now, the library does not Init() the Graph before applying the A* Search.
+
+## New Update
+
+I am developing a __Neural Network__. <br />
 
 ## Tutorial: Code your personal test
 
