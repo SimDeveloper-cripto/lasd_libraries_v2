@@ -7,6 +7,7 @@
 
 #include "../NeuralNetwork/layer.hpp"
 #include "../NeuralNetwork/neuron.hpp"
+#include "../NeuralNetwork/neural_network.hpp"
 
 namespace lasdtest {
     void run_test();

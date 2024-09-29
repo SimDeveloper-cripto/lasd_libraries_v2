@@ -350,25 +350,50 @@ namespace lasdtest {
     }
 
     void run_personal_neural_network_test() {
-        std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
+        /*
+            std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
 
-        Neuron neuron1(3); // First neuron has 3 inputs
-        neuron1.setWeights({0.2, 0.4, 0.6});
-        neuron1.setBias(0.1);
+            Neuron neuron1(3); // First neuron has 3 inputs
+            neuron1.setWeights({0.2, 0.4, 0.6});
+            neuron1.setBias(0.1);
 
-        Neuron neuron2(1); // Second neuron has only 1 input: the output of the first one
-        neuron1.setWeights({0.5});
-        neuron1.setBias(0.2);
+            Neuron neuron2(1); // Second neuron has only 1 input: the output of the first one
+            neuron1.setWeights({0.5});
+            neuron1.setBias(0.2);
 
-        // First Neuron input
-        std::vector<double> inputs = {1.0, 0.5, 0.2};
-        double neuron1_output = neuron1.Compute(inputs);
-        std::cout << "First Neuron Output: " << neuron1_output << std::endl;
+            // First Neuron input
+            std::vector<double> inputs = {1.0, 0.5, 0.2};
+            double neuron1_output = neuron1.Compute(inputs);
+            std::cout << "First Neuron Output: " << neuron1_output << std::endl;
 
-        // First Neuron Output as Input to the Second Neuron
-        std::vector<double> inputs2 = {neuron1_output};
-        double neuron2_output = neuron2.Compute(inputs2);
-        std::cout << "Second Neuron Output: " << neuron2_output << std::endl;
+            // First Neuron Output as Input to the Second Neuron
+            std::vector<double> inputs2 = {neuron1_output};
+            double neuron2_output = neuron2.Compute(inputs2);
+            std::cout << "Second Neuron Output: " << neuron2_output << std::endl;
+        */
+        std::vector<Neuron> input_neurons = {
+            Neuron(2), Neuron(2), Neuron(2) // 3 neurons with 2 inputs each!
+        };
+        input_neurons[0].setBias(0.1);
+        input_neurons[0].setWeights({0.2, 0.3});
+        input_neurons[1].setBias(0.4);
+        input_neurons[1].setWeights({0.5, 0.6});
+        input_neurons[2].setBias(0.7);
+        input_neurons[2].setWeights({0.8, 0.9});
+
+        std::vector<Neuron> output_neurons = {
+            Neuron(3), Neuron(3) // 2 neurons with 3 inputs each!
+        };
+        output_neurons[0].setBias(0.1);
+        output_neurons[0].setWeights({0.2, 0.3, 0.4});
+        output_neurons[1].setBias(0.5);
+        output_neurons[1].setWeights({0.6, 0.7, 0.8});
+
+        NeuralNetwork nn({input_neurons, output_neurons});
+
+        std::cout << "Feeding input to the network: {0.5, 0.9}" << std::endl;
+        std::vector<double> input_values = {0.5, 0.9};
+        nn.Forward(input_values); // Compute final Output
     }
 
     void run_test() {

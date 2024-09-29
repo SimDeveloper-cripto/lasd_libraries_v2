@@ -19,8 +19,7 @@ New Data Structures I want to add:
 
 Todo:
 
-- Test Compute() function of the Neuron class.
-- Test Neural Network class.
+- Train Neural Network.
 - For now, the library does not Init() the Graph before applying the A* Search.
 
 ## New Update

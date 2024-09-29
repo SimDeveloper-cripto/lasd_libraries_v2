@@ -2,6 +2,7 @@
 
 #include "layer.hpp"
 #include <vector>
+#include <iostream>
 
 namespace NNDL {
     class NeuralNetwork {
@@ -9,7 +10,8 @@ namespace NNDL {
         std::vector<Layer> layers;  // Vector of Layers
 
     public:
-        NeuralNetwork(const std::vector<int>& topology); // Example: {3, 4, 2} for a 3-layer NN
+        // NeuralNetwork(const std::vector<int>& topology); // Example: {2, 3} --> 3 neurons with 2 inputs each!
+        NeuralNetwork(const std::vector<std::vector<Neuron>>& neurons_per_layer);
         NeuralNetwork(const NeuralNetwork& other);
         NeuralNetwork(NeuralNetwork&& other) noexcept;
         ~NeuralNetwork() = default;
@@ -19,11 +21,6 @@ namespace NNDL {
         bool operator==(const NeuralNetwork& other) const;
 
         std::vector<double> Forward(const std::vector<double>& input_data);
-
-/*
-        void Train(const std::vector<std::vector<double>>& training_data, 
-                const std::vector<std::vector<double>>& expected_output, 
-                double learning_rate, int epochs);
-*/
+        // void Train(const std::vector<std::vector<double>>& training_data, const std::vector<std::vector<double>>& expected_output, double learning_rate, int epochs);
     };
 }
