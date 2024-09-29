@@ -2,11 +2,10 @@
 
 #include <random>
 #include <iostream>
+
 #include "../LinkedList/linked_list.hpp"
 #include "../Graph/graph.hpp"
 
-#include "../NeuralNetwork/layer.hpp"
-#include "../NeuralNetwork/neuron.hpp"
 #include "../NeuralNetwork/neural_network.hpp"
 
 namespace lasdtest {

@@ -24,7 +24,7 @@ Todo:
 
 ## New Update
 
-I am developing a __Neural Network__. <br />
+I am developing a __Neural Network__! <br />
 
 ## Tutorial: Code your personal test
 

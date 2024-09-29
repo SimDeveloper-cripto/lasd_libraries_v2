@@ -350,9 +350,8 @@ namespace lasdtest {
     }
 
     void run_personal_neural_network_test() {
+        std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
         /*
-            std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
-
             Neuron neuron1(3); // First neuron has 3 inputs
             neuron1.setWeights({0.2, 0.4, 0.6});
             neuron1.setBias(0.1);

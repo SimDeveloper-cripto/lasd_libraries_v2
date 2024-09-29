@@ -9,7 +9,6 @@ namespace NNDL {
         std::vector<Neuron> neurons;
 
     public:
-        // Layer(int num_neurons, int num_inputs_per_neuron);
         Layer(const std::vector<Neuron>& custom_neurons);
         Layer(const Layer& other);
         Layer(Layer&& other) noexcept;

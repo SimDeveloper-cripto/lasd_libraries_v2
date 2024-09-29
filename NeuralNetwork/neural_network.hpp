@@ -1,6 +1,7 @@
 #pragma once
 
 #include "layer.hpp"
+
 #include <vector>
 #include <iostream>
 
@@ -10,7 +11,6 @@ namespace NNDL {
         std::vector<Layer> layers;  // Vector of Layers
 
     public:
-        // NeuralNetwork(const std::vector<int>& topology); // Example: {2, 3} --> 3 neurons with 2 inputs each!
         NeuralNetwork(const std::vector<std::vector<Neuron>>& neurons_per_layer);
         NeuralNetwork(const NeuralNetwork& other);
         NeuralNetwork(NeuralNetwork&& other) noexcept;

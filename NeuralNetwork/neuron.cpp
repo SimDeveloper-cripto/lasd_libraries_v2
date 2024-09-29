@@ -46,11 +46,13 @@ namespace NNDL {
     std::vector<double>& Neuron::getWeights() { return weights; }
 
     double Neuron::Compute(const std::vector<double>& inputs) {
-        // double sum = std::inner_product(inputs.begin(), inputs.end(), weights.begin(), 0.0) + bias;
         double sum = bias;
-        for (size_t i = 0; i < weights.size(); ++i) {
+        for (size_t i = 0; i < weights.size(); ++i) { // (# of weights) == (# of inputs)
             sum += weights[i] * inputs[i];
         }
-        return Sigmoid(sum);
+        
+        double ret_val = Sigmoid(sum);
+        setValue(ret_val);
+        return ret_val;
     }
 }
