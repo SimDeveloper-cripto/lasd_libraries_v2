@@ -2,8 +2,9 @@
 #include <cmath>
 #include <assert.h>
 
-using namespace lasd;
-using namespace NNDL;
+using namespace lasd; // List and Graph namespace
+using namespace NNDL; // Neural Network namespace
+// using namespace NNDL_COMPUTE; // This is used for Activation Functions (Neural Network)
 
 int generate_random_index(unsigned long size) {
     std::default_random_engine generator(std::random_device{}());
@@ -109,8 +110,6 @@ namespace lasdtest {
         graph->addNode(5);
         graph->addNode(6);
 
-        // graph->addEdge(0, 1, 0.0);
-        // graph->addEdge(1, 0, 0.0);
         graph->addEdge(3, 1, 1.0); // 3rd parameter is edge-weight
         graph->addEdge(1, 2, 1.0);
         graph->addEdge(2, 3, 2.0);
@@ -123,7 +122,7 @@ namespace lasdtest {
             That is basically our way to apply Map() to Graph's nodes
         */
         auto applyToNodeBfs = [](const int& node, void* other) {
-            std::cout << "  [QUEUE HEAD] Visiting: " << node << std::endl; // const int&, insted of printing we could modify the values.
+            std::cout << "  [QUEUE HEAD] Visiting: " << node << std::endl; // const int&, instead of printing we could modify the values.
         };
         
         auto applyToNodeDfs = [](const int& node, void* other) {
@@ -350,28 +349,15 @@ namespace lasdtest {
     }
 
     void run_personal_neural_network_test() {
-        std::cout << std::endl << "[ OK ] NEURAL NETWORK TEST STARTED" << std::endl;
-        /*
-            Neuron neuron1(3); // First neuron has 3 inputs
-            neuron1.setWeights({0.2, 0.4, 0.6});
-            neuron1.setBias(0.1);
+        std::cout << std::endl << "[ OK ] SHALLOW NETWORK {FULL-CONNECTED MULTI-LAYER NEURAL NETWORK} TEST STARTED" << std::endl;
 
-            Neuron neuron2(1); // Second neuron has only 1 input: the output of the first one
-            neuron1.setWeights({0.5});
-            neuron1.setBias(0.2);
+        /* ***** CREATION OF A SHALLOW FULL-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
 
-            // First Neuron input
-            std::vector<double> inputs = {1.0, 0.5, 0.2};
-            double neuron1_output = neuron1.Compute(inputs);
-            std::cout << "First Neuron Output: " << neuron1_output << std::endl;
-
-            // First Neuron Output as Input to the Second Neuron
-            std::vector<double> inputs2 = {neuron1_output};
-            double neuron2_output = neuron2.Compute(inputs2);
-            std::cout << "Second Neuron Output: " << neuron2_output << std::endl;
-        */
-        std::vector<Neuron> input_neurons = {
-            Neuron(2), Neuron(2), Neuron(2) // 3 neurons with 2 inputs each!
+        // The First Layer uses Sigmoid
+        std::vector<Neuron> input_neurons = { // 3 neurons with 2 inputs each!
+            Neuron(2, NNDL_COMPUTE::Sigmoid),
+            Neuron(2, NNDL_COMPUTE::Sigmoid),
+            Neuron(2, NNDL_COMPUTE::Sigmoid)
         };
         input_neurons[0].setBias(0.1);
         input_neurons[0].setWeights({0.2, 0.3});
@@ -380,14 +366,17 @@ namespace lasdtest {
         input_neurons[2].setBias(0.7);
         input_neurons[2].setWeights({0.8, 0.9});
 
-        std::vector<Neuron> output_neurons = {
-            Neuron(3), Neuron(3) // 2 neurons with 3 inputs each!
+        // The Second (Output) Layer uses SoftPlus
+        std::vector<Neuron> output_neurons = { // 2 neurons with 3 inputs each!
+            Neuron(3, NNDL_COMPUTE::SoftPlus),
+            Neuron(3, NNDL_COMPUTE::SoftPlus)
         };
         output_neurons[0].setBias(0.1);
         output_neurons[0].setWeights({0.2, 0.3, 0.4});
         output_neurons[1].setBias(0.5);
         output_neurons[1].setWeights({0.6, 0.7, 0.8});
 
+        // Create the Neural Network!
         NeuralNetwork nn({input_neurons, output_neurons});
 
         std::cout << "Feeding input to the network: {0.5, 0.9}" << std::endl;

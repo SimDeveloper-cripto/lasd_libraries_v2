@@ -20,11 +20,13 @@ New Data Structures I want to add:
 Todo:
 
 - Train Neural Network.
+- Should NeuralNetwork be a template Class?
 - For now, the library does not Init() the Graph before applying the A* Search.
 
 ## New Update
 
-I am developing a __Neural Network__! <br />
+I am developing a __Full-Connected Multi-Layer Neural Network__! <br />
+Everything is extensively described in __NeuralNetwork/neural_network.hpp__. <br />
 
 ## Tutorial: Code your personal test
 

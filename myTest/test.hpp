@@ -7,6 +7,7 @@
 #include "../Graph/graph.hpp"
 
 #include "../NeuralNetwork/neural_network.hpp"
+#include "../NeuralNetwork/activation_functions.hpp"
 
 namespace lasdtest {
     void run_test();

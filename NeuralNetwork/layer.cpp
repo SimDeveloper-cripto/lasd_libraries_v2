@@ -3,6 +3,11 @@
 
 namespace NNDL {
     Layer::Layer(const std::vector<Neuron>& custom_neurons) : neurons(custom_neurons) {}
+
+    Layer::Layer(int num_neurons, int num_inputs, std::function<double(double)> activation_fn) {
+        for (int i = 0; i < num_neurons; i++) neurons.emplace_back(Neuron(num_inputs, activation_fn));
+    }
+
     Layer::Layer(const Layer& layer) : neurons(layer.neurons) {}
     Layer::Layer(Layer&& layer) noexcept : neurons(std::move(layer.neurons)) {}
 
