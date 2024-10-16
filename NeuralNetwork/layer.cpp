@@ -3,11 +3,6 @@
 
 namespace NNDL {
     Layer::Layer(const std::vector<Neuron>& custom_neurons) : neurons(custom_neurons) {}
-
-    Layer::Layer(int num_neurons, int num_inputs, std::function<double(double)> activation_fn) {
-        for (int i = 0; i < num_neurons; i++) neurons.emplace_back(Neuron(num_inputs, activation_fn));
-    }
-
     Layer::Layer(const Layer& layer) : neurons(layer.neurons) {}
     Layer::Layer(Layer&& layer) noexcept : neurons(std::move(layer.neurons)) {}
 
@@ -40,9 +35,13 @@ namespace NNDL {
             double ret_val = neuron.Compute(inputs);
             output.push_back(ret_val);
 
-            std::cout << "Neuron " << index++ << " Weights: ";
+            std::cout << "Neuron " << index++ << ", Inputs { "; 
+            for (int i = 0; i < inputs.size(); i++) {
+                std::cout << inputs[i] << " ";
+            }
+            std::cout << "}, Weights: ";
             for (const auto& weight : neuron.getWeights()) { std::cout << weight << " "; }
-            std::cout << " , Bias: " << neuron.getBias() << " , Output: " << ret_val << std::endl;
+            std::cout << ", Bias: " << neuron.getBias() << ", Output Value: " << ret_val << std::endl;
         }
         return output;
     }
