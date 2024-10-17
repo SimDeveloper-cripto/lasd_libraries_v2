@@ -353,6 +353,10 @@ namespace lasdtest {
 
         /* ***** CREATION OF A SHALLOW FULL-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
 
+        // TODO: IMPLEMENT JUST ONE OUTPUT NEURON! (A LAYER WITH ONLY ONE NEURON)
+        // TODO: LOOK AT YOUR NOTES AND SEE IF THE MATRIX REPRESENTATION IS CORRECT
+        // (ROW VECTOR) || (COLUMN VECTOR)
+
         // The First Layer uses Sigmoid
         std::vector<Neuron> input_neurons = { // 3 neurons with 2 inputs each!
             Neuron(2, NNDL_COMPUTE::Sigmoid),

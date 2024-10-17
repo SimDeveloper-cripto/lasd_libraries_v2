@@ -2,7 +2,11 @@
 
 #include <numeric>
 #include <utility>
+<<<<<<< HEAD
 #include <assert.h>
+=======
+#include <cassert>
+>>>>>>> a65a02e4501a60edaf37fb47cb36d76e62851f2b
 
 namespace NNDL {
     Neuron::Neuron(int num_inputs, std::function<double(double)> fn)
@@ -56,7 +60,8 @@ namespace NNDL {
     std::function<double(double)> Neuron::getActivationFunction() const { return activation_fn; }
 
     double Neuron::Compute(const std::vector<double>& inputs) {
-        assert(inputs.size() == weights.size());
+        // Weights's vector dimension must be equal to the input dimension!
+        assert(weights.size() == inputs.size());
 
         double sum = bias;
         for (size_t i = 0; i < weights.size(); ++i) { // (# of weights) == (# of inputs)

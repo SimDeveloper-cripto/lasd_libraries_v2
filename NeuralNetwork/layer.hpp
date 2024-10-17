@@ -6,7 +6,7 @@
 namespace NNDL {
    class Layer {
     private:
-        std::vector<Neuron> neurons;
+        std::vector<Neuron> neurons; // R^m [m-dimensional Vectorial Space]
 
     public:
         Layer(const std::vector<Neuron>& custom_neurons);
