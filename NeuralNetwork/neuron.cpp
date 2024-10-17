@@ -2,6 +2,7 @@
 
 #include <numeric>
 #include <utility>
+#include <assert.h>
 
 namespace NNDL {
     Neuron::Neuron(int num_inputs, std::function<double(double)> fn)
@@ -55,6 +56,8 @@ namespace NNDL {
     std::function<double(double)> Neuron::getActivationFunction() const { return activation_fn; }
 
     double Neuron::Compute(const std::vector<double>& inputs) {
+        assert(inputs.size() == weights.size());
+
         double sum = bias;
         for (size_t i = 0; i < weights.size(); ++i) { // (# of weights) == (# of inputs)
             sum += weights[i] * inputs[i];
