@@ -2,11 +2,7 @@
 
 #include <numeric>
 #include <utility>
-<<<<<<< HEAD
 #include <assert.h>
-=======
-#include <cassert>
->>>>>>> a65a02e4501a60edaf37fb47cb36d76e62851f2b
 
 namespace NNDL {
     Neuron::Neuron(int num_inputs, std::function<double(double)> fn)
