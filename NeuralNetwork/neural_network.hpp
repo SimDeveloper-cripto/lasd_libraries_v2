@@ -29,6 +29,8 @@ namespace NNDL {
         bool operator==(const NeuralNetwork& other) const;
 
         std::vector<double> Forward(const std::vector<double>& input_data);
+
+        // TODO: LEARN HOW TO TRAIN A NETWORK!
         // void Train(const std::vector<std::vector<double>>& training_data, const std::vector<std::vector<double>>& expected_output, double learning_rate, int epochs);
     };
 }
