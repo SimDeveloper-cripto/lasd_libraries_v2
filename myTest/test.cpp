@@ -380,7 +380,7 @@ namespace lasdtest {
         output_neurons[1].setBias(0.5);
         output_neurons[1].setWeights({0.6, 0.7, 0.8});
 
-        // Create the Neural Network!
+        // Create the Neural Network! :)
         NeuralNetwork nn({input_neurons, output_neurons});
 
         std::cout << "Feeding input to the network: {0.5, 0.9}" << std::endl;
