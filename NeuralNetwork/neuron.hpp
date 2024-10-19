@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include <functional>
 
 namespace NNDL {
@@ -17,7 +18,7 @@ namespace NNDL {
             void setActivationFunction(std::function<double(double)> activation_fn);
             std::function<double(double)> getActivationFunction() const;
 
-            double Compute(const std::vector<double>& inputs);
+            std::vector<double> Compute(const std::vector<std::vector<double>>& inputs);
         private:
             double bias;                                 // Bias term
             std::vector<double> weights;                 // Weights for the connections

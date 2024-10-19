@@ -27,4 +27,7 @@ namespace NNDL_COMPUTE {
     double SELUDerivative(double x, double lambda, double alpha) { return (x >= 0) ? lambda : SELU(x, lambda, alpha) + lambda * alpha; }
 
     double SoftPlusDerivative(double x) { return 1.0 / (1.0 + std::exp(-x)); }
+
+    // Linear Activation Function
+    double LINEAR(double x) { return x; }
 }

@@ -7,22 +7,18 @@ namespace NNDL {
     void Layer::setNeurons(const std::vector<Neuron>& ns) { neurons = ns; }
     const std::vector<Neuron>& Layer::getNeurons() { return neurons; }
 
-    std::vector<double> Layer::computeLayerOutput(const std::vector<double>& inputs) {
+    std::vector<std::vector<double>> Layer::computeLayerOutput(const std::vector<std::vector<double>>& inputs) {
+        std::vector<std::vector<double>> layer_outputs;
+
+        // Cascade Computation
         int index = 1;
-
-        std::vector<double> output;
         for (Neuron& neuron : neurons) {
-            double ret_val = neuron.Compute(inputs);
-            output.push_back(ret_val);
+            layer_outputs.push_back(neuron.Compute(inputs)); // Compute for all inputs!
 
-            std::cout << "Neuron " << index++ << ", Inputs { "; 
-            for (int i = 0; i < inputs.size(); i++) {
-                std::cout << inputs[i] << " ";
-            }
-            std::cout << "}, Weights: ";
-            for (const auto& weight : neuron.getWeights()) { std::cout << weight << " "; }
-            std::cout << ", Bias: " << neuron.getBias() << ", Output Value: " << ret_val << std::endl;
+            std::cout << "Neuron " << index++ << ", Outputs { "; 
+            for (const auto& output : layer_outputs.back()) { std::cout << output << " "; }
+            std::cout << "}" << std::endl << std::endl;
         }
-        return output;
+        return layer_outputs;
     }
 }

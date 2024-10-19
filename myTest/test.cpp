@@ -353,35 +353,44 @@ namespace lasdtest {
 
         /* ***** CREATION OF A SHALLOW FULL-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
 
-        // The First Layer uses Sigmoid
-        std::vector<Neuron> input_neurons = { // 3 neurons with 2 inputs each!
-            Neuron(2, NNDL_COMPUTE::Sigmoid),
-            Neuron(2, NNDL_COMPUTE::Sigmoid),
-            Neuron(2, NNDL_COMPUTE::Sigmoid)
+        // Creation of Layer #1
+        Neuron neuron1(3, NNDL_COMPUTE::Sigmoid); // Sigmoid is a non-linear function
+        Neuron neuron2(3, NNDL_COMPUTE::Sigmoid);
+
+        neuron1.setWeights({0.5, -0.6, 0.1});
+        neuron1.setBias(0.1);
+
+        neuron2.setWeights({0.3, 0.8, -0.5});
+        neuron2.setBias(0.2);
+
+        // Creation of Layer #2
+        Neuron neuron3(2, NNDL_COMPUTE::LINEAR);
+
+        neuron3.setWeights({0.7, -0.2});
+        neuron3.setBias(0.3);
+
+        std::vector<std::vector<Neuron>> layers = {
+            {neuron1, neuron2},
+            {neuron3}
         };
-        input_neurons[0].setBias(0.1);
-        input_neurons[0].setWeights({0.2, 0.3});
-        input_neurons[1].setBias(0.4);
-        input_neurons[1].setWeights({0.5, 0.6});
-        input_neurons[2].setBias(0.7);
-        input_neurons[2].setWeights({0.8, 0.9});
 
-        // The Second (Output) Layer uses SoftPlus
-        std::vector<Neuron> output_neurons = { // 2 neurons with 3 inputs each!
-            Neuron(3, NNDL_COMPUTE::SoftPlus),
-            Neuron(3, NNDL_COMPUTE::SoftPlus)
+        NeuralNetwork nn(layers);
+
+        // Inputs for Neural Network (Layer #1)
+        std::vector<std::vector<double>> inputs = {
+            {1.0, 2.0, 3.0}, // First  input vector x1
+            {4.0, 5.0, 6.0}, // Second input vector x2
+            {7.0, 8.0, 9.0}  // Third  input vector x3
         };
-        output_neurons[0].setBias(0.1);
-        output_neurons[0].setWeights({0.2, 0.3, 0.4});
-        output_neurons[1].setBias(0.5);
-        output_neurons[1].setWeights({0.6, 0.7, 0.8});
 
-        // Create the Neural Network! :)
-        NeuralNetwork nn({input_neurons, output_neurons});
-
-        std::cout << "Feeding input to the network: {0.5, 0.9}" << std::endl;
-        std::vector<double> input_values = {0.5, 0.9};
-        nn.Forward(input_values); // Compute final Output
+        std::vector<std::vector<double>> output = nn.Forward(inputs);
+        std::cout << std::endl << "Output of the Neural Network: " << std::endl;
+        for (size_t i = 0; i < output.size(); i++) {
+            for (const auto& o : output[i]) {
+                std::cout << o << " ";
+            }
+            std::cout << std::endl;
+        }
     }
 
     void run_test() {

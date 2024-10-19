@@ -14,6 +14,6 @@ namespace NNDL {
         void setNeurons(const std::vector<Neuron>& neurons);
         const std::vector<Neuron>& getNeurons();
 
-        std::vector<double> computeLayerOutput(const std::vector<double>& inputs);
+        std::vector<std::vector<double>> computeLayerOutput(const std::vector<std::vector<double>>& inputs);
     };
 }

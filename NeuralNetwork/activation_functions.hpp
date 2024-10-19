@@ -14,4 +14,7 @@ namespace NNDL_COMPUTE {
     double ELUDerivative(double x, double alpha = 1.0);
     double SELUDerivative(double x, double lambda = 1.0507, double alpha = 1.67326);
     double SoftPlusDerivative(double x);
+
+    // Linear Activation Function
+    double LINEAR(double x);
 }

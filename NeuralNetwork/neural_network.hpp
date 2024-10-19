@@ -6,8 +6,10 @@
 #include <iostream>
 
 /* [DESCRIPTION]
-    --> This is the architecture for a MULTI-LAYER NEURAL NETWORK.
-    --> To be specific, a FULL-CONNECTED MULTI-LAYER NEURAL NETWORK.
+    --> This is the architecture for a MULTI-LAYER NEURAL NETWORK
+    --> To be specific, a FULL-CONNECTED MULTI-LAYER NEURAL NETWORK
+
+    Neuron --> Layer --> NeuralNetwork
 */
 
 namespace NNDL {
@@ -17,7 +19,6 @@ namespace NNDL {
 
     public:
         NeuralNetwork(const std::vector<std::vector<Neuron>>& neurons_per_layer);
-
-        std::vector<double> Forward(const std::vector<double>& input_data);
+        std::vector<std::vector<double>> Forward(const std::vector<std::vector<double>>& input_data);
     };
 }
