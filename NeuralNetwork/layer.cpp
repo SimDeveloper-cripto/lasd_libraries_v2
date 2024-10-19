@@ -3,29 +3,9 @@
 
 namespace NNDL {
     Layer::Layer(const std::vector<Neuron>& custom_neurons) : neurons(custom_neurons) {}
-    Layer::Layer(const Layer& layer) : neurons(layer.neurons) {}
-    Layer::Layer(Layer&& layer) noexcept : neurons(std::move(layer.neurons)) {}
-
-    Layer& Layer::operator=(const Layer& layer) {
-        if (this != &layer) {
-            neurons = layer.neurons;
-        }
-        return *this;
-    }
-
-    Layer& Layer::operator=(Layer&& layer) noexcept {
-        if (this != &layer) {
-            neurons = std::move(layer.neurons);
-        }
-        return *this;
-    }
-
-    bool Layer::operator==(const Layer& layer) const {
-        return neurons == layer.neurons;
-    }
 
     void Layer::setNeurons(const std::vector<Neuron>& ns) { neurons = ns; }
-    std::vector<Neuron>& Layer::getNeurons() { return neurons; }
+    const std::vector<Neuron>& Layer::getNeurons() { return neurons; }
 
     std::vector<double> Layer::computeLayerOutput(const std::vector<double>& inputs) {
         int index = 1;

@@ -8,27 +8,6 @@ namespace NNDL {
         }
     }
 
-    NeuralNetwork::NeuralNetwork(const NeuralNetwork& other) : layers(other.layers) {}
-    NeuralNetwork::NeuralNetwork(NeuralNetwork&& other) noexcept : layers(std::move(other.layers)) {}
-
-    NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& nn) {
-        if (this != &nn) {
-            layers = nn.layers;
-        }
-        return *this;
-    }
-
-    NeuralNetwork& NeuralNetwork::operator=(NeuralNetwork&& nn) noexcept {
-        if (this != &nn) {
-            layers = std::move(nn.layers);
-        }
-        return *this;
-    }
-
-    bool NeuralNetwork::operator==(const NeuralNetwork& nn) const {
-        return layers == nn.layers;
-    }
-
     std::vector<double> NeuralNetwork::Forward(const std::vector<double>& input_data) {
         int index = 1;
 
