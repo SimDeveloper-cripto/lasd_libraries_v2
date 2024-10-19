@@ -377,10 +377,11 @@ namespace lasdtest {
         NeuralNetwork nn(layers);
 
         // Inputs for Neural Network (Layer #1)
+        // First input vector, X1, is the first column and so on ...
         std::vector<std::vector<double>> inputs = {
-            {1.0, 2.0, 3.0}, // First  input vector x1
-            {4.0, 5.0, 6.0}, // Second input vector x2
-            {7.0, 8.0, 9.0}  // Third  input vector x3
+            {1.0, 4.0, 7.0},
+            {2.0, 5.0, 8.0},
+            {3.0, 6.0, 9.0}
         };
 
         std::vector<std::vector<double>> output = nn.Forward(inputs);
