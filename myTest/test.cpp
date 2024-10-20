@@ -369,40 +369,34 @@ namespace lasdtest {
         neuron3.setWeights({0.7, -0.2});
         neuron3.setBias(0.3);
 
+        // Creation of the Neural Network
         std::vector<std::vector<Neuron>> layers = {
             {neuron1, neuron2},
             {neuron3}
         };
-
         NeuralNetwork nn(layers);
 
         // Inputs for Neural Network (Layer #1)
-        // First input vector, X1, is the first column and so on ...
+        // First input vector, X1 = (1.0, 2.0, 3.0), is the first column and so on ...
         std::vector<std::vector<double>> inputs = {
             {1.0, 4.0, 7.0},
             {2.0, 5.0, 8.0},
             {3.0, 6.0, 9.0}
         };
 
+        // Compute
         std::vector<std::vector<double>> output = nn.Forward(inputs);
-        std::cout << std::endl << "Output of the Neural Network: " << std::endl;
-        for (size_t i = 0; i < output.size(); i++) {
-            for (const auto& o : output[i]) {
-                std::cout << o << " ";
-            }
-            std::cout << std::endl;
-        }
     }
 
     void run_test() {
-        run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
-        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+        // run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
+        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
         
-        run_personal_graph_test();
-        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+        // run_personal_graph_test();
+        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
 
         run_personal_neural_network_test();
-        std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
     }
 }
 

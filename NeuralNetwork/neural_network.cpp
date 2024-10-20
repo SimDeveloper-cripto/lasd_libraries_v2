@@ -13,19 +13,29 @@ namespace NNDL {
 
         std::vector<std::vector<double>> layer_output = input_data;
         for (Layer& layer : layers) {
-            std::cout << "\nLayer " << index++ << " Inputs: " << std::endl;
+            std::cout << "\nLayer #" << index << " Input Matrix: " << std::endl;
             for (const auto& input_vector : layer_output) {
+                std::cout << "[ ";
                 for (const auto& input : input_vector) {
                     std::cout << input << " ";
                 }
-                std::cout << std::endl;
+                std::cout << "]" << std::endl;
             }
 
-            std::cout << "\nOutputs:" << std::endl;
+            std::cout << "\n--> Process of Computation:" << std::endl;
             layer_output = layer.computeLayerOutput(layer_output);
-        }
 
-        // TODO: PROBABILMENTE QUI BISOGNA OTTENERE UN UNICO VALORE BASATO SULL'ULTIMO VETTORE DI OUTPUT
+            std::cout << "Layer #" << index << " [WX + B] Output Matrix: " << std::endl;
+            for (size_t i = 0; i < layer_output.size(); i++) {
+                std::cout << "[ ";
+                for (const auto& output : layer_output[i]) {
+                    std::cout << output << " ";
+                }
+                std::cout << "]" << std::endl;
+            }
+
+            index++;
+        }
         return layer_output;
     }
 }
