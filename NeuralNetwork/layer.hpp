@@ -1,6 +1,8 @@
 #pragma once
 
 #include "neuron.hpp"
+
+#include <mutex>
 #include <iostream>
 
 namespace NNDL {

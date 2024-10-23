@@ -22,6 +22,7 @@ namespace NNDL {
                 std::cout << "]" << std::endl;
             }
 
+            // [COMPUTE LAYER OUTPUT]
             std::cout << "\n--> Process of Computation:" << std::endl;
             layer_output = layer.computeLayerOutput(layer_output);
 
