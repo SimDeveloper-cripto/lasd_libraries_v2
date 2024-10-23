@@ -99,7 +99,7 @@ namespace lasdtest {
     }
 
     void run_personal_graph_test() {
-        std::cout << std::endl << "[ OK ] GRAPH<int> TEST STARTED." << std::endl;
+        std::cout << std::endl << "[ OK ] GRAPH<int> {WEIGHTED AND ORIENTED, IMPLEMENTED BY ADJACENCY LIST} TEST STARTED" << std::endl;
         Graph<int>* graph = new lasd::Graph<int>();
 
         graph->addNode(0);
@@ -389,14 +389,24 @@ namespace lasdtest {
     }
 
     void run_test() {
-        // run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
-        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
-        
-        // run_personal_graph_test();
-        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+        short int choice;
+        std::cout << "\n[1 -DEV] RUN LINKED_LIST<int> TEST" << std::endl << "[2 -DEV] RUN GRAPH<int> TEST" << std::endl
+            << "[3 -DEV] RUN NEURAL_NETWORK TEST" << std::endl;
+        std::cout << ">>> "; std::cin >> choice;
 
-        run_personal_neural_network_test();
-        // std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+        switch(choice) {
+            case 1:
+                run_personal_linked_list_test(); // Example with Integers, but It works also with other fund. data types
+                break;
+            case 2:
+                run_personal_graph_test();
+                break;
+            case 3:
+                run_personal_neural_network_test();
+                break;
+            default:
+                std::cout << "Sorry, there is no action for your choice!" << std::endl;
+        }
     }
 }
 
