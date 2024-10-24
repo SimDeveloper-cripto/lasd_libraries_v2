@@ -43,12 +43,14 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 ### Compile and Execute the project in Windows with G++ or CLANG++ (PowerShell)
 
 ```bat
+mkdir bin
 .\compile_clang++.bat
 cd bin
 .\lasd
 ```
 
 ```bat
+mkdir bin
 .\compile_g++.bat
 cd bin
 .\lasd
@@ -57,6 +59,7 @@ cd bin
 ### Compile and Execute the project in Linux
 
 ```bash
+mkdir bin
 chmod +x build.sh
 ./build.sh
 cd bin
