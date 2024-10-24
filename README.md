@@ -23,6 +23,11 @@ Todo:
 - Should NeuralNetwork be a template Class?
 - For now, the library does not Init() the Graph before applying the A* Search.
 
+## Requirements
+
+- gcc/g++ __v13.2.0__ or higher
+- clang/clang++ __v17.0.4__ or higher
+
 ## New Update
 
 I am developing a __Full-Connected Multi-Layer Neural Network__! <br />
@@ -38,27 +43,24 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 ### Compile and Execute the project in Windows with G++ or CLANG++ (PowerShell)
 
 ```bat
-mkdir bin
 .\compile_clang++.bat
 cd bin
-.\main
+.\lasd
 ```
 
 ```bat
-mkdir bin
 .\compile_g++.bat
 cd bin
-.\main
+.\lasd
 ```
 
 ### Compile and Execute the project in Linux
 
 ```bash
-mkdir bin
 chmod +x build.sh
 ./build.sh
 cd bin
-.\main
+.\lasd
 ```
 
 ## LICENSE
