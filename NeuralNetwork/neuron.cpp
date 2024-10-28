@@ -32,6 +32,15 @@ namespace NNDL {
         }
 
         // Compute [WX + B]
+        // QUESTA IMPLEMENTAZIONE E' ESATTAMENTE (OUTPUT) IDENTICA A CIO' CHE E' STATO TRATTATO IN AULA
+
+        /*  [NOTES]
+            TODO: CHECK #1
+            - [CONSTRAINT] WX can be done if and only if the number of columns of X corresponds to the number of rows of W
+
+            TODO: CHECK #2
+            - [DOUBT] Do I need to Transpose W matrix before proceeding with the calculations? Have a look at the code written with PyTorch: main.py (line 34)
+        */
         for (size_t j = 0; j < inputs[0].size(); ++j) {
             double sum = bias;
             {
