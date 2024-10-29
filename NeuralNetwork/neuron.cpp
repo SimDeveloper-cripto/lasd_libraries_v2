@@ -19,8 +19,9 @@ namespace NNDL {
     std::function<double(double)> Neuron::getActivationFunction() const { return activation_fn; }
 
     std::vector<double> Neuron::Compute(const std::vector<std::vector<double>>& inputs) {
-        // Weights's vector dimension must be equal to the input dimension!
-        assert(weights.size() == inputs.size());
+        // [NOTES]
+        // - [APPLY CONSTRAINT] WX can evaluated if, and only if, the number of columns of W (vector weights) corresponds to the number of rows of X (inputs matrix)
+        assert(weights.size() == inputs.size() && "[ERROR] Weights vector size must match the number of rows in the inputs matrix.");
         std::vector<double> outputs(inputs[0].size(), 0.0); // Init of Output vector
 
         {
@@ -32,15 +33,9 @@ namespace NNDL {
         }
 
         // Compute [WX + B]
-        // QUESTA IMPLEMENTAZIONE E' ESATTAMENTE (OUTPUT) IDENTICA A CIO' CHE E' STATO TRATTATO IN AULA
+        // ITALIAN: QUESTA IMPLEMENTAZIONE E' ESATTAMENTE (OUTPUT) IDENTICA A CIO' CHE E' STATO TRATTATO IN AULA
 
-        /*  [NOTES]
-            TODO: CHECK #1
-            - [APPLY CONSTRAINT] WX can evaluated if, and only if, the number of columns of W corresponds to the number of rows of X
-
-            TODO: CHECK #2
-            - [DOUBT] Do I need to Transpose W matrix before proceeding with the calculations? Have a look at the code written with PyTorch: main.py (line 34)
-        */
+        // TODO: CHECK #1: Do I need to Transpose W matrix?
         for (size_t j = 0; j < inputs[0].size(); ++j) {
             double sum = bias;
             {
