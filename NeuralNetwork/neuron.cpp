@@ -36,7 +36,7 @@ namespace NNDL {
 
         /*  [NOTES]
             TODO: CHECK #1
-            - [CONSTRAINT] WX can be done if and only if the number of columns of X corresponds to the number of rows of W
+            - [APPLY CONSTRAINT] WX can evaluated if, and only if, the number of columns of W corresponds to the number of rows of X
 
             TODO: CHECK #2
             - [DOUBT] Do I need to Transpose W matrix before proceeding with the calculations? Have a look at the code written with PyTorch: main.py (line 34)
