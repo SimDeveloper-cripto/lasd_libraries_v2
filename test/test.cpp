@@ -1,10 +1,9 @@
 #include "test.hpp"
+
 #include <cmath>
 #include <assert.h>
 
 using namespace lasd; // List and Graph namespace
-using namespace NNDL; // Neural Network namespace
-// using namespace NNDL_COMPUTE; // This is used for Activation Functions (Neural Network)
 
 int generate_random_index(unsigned long size) {
     std::default_random_engine generator(std::random_device{}());
@@ -348,50 +347,9 @@ namespace lasdtest {
         assert(S.size() == 1);
     }
 
-    void run_personal_neural_network_test() {
-        std::cout << std::endl << "[ OK ] SHALLOW NETWORK {FULL-CONNECTED MULTI-LAYER NEURAL NETWORK} TEST STARTED" << std::endl;
-
-        /* ***** CREATION OF A SHALLOW FULL-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
-
-        // Creation of Layer #1
-        Neuron neuron1(3, NNDL_COMPUTE::Sigmoid); // Sigmoid is a non-linear function
-        Neuron neuron2(3, NNDL_COMPUTE::Sigmoid);
-
-        neuron1.setWeights({0.5, -0.6, 0.1});
-        neuron1.setBias(0.1);
-
-        neuron2.setWeights({0.3, 0.8, -0.5});
-        neuron2.setBias(0.2);
-
-        // Creation of Layer #2
-        Neuron neuron3(2, NNDL_COMPUTE::LINEAR);
-
-        neuron3.setWeights({0.7, -0.2});
-        neuron3.setBias(0.3);
-
-        // Creation of the Neural Network
-        std::vector<std::vector<Neuron>> layers = {
-            {neuron1, neuron2},
-            {neuron3}
-        };
-        NeuralNetwork nn(layers);
-
-        // Inputs for Neural Network (Layer #1)
-        // First input vector, X1 = (1.0, 2.0, 3.0), is the first column and so on ...
-        std::vector<std::vector<double>> inputs = {
-            {1.0, 4.0, 7.0},
-            {2.0, 5.0, 8.0},
-            {3.0, 6.0, 9.0}
-        };
-
-        // Compute
-        std::vector<std::vector<double>> output = nn.Forward(inputs);
-    }
-
     void run_test() {
         short int choice;
-        std::cout << "\n[1 -DEV] RUN LINKED_LIST<int> TEST" << std::endl << "[2 -DEV] RUN GRAPH<int> TEST" << std::endl
-            << "[3 -DEV] RUN NEURAL_NETWORK TEST" << std::endl;
+        std::cout << "\n[1 -DEV] RUN LINKED_LIST<int> TEST" << std::endl << "[2 -DEV] RUN GRAPH<int> TEST" << std::endl;
         std::cout << ">>> "; std::cin >> choice;
 
         switch(choice) {
@@ -400,9 +358,6 @@ namespace lasdtest {
                 break;
             case 2:
                 run_personal_graph_test();
-                break;
-            case 3:
-                run_personal_neural_network_test();
                 break;
             default:
                 std::cout << "Sorry, there is no action for your choice!" << std::endl;

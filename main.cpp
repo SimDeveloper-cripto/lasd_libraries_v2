@@ -1,4 +1,4 @@
-#include "myTest/test.hpp"
+#include "test/test.hpp"
 
 int main(int argc, char** argv) {
     short int choice;

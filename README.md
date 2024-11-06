@@ -19,8 +19,6 @@ New Data Structures I want to add:
 
 Todo:
 
-- Train Neural Network.
-- Should NeuralNetwork be a template Class?
 - For now, the library does not Init() the Graph before applying the A* Search.
 
 ## Requirements
@@ -28,16 +26,24 @@ Todo:
 - gcc/g++ __v13.2.0__ or higher
 - clang/clang++ __v17.0.4__ or higher
 
-## New Update
+## Upcoming Development (new update)
 
 I am developing a __Full-Connected Multi-Layer Neural Network__! <br />
-Everything is extensively described in __NeuralNetwork/neural_network.hpp__. <br />
+That's a work in progress so, at the moment, It is not usable and I recommend not to do It. <br />
+I'll start working on it once finished the examination of NeuralNetworks (__DeepLearning Module__).  <br />
+You can find the description in __test/NeuralNetwork/neural_network.hpp__. <br />
+
+```bat
+cd test/NeuralNetwork/nn_test/
+.\compile_nn_clang++.bat
+.\nn_lasd
+```
 
 ## Tutorial: Code your personal test
 
 By default, I provided for you a section dedicated to your personal test. <br />
-In __mytest/test.hpp__ there is everything you'll need, including all the libraries and a personal namespace called "__usertest__". <br />
-Your code has to be written inside the namespace at __mytest/test.cpp__ <br />
+In __test/test.hpp__ there is everything you'll need, including all the libraries and a personal namespace called "__usertest__". <br />
+Your code has to be written inside the namespace at __test/test.cpp__ <br />
 I don't forbid you from doing otherwise, but if you want to quickly test things you can do it this way. Have fun! <br />
 
 ### Compile and Execute the project in Windows with G++ or CLANG++ (PowerShell)
