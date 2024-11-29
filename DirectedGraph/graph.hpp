@@ -25,44 +25,6 @@ namespace lasd {
     private:
         unsigned long distance;
         std::vector<Node*> predecessors;
-        // Node* predecessor;
-
-        /* [COMMENT SECTION]
-            - Topic: print for each node its predecessors (every node has only one Node*)
-            How would you do that? Using BFS.
-
-            Graph<int>* graph = new lasd::Graph<int>();
-            graph->addNode(0);
-            graph->addNode(1);
-            graph->addNode(2);
-            graph->addNode(3);
-            graph->addNode(4);
-
-            graph->addEdge(0, 1, 1.0);
-            graph->addEdge(0, 2, 1.0);
-            graph->addEdge(1, 3, 1.0);
-            graph->addEdge(2, 3, 1.0);
-            graph->addEdge(3, 4, 1.0);
-            graph->addEdge(4, 0, 1.0);
-
-            // BFS FROM 0 to update Predecessors
-            graph->Bfs(0, [](const int&, void*){}, nullptr);
-            graph->printForEachNodeItsPredecessor();
-
-            OUTPUT:
-                Node 0 predecessor: None
-                Node 1 predecessor: 0
-                Node 2 predecessor: 0
-                Node 3 predecessor: 1
-                Node 4 predecessor: 3
-
-                That is correct because:
-                    - From node 2 we try to visit node 3, but since it has already been visited we don't update its predecessor.
-                    - Same thing from node 4 to node 0.
-            delete graph;
-
-            That doesn't make any sense. Each node can have multiple incoming edges!
-        */
 
     public:
         Data key;
@@ -84,14 +46,6 @@ namespace lasd {
             return this->distance;
         }
 
-        // inline void setPredecessor(Node* predecessor) {
-        //     this->predecessor = predecessor;
-        // }
-        
-        // inline Node* getPredecessor() const {
-        //     return this->predecessor;
-        // }
-
         inline void addPredecessor(Node* predecessor) {
             this->predecessors.push_back(predecessor);
         }
@@ -104,7 +58,7 @@ namespace lasd {
             return predecessors;
         }
 
-        // NOTE: A function to change Node's Color is not provided because Node<Data> is public.
+        // NOTE [MUST READ]: A function to change Node's Color is not provided because Node<Data> is public.
     };
 
     template <typename Data>
@@ -117,7 +71,7 @@ namespace lasd {
     };
 
     template <typename Data>
-    class Graph {
+    class DirectedGraph {
     private:
         std::map<Data, Node<Data>> Nodes;
         std::map<Data, std::vector<Edge<Data>>> Adj;
@@ -153,20 +107,22 @@ namespace lasd {
             Nodes[u].color = Color::Black;
         }
 
-        void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalOrder) {
+        // DFS HELPER FUNCTION: USED TO GET THE TOPOLOGICAL SORT OF THE GRAPH
+        void DfsVisitTopological(const Data& u, std::stack<Data>& topologicalSort) {
             Nodes[u].color = Color::Gray;
 
             for (const Edge<Data>& edge : Adj[u]) {
                 const Data& v = edge.to;
                 if (Nodes[v].color == Color::White) {
-                    DfsVisitTopological(v, topologicalOrder);
+                    DfsVisitTopological(v, topologicalSort);
                 }
             }
 
             Nodes[u].color = Color::Black;
-            topologicalOrder.push(u);
+            topologicalSort.push(u);
         }
 
+        // DFS HELPER FUNCTION: USED KNOW IF THE GRAPH CONTAINS A CYCLE
         bool DfsVisitAcyclic(const Data& u) {
             Nodes[u].color = Color::Gray;
 
@@ -184,17 +140,17 @@ namespace lasd {
         }
 
     public:
-        Graph() = default;
-        Graph(const Graph&);           // Copy Constructor
-        Graph(Graph&& other) noexcept; // Move Constructor
+        DirectedGraph() = default;
+        DirectedGraph(const DirectedGraph&);           // Copy Constructor
+        DirectedGraph(DirectedGraph&& other) noexcept; // Move Constructor
 
-        virtual ~Graph() = default;
+        virtual ~DirectedGraph() = default;
 
-        Graph& operator=(const Graph& other);     // Copy Assignment
-        Graph& operator=(Graph&& other) noexcept; // Move Assignment
+        DirectedGraph& operator=(const DirectedGraph& other);     // Copy Assignment
+        DirectedGraph& operator=(DirectedGraph&& other) noexcept; // Move Assignment
 
-        bool operator==(const Graph&) const noexcept = delete;
-        bool operator!=(const Graph&) const noexcept = delete;
+        bool operator==(const DirectedGraph&) const noexcept = delete;
+        bool operator!=(const DirectedGraph&) const noexcept = delete;
 
         void Init();
 
@@ -215,7 +171,7 @@ namespace lasd {
 	    std::unordered_map<Data, Color> GetCurrentColors() const;
 
         // SIMPLE FUNCTION TO PRINT GRAPH'S STRUCTURE
-        void showGraph() const noexcept;
+        void show() const noexcept;
 
         // Bfs, Dfs section ( Map() in PreOrder implementation )
         void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept;
@@ -232,8 +188,8 @@ namespace lasd {
         // SET RELATED DFS (MAP & FOLD)
         void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
-        
-        // SET RELATED BFS (MAP & FOLD)
+
+        // TODO: SET RELATED BFS (MAP & FOLD)
         // ...
 
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
@@ -242,9 +198,9 @@ namespace lasd {
         // GET MINIMUM PATH BETWEEN TWO NODES
         std::vector<Data> GetMinimumPath(const Data& source, const Data& destination) noexcept;
 
-        // GET TOPOLOGICAL ORDER/SORT OF THE GRAPH: in italian we call it topological-order
-        std::stack<Data> getTopologicalOrder(bool print_message);
-        std::vector<Data> getTopologicalOrderUsingIncomingGrade();
+        // GET TOPOLOGICAL SORT OF THE GRAPH
+        std::stack<Data> getTopologicalSort(bool print_message);
+        std::vector<Data> getTopologicalSortUsingIncomingGrade();
 
         // Dijkstra's algorithm
         std::vector<Data> Dijkstra(const Data& source, const Data& destination);

@@ -28,7 +28,7 @@ Todo:
 
 ## Upcoming Development (new update)
 
-I am developing a __Full-Connected Multi-Layer Neural Network__! <br />
+I am developing a __Fully-Connected Multi-Layer Neural Network__! <br />
 That's a work in progress so, at the moment, It is not usable and I recommend not to do It. <br />
 I'll start working on it once finished the examination of NeuralNetworks (__DeepLearning Module__).  <br />
 You can find the description in __test/NeuralNetwork/neural_network.hpp__. <br />

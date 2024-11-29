@@ -7,7 +7,7 @@
 
 /* [DESCRIPTION]
     --> This is the architecture for a MULTI-LAYER NEURAL NETWORK
-    --> To be specific, a FULL-CONNECTED MULTI-LAYER NEURAL NETWORK
+    --> To be specific, a FULLY-CONNECTED MULTI-LAYER NEURAL NETWORK
 
     Neuron --> Layer --> NeuralNetwork
 */

@@ -3,19 +3,19 @@
 
 namespace lasd {
     template <typename Data>
-    Graph<Data>::Graph(const Graph& other) {
+    DirectedGraph<Data>::DirectedGraph(const DirectedGraph& other) {
         Adj   = other.Adj;
         Nodes = other.Nodes;
     }
 
     template <typename Data>
-    Graph<Data>::Graph(Graph&& other) noexcept {
+    DirectedGraph<Data>::DirectedGraph(DirectedGraph&& other) noexcept {
         std::swap(Adj, other.Adj);
         std::swap(Nodes, other.Nodes);
     }
 
     template <typename Data>
-    Graph<Data>& Graph<Data>::operator=(const Graph& other) {
+    DirectedGraph<Data>& DirectedGraph<Data>::operator=(const DirectedGraph& other) {
         if (this != &other) {
             Adj   = other.Adj;
             Nodes = other.Nodes;
@@ -24,7 +24,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    Graph<Data>& Graph<Data>::operator=(Graph&& other) noexcept {
+    DirectedGraph<Data>& DirectedGraph<Data>::operator=(DirectedGraph&& other) noexcept {
         if (this != &other) {
             std::swap(Adj, other.Adj);
             std::swap(Nodes, other.Nodes);
@@ -33,7 +33,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Init() {
+    void DirectedGraph<Data>::Init() {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
             my_pair.second.setDistance(std::numeric_limits<unsigned long>::max());
@@ -42,14 +42,14 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Clear() {
+    void DirectedGraph<Data>::Clear() {
         Nodes.clear();
         Adj.clear();
         Init();
     }
 
     template <typename Data>
-    void Graph<Data>::addNode(const Node<Data>& node) noexcept {
+    void DirectedGraph<Data>::addNode(const Node<Data>& node) noexcept {
         Data key = node.key;
         if (Nodes.find(key) == Nodes.end()) {
             Node<Data> new_node(key);
@@ -58,7 +58,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::addNode(const Data& key) noexcept {
+    void DirectedGraph<Data>::addNode(const Data& key) noexcept {
         if (Nodes.find(key) == Nodes.end()) {
             Node<Data> node(key);
             Nodes[key] = node;
@@ -66,7 +66,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight) {
+    void DirectedGraph<Data>::addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight) {
         if (Nodes.find(node_from.key) != Nodes.end() && Nodes.find(node_to.key) != Nodes.end()) {
             Adj[node_from.key].emplace_back(node_to.key, weight);
         } else {
@@ -75,7 +75,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::addEdge(const Data& from, const Data& to, double weight) {
+    void DirectedGraph<Data>::addEdge(const Data& from, const Data& to, double weight) {
         if (Nodes.find(from) != Nodes.end() && Nodes.find(to) != Nodes.end()) {
             Adj[from].emplace_back(to, weight);
         } else {
@@ -84,18 +84,18 @@ namespace lasd {
     }
 
     template <typename Data>
-    Color Graph<Data>::GetColor(const Data& node_key) const {
+    Color DirectedGraph<Data>::GetColor(const Data& node_key) const {
         auto it = Nodes.find(node_key);
         if (it != Nodes.end()) {
             return it->second.color;
         } else {
-            throw std::invalid_argument("ERROR: Key value provided for GetColor() does not exist in Graph!");
+            throw std::invalid_argument("ERROR: Key value provided for GetColor() does not exist in DirectedGraph!");
         }
     }
 
     template <typename Data>
-    std::vector<Node<Data>*> Graph<Data>::GetAdjacentNodes(const Data& node) const {
-        if (Adj.find(node) == Adj.end()) throw std::invalid_argument("Node provided for GetAdjacentNodes() does not exist in the Graph! :(");
+    std::vector<Node<Data>*> DirectedGraph<Data>::GetAdjacentNodes(const Data& node) const {
+        if (Adj.find(node) == Adj.end()) throw std::invalid_argument("Node provided for GetAdjacentNodes() does not exist in the DirectedGraph! :(");
 
         std::vector<Node<Data>*> adjs;
         for (const Edge<Data>& edge : Adj.at(node)) adjs.push_back(const_cast<Node<Data>*>(&Nodes.at(edge.to)));
@@ -104,7 +104,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    std::vector<Node<Data>> Graph<Data>::GetAllNodes() const {
+    std::vector<Node<Data>> DirectedGraph<Data>::GetAllNodes() const {
         std::vector<Node<Data>> nodes;
         if (Nodes.empty()) return {};
         for (auto& pair : Nodes) nodes.emplace_back(pair.second);
@@ -112,7 +112,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    std::unordered_map<Data, Color> Graph<Data>::GetCurrentColors() const {
+    std::unordered_map<Data, Color> DirectedGraph<Data>::GetCurrentColors() const {
         std::unordered_map<Data, Color> c_map;
         for (const auto& node: Nodes) {
             c_map[node.first] = node.second.color;
@@ -121,7 +121,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::showGraph() const noexcept {
+    void DirectedGraph<Data>::show() const noexcept {
         for (const auto& node : Nodes) {
             std::cout << "Node: " << node.first << " -> ";
             auto adjIt = Adj.find(node.first);
@@ -135,7 +135,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept {
+    void DirectedGraph<Data>::Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         for (auto& my_pair : Nodes) {
             if (my_pair.second.color == Color::White) {
@@ -145,7 +145,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::DfsFromSet(const std::set<Data>& nodes, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+    void DirectedGraph<Data>::DfsFromSet(const std::set<Data>& nodes, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         for (auto& key : nodes) {
             auto it = Nodes.find(key);
@@ -156,7 +156,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::DfsFromSet(const std::set<Data>& nodes, FoldFunctor visit, const void* par, void* acc) noexcept {
+    void DirectedGraph<Data>::DfsFromSet(const std::set<Data>& nodes, FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
         for (auto& key : nodes) {
             auto it = Nodes.find(key);
@@ -167,13 +167,13 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Dfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+    void DirectedGraph<Data>::Dfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         DfsVisit(u, visit, other);
     }
 
     template <typename Data>
-    void Graph<Data>::Bfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+    void DirectedGraph<Data>::Bfs(const Data& u, std::function<void(const Data&, void*)> visit, void* other) noexcept {
         Init();
         Nodes[u].setDistance(0);
         std::queue<Data> queue;
@@ -200,7 +200,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Dfs(FoldFunctor visit, const void* par, void* acc) noexcept {
+    void DirectedGraph<Data>::Dfs(FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
         for (auto& my_pair : Nodes) {
             if (my_pair.second.color == Color::White) {
@@ -210,13 +210,13 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Dfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
+    void DirectedGraph<Data>::Dfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
         DfsVisit(u, visit, par, acc);
     }
 
     template <typename Data>
-    void Graph<Data>::Bfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
+    void DirectedGraph<Data>::Bfs(const Data& u, FoldFunctor visit, const void* par, void* acc) noexcept {
         Init();
         Nodes[u].setDistance(0);
         std::queue<Data> queue;
@@ -243,7 +243,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::Transpose() {
+    void DirectedGraph<Data>::Transpose() {
         std::map<Data, std::vector<Edge<Data>>> newAdj;
         for (const auto& [from, edges] : Adj) {
             for (const auto& edge : edges) {
@@ -253,46 +253,25 @@ namespace lasd {
         Adj = newAdj;
     }
 
-// [OLD IMPLEMENTATION]
-/* // THIS IS BEFORE USING WEIGHTS
     template <typename Data>
-    std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
-        std::vector<Data> path;
-        if (Nodes.find(source) == Nodes.end() || Nodes.find(destination) == Nodes.end()) return path;
-
-        Node<Data>* current = &Nodes[destination];
-        while (current && current->key != source) {
-            path.push_back(current->key);
-            current = current->getPredecessor();
-        }
-
-        if (current && current->key == source)
-            path.push_back(current->key);
-
-        std::reverse(path.begin(), path.end());
-        return path;
-    }
-*/
-
-    template <typename Data>
-    std::vector<Data> Graph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
+    std::vector<Data> DirectedGraph<Data>::GetMinimumPath(const Data& source, const Data& destination) noexcept {
         // Dijkstra's Algorithm Implementation for Weighted Graphs
         return Dijkstra(source, destination);
     }
 
     template <typename Data>
-    std::stack<Data> Graph<Data>::getTopologicalOrder(bool print_message) {
-        std::stack<Data> topologicalOrder;
+    std::stack<Data> DirectedGraph<Data>::getTopologicalSort(bool print_message) {
+        std::stack<Data> topologicalSort;
         Init();
         for (auto& my_pair : Nodes) {
             if (my_pair.second.color == Color::White) {
-                DfsVisitTopological(my_pair.first, topologicalOrder);
+                DfsVisitTopological(my_pair.first, topologicalSort);
             }
         }
 
         if (print_message) {
             std::cout << "Topological order: ";
-            std::stack<Data> temp = topologicalOrder;
+            std::stack<Data> temp = topologicalSort;
             while (!temp.empty()) {
                 std::cout << temp.top() << " ";
                 temp.pop();
@@ -300,11 +279,11 @@ namespace lasd {
             std::cout << std::endl;
         }
 
-        return topologicalOrder;
+        return topologicalSort;
     }
 
     template <typename Data>
-    std::vector<Data> Graph<Data>::getTopologicalOrderUsingIncomingGrade() {
+    std::vector<Data> DirectedGraph<Data>::getTopologicalSortUsingIncomingGrade() {
         // This function calculates the topological order using the Incoming Grade (Kahn's Algorithm)
         std::map<Data, int> inDegree;
         for (const auto& node : Nodes) {
@@ -324,11 +303,11 @@ namespace lasd {
             }
         }
 
-        std::vector<Data> topologicalOrder;
+        std::vector<Data> topologicalSort;
         while (!zeroInDegreeQueue.empty()) {
             Data current = zeroInDegreeQueue.front();
             zeroInDegreeQueue.pop();
-            topologicalOrder.push_back(current);
+            topologicalSort.push_back(current);
 
             for (const Edge<Data>& edge : Adj[current]) {
                 inDegree[edge.to]--;
@@ -338,16 +317,16 @@ namespace lasd {
             }
         }
 
-        if (topologicalOrder.size() != Nodes.size()) {
-            throw std::runtime_error("ERROR: The graph is not a DAG, it has at least one cycle.");
+        if (topologicalSort.size() != Nodes.size()) {
+            throw std::runtime_error("ERROR: The graph has at least one cycle!");
         }
 
-        return topologicalOrder;
+        return topologicalSort;
     }
 
     // O((log V * (V + E)))
     template <typename Data>
-    std::vector<Data> Graph<Data>::Dijkstra(const Data& source, const Data& destination) {
+    std::vector<Data> DirectedGraph<Data>::Dijkstra(const Data& source, const Data& destination) {
         std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq; // MIN-HEAP
         std::unordered_map<Data, double> distances;
         std::unordered_map<Data, Data> predecessors;
@@ -387,7 +366,7 @@ namespace lasd {
 
     // A* Search
     template <typename Data>
-    std::vector<std::pair<Data, double>> Graph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
+    std::vector<std::pair<Data, double>> DirectedGraph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
         std::map<Data, double> gScore, fScore;
         std::unordered_map<Data, Data> cameFrom;
         std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<std::pair<double, Data>>> pq; // MIN-HEAP
@@ -441,7 +420,7 @@ namespace lasd {
     }
     
     template <typename Data>
-    std::vector<std::vector<Data>> Graph<Data>::CalculateStronglyConnectedComponents() noexcept {
+    std::vector<std::vector<Data>> DirectedGraph<Data>::CalculateStronglyConnectedComponents() noexcept {
         std::stack<Data> stack;
         Init();
 
@@ -451,7 +430,7 @@ namespace lasd {
             }
         }
 
-        Graph<Data> transposedGraph = *this;
+        DirectedGraph<Data> transposedGraph = *this;
         transposedGraph.Transpose();
         transposedGraph.Init();
 
@@ -472,7 +451,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    bool Graph<Data>::isGraphAcyclicDfs() noexcept {
+    bool DirectedGraph<Data>::isGraphAcyclicDfs() noexcept {
         Init();
         for (auto& my_pair : Nodes) {
             if (my_pair.second.color == Color::White) {
@@ -485,7 +464,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void Graph<Data>::printForEachNodeItsPredecessor() noexcept {
+    void DirectedGraph<Data>::printForEachNodeItsPredecessor() noexcept {
         for (const auto& node : Nodes) {
             std::cout << "Node " << node.first << " predecessor: ";
             const auto& predecessors = node.second.getPredecessors();
@@ -500,7 +479,7 @@ namespace lasd {
         }
     }
 
-    template class Graph<int>;
-    template class Graph<char>;
-    template class Graph<std::string>;
+    template class DirectedGraph<int>;
+    template class DirectedGraph<char>;
+    template class DirectedGraph<std::string>;
 }

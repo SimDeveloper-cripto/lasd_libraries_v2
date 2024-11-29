@@ -99,7 +99,7 @@ namespace lasdtest {
 
     void run_personal_graph_test() {
         std::cout << std::endl << "[ OK ] GRAPH<int> {WEIGHTED AND ORIENTED, IMPLEMENTED BY ADJACENCY LIST} TEST STARTED" << std::endl;
-        Graph<int>* graph = new lasd::Graph<int>();
+        DirectedGraph<int>* graph = new lasd::DirectedGraph<int>();
 
         graph->addNode(0);
         graph->addNode(1);
@@ -132,7 +132,7 @@ namespace lasdtest {
         auto fastMapDfs = [] (const int& node, void* other) {};
 
         std::cout << "Printing the Graph: " << std::endl;
-        graph->showGraph();
+        graph->show();
 
         // DEFAULT BFS
         std::cout << "Bfs's result, starting from 1: " << std::endl;
@@ -171,7 +171,7 @@ namespace lasdtest {
         }
  
         std::cout << "Topological-Order of the Graph (Dfs): ";
-        std::stack<int> myOrder = graph->getTopologicalOrder(true);
+        std::stack<int> myOrder = graph->getTopologicalSort(false);
 
         while(!myOrder.empty()) {
             std::cout << myOrder.top() << " ";
@@ -181,8 +181,8 @@ namespace lasdtest {
 
         if (do_incoming_grade) {
             std::cout << "Topological-Order of the Graph using Incoming Grade: ";
-            std::vector<int> myOrder2 = graph->getTopologicalOrderUsingIncomingGrade();
-            
+            std::vector<int> myOrder2 = graph->getTopologicalSortUsingIncomingGrade();
+
             for (const int elem : myOrder2) std::cout << elem << " ";
             std::cout << std::endl;
         }
@@ -203,7 +203,7 @@ namespace lasdtest {
 
         graph->Transpose();
         std::cout << std::endl << "Printing the Transposed Graph: " << std::endl;
-        graph->showGraph();
+        graph->show();
 
         /* ************************************************************************ */
 
@@ -217,7 +217,7 @@ namespace lasdtest {
         graph->addEdge(node1, node2, 7.0);
         graph->addEdge(node2, node1, 2.0);
         graph->addEdge(5, node2.key, 2.0);
-        graph->showGraph();
+        graph->show();
 
         std::cout << std::endl << "Dfs's result (starting from new node " << node1.key << "): ";
         graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is Defined Above.
@@ -256,7 +256,7 @@ namespace lasdtest {
 
 
         std::cout << std::endl << "FOR EACH NODE EVERY PREDECESSOR: " << std::endl;
-        Graph<int>* new_g = new lasd::Graph<int>();
+        DirectedGraph<int>* new_g = new lasd::DirectedGraph<int>();
         new_g->addNode(0);
         new_g->addNode(1);
         new_g->addNode(2);
@@ -276,7 +276,7 @@ namespace lasdtest {
         delete new_g;
 
         // For now {X, Y} is a single value.
-        Graph<int> new_g2;
+        DirectedGraph<int> new_g2;
         for (int i = 0; i < 6; i++) new_g2.addNode(i);
 
         new_g2.addEdge(0, 1, 2.5);
@@ -302,8 +302,8 @@ namespace lasdtest {
         std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath);
 
-        /* SOLVE ONE ASD EXAM [SEPTEMBER 2019, LOOK AT YOUR SOLUTION] */
-        Graph<int> new_g3;
+        /* SOLVED ONE ASD EXAM [SEPTEMBER 2019, LOOK AT YOUR SOLUTION] */
+        DirectedGraph<int> new_g3;
         for (int i = 0; i < 7; i++) new_g3.addNode(i);
 
         new_g3.addEdge(1, 0, 1.0);
@@ -349,7 +349,7 @@ namespace lasdtest {
 
     void run_test() {
         short int choice;
-        std::cout << "\n[1 -DEV] RUN LINKED_LIST<int> TEST" << std::endl << "[2 -DEV] RUN GRAPH<int> TEST" << std::endl;
+        std::cout << "\n[1 - DEV] RUN LINKED_LIST<int> TEST" << std::endl << "[2 - DEV] RUN GRAPH<int> TEST" << std::endl;
         std::cout << ">>> "; std::cin >> choice;
 
         switch(choice) {

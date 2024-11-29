@@ -4,9 +4,9 @@ using namespace NNDL;
 
 namespace nn_lasdtest {
     void run_personal_neural_network_test() {
-        std::cout << std::endl << "[ OK ] SHALLOW NETWORK {FULL-CONNECTED MULTI-LAYER NEURAL NETWORK} TEST STARTED" << std::endl;
+        std::cout << std::endl << "[ OK ] SHALLOW NETWORK {FULLY-CONNECTED MULTI-LAYER NEURAL NETWORK} TEST STARTED" << std::endl;
 
-        /* ***** CREATION OF A SHALLOW FULL-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
+        /* ***** CREATION OF A SHALLOW FULLY-CONNECTED NEURAL NETWORK (JUST ONE INTERNAL LAYER) ***** */
 
         // Creation of Layer #1
         Neuron neuron1(3, NNDL_COMPUTE::Sigmoid); // Sigmoid is a non-linear function

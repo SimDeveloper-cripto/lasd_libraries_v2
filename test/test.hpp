@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../LinkedList/linked_list.hpp"
-#include "../Graph/graph.hpp"
+#include "../DirectedGraph/graph.hpp"
 
 namespace lasdtest {
     void run_test();

@@ -33,8 +33,6 @@ namespace NNDL {
         }
 
         // Compute [WX + B]
-        // ITALIAN: QUESTA IMPLEMENTAZIONE E' ESATTAMENTE (OUTPUT) IDENTICA A CIO' CHE E' STATO TRATTATO IN AULA
-
         // TODO: CHECK #1: Do I need to Transpose W matrix?
         for (size_t j = 0; j < inputs[0].size(); ++j) {
             double sum = bias;
