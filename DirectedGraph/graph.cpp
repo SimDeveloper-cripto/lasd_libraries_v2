@@ -33,7 +33,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void DirectedGraph<Data>::Init() {
+    void DirectedGraph<Data>::Init() noexcept {
         for (auto& my_pair : Nodes) {
             my_pair.second.color = Color::White;
             my_pair.second.setDistance(std::numeric_limits<unsigned long>::max());
@@ -42,7 +42,21 @@ namespace lasd {
     }
 
     template <typename Data>
-    void DirectedGraph<Data>::Clear() {
+    size_t DirectedGraph<Data>::Size() const noexcept {
+        // |V| + |E|
+        size_t c_edges = 0;
+        for (const auto& pair : Adj)
+            c_edges += pair.second.size();
+        return (Nodes.size() + c_edges);
+    }
+
+    template <typename Data>
+    bool DirectedGraph<Data>::isEmpty() const noexcept {
+        return (Nodes.empty() && Adj.empty());
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::Clear() noexcept {
         Nodes.clear();
         Adj.clear();
         Init();
@@ -80,6 +94,47 @@ namespace lasd {
             Adj[from].emplace_back(to, weight);
         } else {
             throw std::runtime_error("ERROR: addEdge() -> At least one of the nodes provided does not exist.");
+        }
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::removeNode(const Node<Data>& node) {
+        Data key = node.key;
+        if (Nodes.find(key) == Nodes.end())
+            throw std::invalid_argument("ERROR: Could not find the node to remove. It does not exist.");
+        
+        Nodes.erase(key); // Remove from Nodes
+        Adj.erase(key);   // Remove outgoing edges
+
+        // Remove incoming edges
+        for (auto& [from, edges] : Adj) {
+            edges.erase(
+                std::remove_if(edges.begin(), edges.end(),
+                            [&](const Edge<Data>& edge) {
+                                return edge.to == key;
+                            }),
+                edges.end()
+            );
+        }
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::removeNode(Data& key) {
+        if (Nodes.find(key) == Nodes.end())
+            throw std::invalid_argument("ERROR: Could not find the node to remove. It does not exist.");
+        
+        Nodes.erase(key); // Remove from Nodes
+        Adj.erase(key);   // Remove outgoing edges
+
+        // Remove incoming edges
+        for (auto& [from, edges] : Adj) {
+            edges.erase(
+                std::remove_if(edges.begin(), edges.end(),
+                            [&](const Edge<Data>& edge) {
+                                return edge.to == key;
+                            }),
+                edges.end()
+            );
         }
     }
 
@@ -241,6 +296,18 @@ namespace lasd {
             Nodes[current].color = Color::Black;
         }
     }
+
+/*
+    template <typename Data>
+    void DirectedGraph<Data>::BfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+    }
+    
+    template <typename Data>
+    void DirectedGraph<Data>::BfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept {
+        Init();
+    }
+*/
 
     template <typename Data>
     void DirectedGraph<Data>::Transpose() {

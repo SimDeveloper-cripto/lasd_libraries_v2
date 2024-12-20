@@ -1,15 +1,16 @@
 # Overview
 
 This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries> <br />
-What I have focused my work on the most is the Weigthed and Oriented Graph data structure, which is implemented by adjacency lists. <br />
-I used this library for the examination of algorithms and data structures. <br />
-This is my first ever try in implementing something like this so any help is well accepted! <br />
+What I am focusing my work on the most is the Weigthed and Oriented Graph data structure, which is implemented by adjacency lists. <br />
+Also, I used this library for the examination of algorithms and data structures. <br />
+__Disclaimer:__ The usage of __non-primitive data types__ need more testing.
 
 Things I want to add in the future for the Graph:
 
 - A* Search Algorithm for std::pair<>
 - PostOrder Map() and Fold() (both Bfs and Dfs)
 - Bfs starting from a std::set<> (both Map and Fold)
+- Visualization of State
 
 New Data Structures I want to add:
 

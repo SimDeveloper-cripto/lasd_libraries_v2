@@ -5,6 +5,8 @@
 
 using namespace lasd; // List and Graph namespace
 
+// TODO: THINK OF A MORE ORGANIZED TEST SUITE
+
 int generate_random_index(unsigned long size) {
     std::default_random_engine generator(std::random_device{}());
     std::uniform_int_distribution<int> dist(0, size-1);
@@ -99,8 +101,10 @@ namespace lasdtest {
 
     void run_personal_graph_test() {
         std::cout << std::endl << "[ OK ] GRAPH<int> {WEIGHTED AND ORIENTED, IMPLEMENTED BY ADJACENCY LIST} TEST STARTED" << std::endl;
-        DirectedGraph<int>* graph = new lasd::DirectedGraph<int>();
 
+        /* TEST SECTION #1 (WITH DYNAMIC ALLOCATION) */
+
+        DirectedGraph<int>* graph = new lasd::DirectedGraph<int>();
         graph->addNode(0);
         graph->addNode(1);
         graph->addNode(2);
@@ -130,6 +134,8 @@ namespace lasdtest {
 
         // DO NOT USE THIS ONE! 
         auto fastMapDfs = [] (const int& node, void* other) {};
+
+        std::cout << "Graph's size: " << graph->Size() << std::endl;
 
         std::cout << "Printing the Graph: " << std::endl;
         graph->show();
@@ -252,10 +258,19 @@ namespace lasdtest {
         accum = 0;
         std::cout << "Dfs's Fold application result: " << std::endl;
         graph->Dfs(applyFoldToNode, &start, &accum);
+
+        std::cout << "Removing all the nodes: ";
+        std::vector<Node<int>> nodes = graph->GetAllNodes();
+        for (const Node<int>& node : nodes) {
+            graph->removeNode(node);
+        }
+
+        graph->isEmpty() ? std::cout << "Graph is Empty!" : std::cout << "Graph is not Empty!" << std::endl;
         delete graph;
 
+        /* TEST SECTION #2 (WITH DYNAMIC ALLOCATION) */
 
-        std::cout << std::endl << "FOR EACH NODE EVERY PREDECESSOR: " << std::endl;
+        std::cout << std::endl << "\nFOR EACH NODE, EVERY PREDECESSOR: " << std::endl;
         DirectedGraph<int>* new_g = new lasd::DirectedGraph<int>();
         new_g->addNode(0);
         new_g->addNode(1);
@@ -273,7 +288,13 @@ namespace lasdtest {
         // BFS starting from 0 to update the vector of predecessors
         new_g->Bfs(0, [](const int&, void*){}, nullptr);
         new_g->printForEachNodeItsPredecessor();
+
+        std::cout << "Clearing the Graph: ";
+        graph->Clear();
+        graph->isEmpty() ? std::cout << "Graph is Empty!" : std::cout << "Graph is not Empty!" << std::endl;
         delete new_g;
+
+        /* TEST SECTION #3 (WITH STACK ALLOCATION) */
 
         // For now {X, Y} is a single value.
         DirectedGraph<int> new_g2;
@@ -301,6 +322,8 @@ namespace lasdtest {
         // ASSERT CORRECT PATH
         std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath);
+
+        /* TEST SECTION #4 (WITH STACK ALLOCATION) */
 
         /* SOLVED ONE ASD EXAM [SEPTEMBER 2019, LOOK AT YOUR SOLUTION] */
         DirectedGraph<int> new_g3;
@@ -330,7 +353,6 @@ namespace lasdtest {
         std::cout << "--- #2 TRANSPOSE DFS SET" << std::endl;
         new_g3.DfsFromSet(ASet, fastMapDfs, nullptr);
 
-        std::cout << std::endl;
         for (auto& node : new_g3.GetAllNodes()) {
             auto value = node.key;
             std::unordered_map<int, Color>::iterator it = color_map_v1.find(value);
@@ -338,13 +360,15 @@ namespace lasdtest {
                 // We only check the nodes which aren't inside the Set.
                 if (ASet.find(value) == ASet.end() && (it->second == Color::White || node.color == Color::White)) {
                     S.push_back(value);
-                    std::cout << "Found: " << value << std::endl; // Will print "Found: 4".
+                    std::cout << "--- Found: " << value << std::endl; // Will print "Found: 4".
+                    assert(value == 4);
                 }
             }
         }
 
         // ASSERT CORRECT STACK SIZE
         assert(S.size() == 1);
+        std::cout << "--- 'Stack' size = 1, correct! " << std::endl;
     }
 
     void run_test() {

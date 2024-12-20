@@ -152,10 +152,15 @@ namespace lasd {
         bool operator==(const DirectedGraph&) const noexcept = delete;
         bool operator!=(const DirectedGraph&) const noexcept = delete;
 
-        void Init();
+        void Init() noexcept;
+
+        // GET GRAPH SIZE: |V| + |E|
+        size_t Size() const noexcept;
+
+        bool isEmpty() const noexcept;
 
         // CLEAR THE STRUCTURE
-        void Clear();
+        void Clear() noexcept;
 
         // ADD A NODE TO THE GRAPH
         void addNode(const Node<Data>& node) noexcept;
@@ -164,6 +169,10 @@ namespace lasd {
         // ADD EDGE BETWEEN TO NODES
         void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight);
         void addEdge(const Data& from, const Data& to, double weight);
+
+        // REMOVE A NODE
+        void removeNode(const Node<Data>& node);
+        void removeNode(Data& key);
 
         std::vector<Node<Data>> GetAllNodes() const;
 
@@ -189,8 +198,9 @@ namespace lasd {
         void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
 
-        // TODO: SET RELATED BFS (MAP & FOLD)
-        // ...
+        // TODO: IMPLEMENT BFS FROM SET, BOTH FOR MAP AND FOLD
+        // void BfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        // void BfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
 
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
         void Transpose();
