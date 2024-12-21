@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     short int choice;
-    std::cout << "[1 - DEVELOPER] Run default TEST" << std::endl << "[2 - USER]      Run your personal TEST" << std::endl;
+    std::cout << "[1 - DEVELOPER] Run dev TEST" << std::endl << "[2 - USER]      Run your personal TEST" << std::endl;
     std::cout << ">>> "; std::cin >> choice;
 
     switch(choice) {

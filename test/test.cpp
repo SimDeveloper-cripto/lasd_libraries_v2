@@ -5,8 +5,6 @@
 
 using namespace lasd; // List and Graph namespace
 
-// TODO: THINK OF A MORE ORGANIZED TEST SUITE
-
 int generate_random_index(unsigned long size) {
     std::default_random_engine generator(std::random_device{}());
     std::uniform_int_distribution<int> dist(0, size-1);
@@ -312,7 +310,7 @@ namespace lasdtest {
 
         std::vector<std::pair<int, double>> path = new_g2.AStar(0, 5, Heuristic);
 
-        std::cout << std::endl << "NEW GRAPH OF COORDINATES HAS BEEN CREATED!" << std::endl;
+        std::cout << std::endl << "\nNEW GRAPH OF COORDINATES HAS BEEN CREATED!" << std::endl;
         std::cout << "[A* SEARCH ALGORITHM FROM 0 TO 5] RESULT: ";
         for (const auto& [node, fScore] : path) {
             std::cout << "{ Node: " << node << ", Heuristic: " << fScore << "} ";

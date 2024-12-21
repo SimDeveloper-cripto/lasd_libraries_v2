@@ -2,6 +2,70 @@
 #include <assert.h>
 
 namespace lasd {
+    /* PRIVATE SECTION */
+
+    template <typename Data>
+    Color DirectedGraph<Data>::GetColor(const Data& node_key) const {
+        auto it = Nodes.find(node_key);
+        if (it != Nodes.end()) {
+            return it->second.color;
+        } else {
+            throw std::invalid_argument("ERROR: Key value provided for GetColor() does not exist in DirectedGraph!");
+        }
+    }
+
+    template <typename Data>
+    std::vector<Node<Data>*> DirectedGraph<Data>::GetAdjacentNodes(const Data& node) const {
+        if (Adj.find(node) == Adj.end()) throw std::invalid_argument("Node provided for GetAdjacentNodes() does not exist in the DirectedGraph! :(");
+
+        std::vector<Node<Data>*> adjs;
+        for (const Edge<Data>& edge : Adj.at(node)) adjs.push_back(const_cast<Node<Data>*>(&Nodes.at(edge.to)));
+
+        return adjs;
+    }
+
+    // O((log V * (V + E)))
+    template <typename Data>
+    std::vector<Data> DirectedGraph<Data>::Dijkstra(const Data& source, const Data& destination) {
+        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq; // MIN-HEAP
+        std::unordered_map<Data, double> distances;
+        std::unordered_map<Data, Data> predecessors;
+
+        for (const auto& node : Nodes) {
+            distances[node.first] = std::numeric_limits<double>::max();
+        }
+        distances[source] = 0;
+        pq.emplace(0, source);
+
+        while (!pq.empty()) {
+            Data current = pq.top().second;
+            pq.pop();
+
+            if (current == destination) {
+                break;
+            }
+
+            for (const Edge<Data>& edge : Adj[current]) {
+                double newDist = distances[current] + edge.weight;
+                if (newDist < distances[edge.to]) {
+                    distances[edge.to] = newDist;
+                    predecessors[edge.to] = current;
+                    pq.emplace(newDist, edge.to);
+                }
+            }
+        }
+
+        std::vector<Data> path;
+        for (Data at = destination; at != source; at = predecessors[at]) {
+            path.push_back(at);
+        }
+        path.push_back(source);
+        std::reverse(path.begin(), path.end());
+        return path;
+    }
+
+    /* PUBLIC SECTION */
+
     template <typename Data>
     DirectedGraph<Data>::DirectedGraph(const DirectedGraph& other) {
         Adj   = other.Adj;
@@ -136,26 +200,6 @@ namespace lasd {
                 edges.end()
             );
         }
-    }
-
-    template <typename Data>
-    Color DirectedGraph<Data>::GetColor(const Data& node_key) const {
-        auto it = Nodes.find(node_key);
-        if (it != Nodes.end()) {
-            return it->second.color;
-        } else {
-            throw std::invalid_argument("ERROR: Key value provided for GetColor() does not exist in DirectedGraph!");
-        }
-    }
-
-    template <typename Data>
-    std::vector<Node<Data>*> DirectedGraph<Data>::GetAdjacentNodes(const Data& node) const {
-        if (Adj.find(node) == Adj.end()) throw std::invalid_argument("Node provided for GetAdjacentNodes() does not exist in the DirectedGraph! :(");
-
-        std::vector<Node<Data>*> adjs;
-        for (const Edge<Data>& edge : Adj.at(node)) adjs.push_back(const_cast<Node<Data>*>(&Nodes.at(edge.to)));
-
-        return adjs;
     }
 
     template <typename Data>
@@ -391,46 +435,6 @@ namespace lasd {
         return topologicalSort;
     }
 
-    // O((log V * (V + E)))
-    template <typename Data>
-    std::vector<Data> DirectedGraph<Data>::Dijkstra(const Data& source, const Data& destination) {
-        std::priority_queue<std::pair<double, Data>, std::vector<std::pair<double, Data>>, std::greater<>> pq; // MIN-HEAP
-        std::unordered_map<Data, double> distances;
-        std::unordered_map<Data, Data> predecessors;
-
-        for (const auto& node : Nodes) {
-            distances[node.first] = std::numeric_limits<double>::max();
-        }
-        distances[source] = 0;
-        pq.emplace(0, source);
-
-        while (!pq.empty()) {
-            Data current = pq.top().second;
-            pq.pop();
-
-            if (current == destination) {
-                break;
-            }
-
-            for (const Edge<Data>& edge : Adj[current]) {
-                double newDist = distances[current] + edge.weight;
-                if (newDist < distances[edge.to]) {
-                    distances[edge.to] = newDist;
-                    predecessors[edge.to] = current;
-                    pq.emplace(newDist, edge.to);
-                }
-            }
-        }
-
-        std::vector<Data> path;
-        for (Data at = destination; at != source; at = predecessors[at]) {
-            path.push_back(at);
-        }
-        path.push_back(source);
-        std::reverse(path.begin(), path.end());
-        return path;
-    }
-
     // A* Search
     template <typename Data>
     std::vector<std::pair<Data, double>> DirectedGraph<Data>::AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic) {
@@ -516,6 +520,8 @@ namespace lasd {
         }
         return sccs;
     }
+
+    /* HELPER FUNCTIONS SECTION */
 
     template <typename Data>
     bool DirectedGraph<Data>::isGraphAcyclicDfs() noexcept {

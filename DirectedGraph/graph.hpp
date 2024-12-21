@@ -79,6 +79,9 @@ namespace lasd {
         Color GetColor(const Data& node) const;
         std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const;
 
+        // Dijkstra's algorithm (to determine a minimum path between two nodes)
+        std::vector<Data> Dijkstra(const Data& source, const Data& destination);
+
         // DFS MAP()
         void DfsVisit(const Data& u, std::function<void(const Data&, void* other)> visit, void* other) {
             Nodes[u].color = Color::Gray;
@@ -202,7 +205,7 @@ namespace lasd {
         // void BfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         // void BfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
 
-        // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph but Transposed
+        // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph, but Transposed
         void Transpose();
 
         // GET MINIMUM PATH BETWEEN TWO NODES
@@ -211,9 +214,6 @@ namespace lasd {
         // GET TOPOLOGICAL SORT OF THE GRAPH
         std::stack<Data> getTopologicalSort(bool print_message);
         std::vector<Data> getTopologicalSortUsingIncomingGrade();
-
-        // Dijkstra's algorithm
-        std::vector<Data> Dijkstra(const Data& source, const Data& destination);
 
         /* [ A* Search ] */
         // Data  : Node Value
