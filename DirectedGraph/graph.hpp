@@ -201,10 +201,6 @@ namespace lasd {
         void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
 
-        // TODO: IMPLEMENT BFS FROM SET, BOTH FOR MAP AND FOLD
-        // void BfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
-        // void BfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
-
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph, but Transposed
         void Transpose();
 

@@ -341,18 +341,6 @@ namespace lasd {
         }
     }
 
-/*
-    template <typename Data>
-    void DirectedGraph<Data>::BfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept {
-        Init();
-    }
-    
-    template <typename Data>
-    void DirectedGraph<Data>::BfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept {
-        Init();
-    }
-*/
-
     template <typename Data>
     void DirectedGraph<Data>::Transpose() {
         std::map<Data, std::vector<Edge<Data>>> newAdj;

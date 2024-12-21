@@ -1,6 +1,6 @@
 # Overview
 
-This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries> <br />
+This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries>. <br />
 What I am focusing my work on the most is the __Weigthed and Oriented Graph data structure, which is implemented by adjacency lists__. <br />
 Also, I used this library for the examination of algorithms and data structures. <br />
 __Disclaimer:__ The usage of __non-primitive data types__ need more testing.
@@ -9,20 +9,20 @@ Things I want to add in the future for the Graph:
 
 - A* Search Algorithm for std::pair<>
 - PostOrder Map() and Fold() (both Bfs and Dfs)
-- Bfs starting from a std::set<> (both Map and Fold)
-- Visualization of State
+- Visualization of State using OpenGL
 
 New Data Structures I want to add:
 
 - Doubly Linked List
 - Priority Queue
 - Min Heap
+- Fibonacci Heap
 
 Todo:
 
 - Complete API description
-- For now, the library does not Init() the Graph before applying the A* Search.
-- Work on a more organized test suite.
+- For now, the library does not Init() the Graph before applying the A* Search
+- Work on a more organized test suite
 
 ## Requirements
 
@@ -46,7 +46,7 @@ cd test/NeuralNetwork/nn_test/
 
 By default, I provided for you a section dedicated to your personal test. <br />
 In __test/test.hpp__ there is everything you'll need, including all the libraries and a personal namespace called "__usertest__". <br />
-Your code has to be written inside the namespace at __test/test.cpp__ <br />
+Your code has to be written inside the namespace at __test/test.cpp__. <br />
 You can use the test code as a way to learn how to use the library. <br />
 I don't forbid you from doing otherwise, but if you want to quickly test things you can do it this way. Have fun! <br />
 
@@ -95,8 +95,8 @@ Represents a node in the graph.
 
 | __Private Member__      | __Type__                         | __Description__                                      |
 |------------------|-----------------------------------------|------------------------------------------------------|
-| `distance`      | `unsigned long`                          | Distance metric used in pathfinding algorithms.      |
-| `predecessors`  | `std::vector<Node*>`                     | List of predecessor nodes.                           |
+| `distance`       | `unsigned long`                          | Distance metric used in pathfinding algorithms.     |
+| `predecessors`   | `std::vector<Node*>`                     | List of predecessor nodes.                          |
 
 | __Method__                                | __Description__                                                                 |
 |-------------------------------------------|---------------------------------------------------------------------------------|
@@ -187,8 +187,8 @@ Represents the directed graph and provides all operations and algorithms.
 
 | __Method__                                   | __Description__              |
 |----------------------------------------------|------------------------------|
-| `bool isGraphAcyclicDfs() noexcept`                                   | |
-| `void printForEachNodeItsPredecessor() noexcept`                      | |
+| `bool isGraphAcyclicDfs() noexcept`                                   | Returns true if the graph does not contain cycles. |
+| `void printForEachNodeItsPredecessor() noexcept`                      | Prints the predecessors list of each node.         |
 
 ---
 
