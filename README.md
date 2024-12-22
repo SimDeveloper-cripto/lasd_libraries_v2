@@ -20,9 +20,8 @@ New Data Structures I want to add:
 
 Todo:
 
-- Complete Graph API description
-- For now, the library does not Init() the Graph before applying the A* Search
 - Work on a more organized test suite
+- For now, the library does not Init() the Graph before applying the A* Search
 
 ## Requirements
 

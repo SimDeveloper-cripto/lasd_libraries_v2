@@ -89,25 +89,25 @@ Represents the directed graph and provides all operations and algorithms.
 
 | __Method__                                   | __Description__                                                                                    |
 |----------------------------------------------|---------------------------------------------------------------------------------                   |
-| `void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept`                               | |
-| `void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept`                  | |
-| `void Dfs(FoldFunctor, const void*, void*) noexcept`                                                          | |
-| `void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept`                                             | |
-| `void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept` | |
-| `void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept`                            | |
-| `void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept`                  | |
-| `void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept`                                             | |
+| `void Dfs(std::function<void(const Data&, void*)> visit, void* other) noexcept`                               | Performs a depth-first search (DFS) traversal of the graph, applying a map function to each node.  |
+| `void Dfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept`                  | Starts a DFS traversal applying a map, starting from a specified node.                             |
+| `void Dfs(FoldFunctor, const void*, void*) noexcept`                                                          | Performs a DFS traversal using a fold function for custom aggregation of node data.                |
+| `void Dfs(const Data&, FoldFunctor, const void*, void*) noexcept`                                             | Starts a DFS traversal from a specified node, using a fold function for aggregation.               |
+| `void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept` | Performs DFS from a set of starting nodes, applying a map function.                                |
+| `void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept`                            | Performs DFS from a set of starting nodes, using a fold function for aggregation.                  |
+| `void Bfs(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept`                  | Performs a breadth-first search (BFS) traversal from a specified node, applying a map function.    |
+| `void Bfs(const Data&, FoldFunctor, const void*, void*) noexcept`                                             | Performs BFS from a specified node, using a fold function for aggregation.                         |
 
 ### Algorithms
 
-| __Method__                                   | __Description__                                                                                            |
-|----------------------------------------------|---------------------------------------------------------------------------------                           |
-| `void Transpose()`                                                                                                                                   | |
-| `std::vector<Data> GetMinimumPath(const Data& source, const Data& destination) noexcept`                                                             | |
-| `std::stack<Data> getTopologicalSort(bool print_message)`                                                                                            | |
-| `std::vector<Data> getTopologicalSortUsingIncomingGrade()`                                                                                           | |
-| `std::vector<std::pair<Data, double>> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic)` | |
-| `std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept`                                                                     | |
+| __Method__                                   | __Description__                                                                  |
+|----------------------------------------------|--------------------------------------------------------------------------------- |
+| `void Transpose()`                                                                                                                                   | Creates the transpose of the graph by reversing the direction of all edges.                    |
+| `std::vector<Data> GetMinimumPath(const Data& source, const Data& destination) noexcept`                                                             | Finds the shortest path between two nodes using Dijkstra's algorithm.                          |
+| `std::stack<Data> getTopologicalSort(bool print_message)`                                                                                            | Returns a topological order of the graph's nodes. Prints a message if sorting is not possible. |
+| `std::vector<Data> getTopologicalSortUsingIncomingGrade()`                                                                                           | Computes a topological sort of the graph using node in-degrees.                                |
+| `std::vector<std::pair<Data, double>> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic)` | Finds the shortest path between two nodes using the A* algorithm, incorporating a heuristic.   |
+| `std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept`                                                                     | Identifies and returns all strongly connected components in the graph.                         |
 
 ---
 
