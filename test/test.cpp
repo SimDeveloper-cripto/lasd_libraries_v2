@@ -135,11 +135,11 @@ namespace lasdtest {
 
         std::cout << "Graph's size: " << graph->Size() << std::endl;
 
-        std::cout << "Printing the Graph: " << std::endl;
+        std::cout << "\nPrinting the Graph: " << std::endl;
         graph->show();
 
         // DEFAULT BFS
-        std::cout << "Bfs's result, starting from 1: " << std::endl;
+        std::cout << "\nBfs's result, starting from 1: " << std::endl;
         graph->Bfs(1, applyToNodeBfs, nullptr);
 
         { /* [MIN PATH TEST] START */
@@ -168,13 +168,13 @@ namespace lasdtest {
         // CUSTOM MADE DFS TO CHECK IF GRAPH IS CYCLIC
         bool do_incoming_grade = true;
         if (graph->isGraphAcyclicDfs()) {
-            std::cout << std::endl << "Acyclic test: the Graph is acyclic." << std::endl;
+            std::cout << std::endl << "\nAcyclic test: the Graph is acyclic." << std::endl;
         } else {
-            std::cout << std::endl << "Acyclic test: the Graph is cyclic." << std::endl;
+            std::cout << std::endl << "\nAcyclic test: the Graph is cyclic." << std::endl;
             do_incoming_grade = false;
         }
  
-        std::cout << "Topological-Order of the Graph (Dfs): ";
+        std::cout << "\nTopological-Order of the Graph (Dfs): ";
         std::stack<int> myOrder = graph->getTopologicalSort(false);
 
         while(!myOrder.empty()) {
@@ -215,7 +215,7 @@ namespace lasdtest {
         node1.key = 10, node2.key = 11;
         node1.color = Color::White, node2.color = Color::White;
 
-        std::cout << "Added new Node to Graph, addNode(const Node<Data>&) called:" << std::endl;
+        std::cout << "\nAdded new Nodes to Graph, addNode(const Node<Data>&) called:" << std::endl;
         graph->addNode(node1);
         graph->addNode(node2);
         graph->addEdge(node1, node2, 7.0);
@@ -227,9 +227,9 @@ namespace lasdtest {
         graph->Dfs(node1.key, applyToNodeDfs, nullptr); // applyToNodeDfs is Defined Above.
 
         if (graph->isGraphAcyclicDfs()) {
-            std::cout << std::endl << "Acyclic test: the new Graph is acyclic." << std::endl;
+            std::cout << std::endl << "\nAcyclic test: the new Graph is acyclic." << std::endl;
         } else {
-            std::cout << std::endl << "Acyclic test: the new Graph is cyclic." << std::endl;
+            std::cout << std::endl << "\nAcyclic test: the new Graph is cyclic." << std::endl;
         }
 
         /* ************************************************************************ */
@@ -250,14 +250,14 @@ namespace lasdtest {
         /* Apply Fold() to the Transposed Graph */
         int start = 2, accum = 0;
 
-        std::cout << "Bfs's Fold application result: " << std::endl;
+        std::cout << "\nBfs's Fold application result: " << std::endl;
         graph->Bfs(1, applyFoldToNode, &start, &accum);
 
         accum = 0;
-        std::cout << "Dfs's Fold application result: " << std::endl;
+        std::cout << "\nDfs's Fold application result: " << std::endl;
         graph->Dfs(applyFoldToNode, &start, &accum);
 
-        std::cout << "Removing all the nodes: ";
+        std::cout << "\nRemoving all the nodes: ";
         std::vector<Node<int>> nodes = graph->GetAllNodes();
         for (const Node<int>& node : nodes) {
             graph->removeNode(node);
@@ -268,7 +268,7 @@ namespace lasdtest {
 
         /* TEST SECTION #2 (WITH DYNAMIC ALLOCATION) */
 
-        std::cout << std::endl << "\nFOR EACH NODE, EVERY PREDECESSOR: " << std::endl;
+        std::cout << std::endl << "\nFor each node, every predecessor: " << std::endl;
         DirectedGraph<int>* new_g = new lasd::DirectedGraph<int>();
         new_g->addNode(0);
         new_g->addNode(1);
@@ -287,7 +287,7 @@ namespace lasdtest {
         new_g->Bfs(0, [](const int&, void*){}, nullptr);
         new_g->printForEachNodeItsPredecessor();
 
-        std::cout << "Clearing the Graph: ";
+        std::cout << "\nClearing the Graph: ";
         graph->Clear();
         graph->isEmpty() ? std::cout << "Graph is Empty!" : std::cout << "Graph is not Empty!" << std::endl;
         delete new_g;
@@ -310,7 +310,7 @@ namespace lasdtest {
 
         std::vector<std::pair<int, double>> path = new_g2.AStar(0, 5, Heuristic);
 
-        std::cout << std::endl << "\nNEW GRAPH OF COORDINATES HAS BEEN CREATED!" << std::endl;
+        std::cout << std::endl << "\nNew graph of coordinates has been created!" << std::endl;
         std::cout << "[A* SEARCH ALGORITHM FROM 0 TO 5] RESULT: ";
         for (const auto& [node, fScore] : path) {
             std::cout << "{ Node: " << node << ", Heuristic: " << fScore << "} ";

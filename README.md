@@ -20,7 +20,6 @@ New Data Structures I want to add:
 
 Todo:
 
-- Work on a more organized test suite
 - For now, the library does not Init() the Graph before applying the A* Search
 
 ## Requirements
