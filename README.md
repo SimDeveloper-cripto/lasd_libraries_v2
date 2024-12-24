@@ -44,13 +44,13 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 
 ```bat
 .\compile_clang++.bat
-cd build
+cd build/win
 .\lasd
 ```
 
 ```bat
 .\compile_g++.bat
-cd build
+cd build/win
 .\lasd
 ```
 
@@ -59,7 +59,7 @@ cd build
 ```bash
 chmod +x build.sh
 ./build.sh
-cd build
+cd build/linux
 .\lasd
 ```
 
