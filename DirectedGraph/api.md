@@ -62,26 +62,27 @@ Represents the directed graph and provides all operations and algorithms.
 | `Nodes`             | `std::map<Data, Node<Data>>`              | A map of all nodes in the graph |
 | `Adj`               | `std::map<Data, std::vector<Edge<Data>>>` | Adjacency list for the graph    |
 
-| __Method__                                   | __Description__                                                                                   |
-|----------------------------------------------|---------------------------------------------------------------------------------                  |
-| `DirectedGraph()`                                                                     | Default constructor                                      |
-| `DirectedGraph(const DirectedGraph&)`                                                 | Copy constructor                                         |
-| `DirectedGraph(DirectedGraph&& other) noexcept`                                       | Move constructor                                         |
-| `DirectedGraph& operator=(const DirectedGraph&)`                                      | Copy assignment operator                                 |
-| `DirectedGraph& operator=(DirectedGraph&& other) noexcept`                            | Move assignment operator                                 |
-| `void Init() noexcept`                                                                | Initializes the graph                                    |
-| `size_t Size() const noexcept`                                                        | Returns the total size of the graph                      |
-| `bool isEmpty() const noexcept`                                                       | Checks whether the graph is empty                        |
-| `void Clear() noexcept`                                                               | Clears all nodes and edges from the graph                |
-| `void addNode(const Node<Data>& node)`                                                | Adds a node to the graph using an existing `Node` object |
-| `void addNode(const Data& key)`                                                       | Adds a node to the graph using a `Data` key              |
-| `void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight)` | Adds an edge between two nodes                           |
-| `void addEdge(const Data& from, const Data& to, double weight)`                       | Adds an edge between two nodes identified by their keys  |
-| `void removeNode(const Node<Data>& node)`                                             | Removes a node and its associated edges from the graph   |
-| `void removeNode(Data& key)`                                                          | Removes a node (identified by its key) from the graph    |
-| `std::vector<Node<Data>> GetAllNodes() const`                                         | Retrieves all nodes in the graph                         |
-| `std::unordered_map<Data, Color> GetCurrentColors() const`                            | Gets the color state of all nodes in the graph           |
-| `void show() const noexcept`                                                          | Prints the graph's adjacency structure to the console    |
+| __Method__                                   | __Description__                                                                                          |
+|----------------------------------------------|---------------------------------------------------------------------------------                         |
+| `DirectedGraph()`                                                                     | Default constructor                                             |
+| `DirectedGraph(const DirectedGraph&)`                                                 | Copy constructor                                                |
+| `DirectedGraph(DirectedGraph&& other) noexcept`                                       | Move constructor                                                |
+| `DirectedGraph& operator=(const DirectedGraph&)`                                      | Copy assignment operator                                        |
+| `DirectedGraph& operator=(DirectedGraph&& other) noexcept`                            | Move assignment operator                                        |
+| `void Init() noexcept`                                                                | Initializes the graph                                           |
+| `size_t Size() const noexcept`                                                        | Returns the total size of the graph                             |
+| `bool isEmpty() const noexcept`                                                       | Checks whether the graph is empty                               |
+| `void Clear() noexcept`                                                               | Clears all nodes and edges from the graph                       |
+| `void addNode(const Node<Data>& node)`                                                | Adds a node to the graph using an existing `Node` object        |
+| `void addNode(const Data& key)`                                                       | Adds a node to the graph using a `Data` key                     |
+| `void addEdge(const Node<Data>& node_from, const Node<Data>& node_to, double weight)` | Adds an edge between two nodes                                  |
+| `void addEdge(const Data& from, const Data& to, double weight)`                       | Adds an edge between two nodes identified by their keys         |
+| `void removeNode(const Node<Data>& node)`                                             | Removes a node and its associated edges from the graph          |
+| `void removeNode(Data& key)`                                                          | Removes a node (identified by its key) from the graph           |
+| `std::vector<Node<Data>> GetAllNodes() const`                                         | Retrieves all nodes in the graph                                |
+| `std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const`                   | Returns a vector containing all the adjacent nodes of that node |
+| `std::unordered_map<Data, Color> GetCurrentColors() const`                            | Gets the color state of all nodes in the graph                  |
+| `void show() const noexcept`                                                          | Prints the graph's adjacency structure to the console           |
 
 ### Traversals
 

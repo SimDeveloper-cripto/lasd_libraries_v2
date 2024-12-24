@@ -77,7 +77,6 @@ namespace lasd {
         std::map<Data, std::vector<Edge<Data>>> Adj;
 
         Color GetColor(const Data& node) const;
-        std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const;
 
         // Dijkstra's algorithm (to determine a minimum path between two nodes)
         std::vector<Data> Dijkstra(const Data& source, const Data& destination);
@@ -178,6 +177,8 @@ namespace lasd {
         void removeNode(Data& key);
 
         std::vector<Node<Data>> GetAllNodes() const;
+
+        std::vector<Node<Data>*> GetAdjacentNodes(const Data& node) const;
 
 	    // GET CURRENT STATE OF THE COLORS OF ALL THE NODES
 	    std::unordered_map<Data, Color> GetCurrentColors() const;
