@@ -120,7 +120,7 @@ Represents the directed graph and provides all operations and algorithms.
 
 ---
 
-## Quick Start Example
+## Quick Start
 
 Create a folder inside the root directory of the project.
 
@@ -137,52 +137,61 @@ Then, write your own main.cpp file.
 
 using namespace lasd;
 
-// You can also find this code in test/test.cpp (graph test)
+// Get Minimum Path between two nodes
 int main(void) {
-    DirectedGraph<int> g;
-    for (int i = 0; i < 7; i++) g.addNode(i);
+    DirectedGraph<int>* graph = new lasd::DirectedGraph<int>();
+    for (int i = 0; i < 7; ++i) graph->addNode(i);
 
-    g.addEdge(1, 0, 1.0);
-    g.addEdge(0, 6, 1.0);
-    g.addEdge(6, 5, 1.0);
-    g.addEdge(5, 0, 1.0);
-    g.addEdge(0, 1, 1.0);
-    g.addEdge(4, 2, 1.0);
-    g.addEdge(4, 3, 1.0);
-    g.addEdge(2, 0, 1.0);
-    g.addEdge(3, 6, 1.0);
+    graph->addEdge(3, 1, 1.0);
+    graph->addEdge(1, 2, 1.0);
+    graph->addEdge(2, 3, 2.0);
+    graph->addEdge(1, 4, 3.0);
+    graph->addEdge(4, 5, 3.0);
+    graph->addEdge(5, 6, 4.0);
+    graph->addEdge(6, 4, 1.0);
 
-    std::set<int> ASet; // Use a Set to get O(log(n)) as search complexity.
-    std::vector<int> S;
-        
-    ASet.insert(0);
-    ASet.insert(2);
-    ASet.insert(3);
-        
-    std::cout << "--- #1 DFS SET" << std::endl;
-    g.DfsFromSet(ASet, fastMapDfs, nullptr);
-    std::unordered_map<int, Color> color_map_v1 = g.GetCurrentColors();
-    g.Transpose();
-    std::cout << "--- #2 TRANSPOSE DFS SET" << std::endl;
-    g.DfsFromSet(ASet, fastMapDfs, nullptr);
+    { /* [MIN PATH] START */
+        int start = 1, end = 4;
 
-    for (auto& node : g.GetAllNodes()) {
-        auto value = node.key;
-        std::unordered_map<int, Color>::iterator it = color_map_v1.find(value);
-        if (it != color_map_v1.end()) {
-            // We only check the nodes which aren't inside the Set.
-            if (ASet.find(value) == ASet.end() && (it->second == Color::White || node.color == Color::White)) {
-                S.push_back(value);
-                std::cout << "--- Found: " << value << std::endl; // It will print "Found: 4".
-                assert(value == 4);
-            }
-        }
-    }
+        std::cout << std::endl;
+        std::cout << "Minimum path between nodes " << start << " and " << end << ":" << std::endl;
 
-    // ASSERT CORRECT STACK SIZE
-    assert(S.size() == 1);
+        std::cout << "   Starting from " << start << ": ";
+        for (const int vertex : graph->GetMinimumPath(start, end))
+        std::cout << vertex << " ";
+
+        /* OUTPUT: DIRECT PATH FROM 1 TO 4 (WEIGHT 3.0) */
+
+        std::cout << std::endl << std::endl;
+    } /* [MIN PATH] END */
+
+    std::cout << "\nRemoving all the nodes: ";
+    std::vector<Node<int>> nodes = graph->GetAllNodes();
+    for (const Node<int>& node : nodes) graph->removeNode(node);
+
+    graph->isEmpty() ? std::cout << "Graph is Empty!" : std::cout << "Graph is not Empty!" << std::endl;
+    delete graph;
     return 0;
 }
+```
+
+## Run Examples in Windows with g++ or clang++ (PowerShell)
+
+__Warning__: For some of them, the library __glfw3__ is required. <br />
+
+```bat
+cd examples
+.\compile_g++.bat
+cd build/win
+.\example
+```
+
+```bat
+```
+
+## Run Examples in Linux with g++
+
+```bash
 ```
 
 ## LICENSE

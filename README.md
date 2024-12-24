@@ -30,7 +30,10 @@ Todo:
 ## Graph API
 
 Have a look at __DirectedGraph/api.md__ file. <br />
-There you'll find a complete description of the library and also a __quick start code__ example.
+There you'll find a complete description of the library and also:
+
+- A __quick start code__
+- __Examples of usage__
 
 ## Code your personal TEST
 
@@ -54,7 +57,7 @@ cd build/win
 .\lasd
 ```
 
-### Compile and Execute the project in Linux
+### Compile and Execute the project in Linux with g++
 
 ```bash
 chmod +x build.sh

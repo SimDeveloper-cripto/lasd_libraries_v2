@@ -343,7 +343,7 @@ namespace lasdtest {
         ASet.insert(0);
         ASet.insert(2);
         ASet.insert(3);
-        
+
         std::cout << "--- #1 DFS SET" << std::endl;
         new_g3.DfsFromSet(ASet, fastMapDfs, nullptr);
         std::unordered_map<int, Color> color_map_v1 = new_g3.GetCurrentColors();
