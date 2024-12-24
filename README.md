@@ -43,26 +43,23 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 ### Compile and Execute the project in Windows with g++ or clang++ (PowerShell)
 
 ```bat
-mkdir bin
 .\compile_clang++.bat
-cd bin
+cd build
 .\lasd
 ```
 
 ```bat
-mkdir bin
 .\compile_g++.bat
-cd bin
+cd build
 .\lasd
 ```
 
 ### Compile and Execute the project in Linux
 
 ```bash
-mkdir bin
 chmod +x build.sh
 ./build.sh
-cd bin
+cd build
 .\lasd
 ```
 
