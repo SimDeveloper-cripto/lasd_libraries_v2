@@ -187,6 +187,10 @@ cd build/win
 ```
 
 ```bat
+cd examples
+.\compile_clang++.bat
+cd build/win
+.\example
 ```
 
 ## Run Examples in Linux with g++

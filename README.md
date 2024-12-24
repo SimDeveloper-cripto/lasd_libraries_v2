@@ -20,6 +20,7 @@ New Data Structures I want to add:
 
 Todo:
 
+- Provide documentation also for the `LinkedList` library
 - For now, the library does not Init() the Graph before applying the A* Search
 
 ## Requirements
