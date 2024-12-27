@@ -138,9 +138,9 @@ Then, write your own main.cpp file.
 
 using namespace lasd;
 
-// Get Minimum Path between two nodes
+// Get the Minimum Path between two nodes using Dijkstra's Algorithm
 int main(void) {
-    DirectedGraph<int>* graph = new lasd::DirectedGraph<int>();
+    DirectedGraph<int>* graph = new DirectedGraph<int>();
     for (int i = 0; i < 7; ++i) graph->addNode(i);
 
     graph->addEdge(3, 1, 1.0);
@@ -162,7 +162,6 @@ int main(void) {
         std::cout << vertex << " ";
 
         /* OUTPUT: DIRECT PATH FROM 1 TO 4 (WEIGHT 3.0) */
-
         std::cout << std::endl << std::endl;
     } /* [MIN PATH] END */
 
