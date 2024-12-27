@@ -178,18 +178,24 @@ int main(void) {
 
 ## Run Examples in Windows with g++ or clang++ (PowerShell)
 
-__Warning__: For some of them, the library __glfw3__ is required. <br />
+__Warning__: For some of them, the libraries `GLFW/glfw3.h` and `GL/freeglut.h` are required. <br />
+Don't worry, I have provided for you a flag to use in this case so that you don't have to download anything. You can just skip those exmaples! <br />
+Those libraries can be easily downloaded using __MSYS__ and __MINGW64__. <br />
 
 ```bat
+REM The flag '--no-gl' is OPTIONAL. Use it just like I am showing you, to skip OpenGL examples.
+
 cd examples
-.\compile_g++.bat
+.\compile_clang++.bat --no-gl
 cd build/win
 .\example
 ```
 
 ```bat
+REM The flag '--no-gl' is OPTIONAL. Use it just like I am showing you, to skip OpenGL examples.
+
 cd examples
-.\compile_clang++.bat
+.\compile_g++.bat
 cd build/win
 .\example
 ```

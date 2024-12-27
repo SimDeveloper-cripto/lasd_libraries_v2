@@ -20,6 +20,8 @@ New Data Structures I want to add:
 
 Todo:
 
+- Complete `dijkstra with opengl` example
+- Provide `clang++` compilation support for Linux
 - Provide documentation also for the `LinkedList` library
 - For now, the library does not Init() the Graph before applying the A* Search
 
