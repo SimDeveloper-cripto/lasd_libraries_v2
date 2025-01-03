@@ -9,7 +9,6 @@ Things I want to add in the future for the Graph:
 
 - A* Search Algorithm for std::pair<>
 - PostOrder Map() and Fold() (both Bfs and Dfs)
-- Visualization of State using OpenGL
 
 New Data Structures I want to add:
 
@@ -20,7 +19,6 @@ New Data Structures I want to add:
 
 Todo:
 
-- Complete `dijkstra with opengl` example
 - Provide `clang++` compilation support for Linux
 - Provide documentation also for the `LinkedList` library
 - For now, the library does not Init() the Graph before applying the A* Search
@@ -85,3 +83,5 @@ cd test/NeuralNetwork/nn_test/
 ## LICENSE
 
 [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
+
+Copyright © 2024 Simone Catapano "SimDeveloper-cripto".

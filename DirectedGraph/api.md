@@ -175,34 +175,14 @@ int main(void) {
 }
 ```
 
-## Run Examples in Windows with g++ or clang++ (PowerShell)
+## Examples
 
-__Warning__: For some of them, the libraries `GLFW/glfw3.h` and `GL/freeglut.h` are required. <br />
-Don't worry, I have provided for you a flag to use in this case so that you don't have to download anything. You can just skip those exmaples! <br />
-Those libraries can be easily downloaded using __MSYS__ and __MINGW64__. <br />
+The folder __examples__ shows you a list of different use cases of this library. <br />
+This is what you can do, combining the project with __OpenGL__:
 
-```bat
-REM The flag '--no-gl' is OPTIONAL. Use it just like I am showing you, to skip OpenGL examples.
+![IMAGE](dijkstra.jpg)
 
-cd examples
-.\compile_clang++.bat --no-gl
-cd build/win
-.\example
-```
-
-```bat
-REM The flag '--no-gl' is OPTIONAL. Use it just like I am showing you, to skip OpenGL examples.
-
-cd examples
-.\compile_g++.bat
-cd build/win
-.\example
-```
-
-## Run Examples in Linux with g++
-
-```bash
-```
+Source folder: __examples/dijkstra_opengl/__
 
 ## LICENSE
 
