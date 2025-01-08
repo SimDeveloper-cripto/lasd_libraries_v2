@@ -178,10 +178,11 @@ int main(void) {
 ## Examples
 
 The folder __examples__ shows you a list of different use cases of this library. <br />
-This is what you can do, combining the project with __OpenGL__:
+This is what you can do, combining the project with __OpenGL__, starting from node `3` to node `6`:
 
 ![IMAGE](dijkstra.jpg)
 
+The minimum path here is `3 -> 1 -> 4 -> 5 -> 6`. <br />
 Source folder: __examples/dijkstra_opengl/__
 
 ## LICENSE

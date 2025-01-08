@@ -111,6 +111,12 @@ namespace lasd_glfw {
         glEnd();
     }
 
+    bool isEdgeInPath(const std::vector<int>& path, int from, int to) {
+        for (size_t i = 0; i < path.size() - 1; ++i)
+            if (path[i] == from && path[i + 1] == to) return true;
+        return false;
+    }
+
     int show() {
         if (!glfwInit()) {
             std::cerr << "Could not initialize GLFW.\n";
@@ -172,9 +178,7 @@ namespace lasd_glfw {
                 const Node& n1 = nodes[from];
                 const Node& n2 = nodes[to];
 
-                bool isInPath = std::find(path.begin(), path.end(), from) != path.end() &&
-                                std::find(path.begin(), path.end(), to) != path.end();
-
+                bool isInPath = isEdgeInPath(path, from, to);
                 drawArrow(n1.x, n1.y, n2.x, n2.y, isInPath ? edgeHighlightColor : edgeColor);
 
                 char weightText[16];

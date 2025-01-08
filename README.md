@@ -19,18 +19,18 @@ New Data Structures I want to add:
 
 Todo:
 
-- Provide `clang++` compilation support for Linux
 - Provide documentation also for the `LinkedList` library
 - For now, the library does not Init() the Graph before applying the A* Search
 
 ## Requirements
 
+- make
 - gcc/g++ __v13.2.0__ or higher
 - clang/clang++ __v17.0.4__ or higher
 
 ## Graph API
 
-Have a look at __DirectedGraph/api.md__ file. <br />
+Have a look at __DirectedGraph/README.md__ file. <br />
 There you'll find a complete description of the library and also:
 
 - A __quick start code__
@@ -44,26 +44,11 @@ Your code has to be written inside the namespace at __test/test.cpp__. <br />
 You can use the test code as a way to learn how to use the library. <br />
 I don't forbid you from doing otherwise, but if you want to quickly test things you can do it this way. Have fun! <br />
 
-### Compile and Execute the project in Windows with g++ or clang++ (PowerShell)
+### Compile and Execute
 
 ```bat
-.\compile_clang++.bat
+make
 cd build/win
-.\lasd
-```
-
-```bat
-.\compile_g++.bat
-cd build/win
-.\lasd
-```
-
-### Compile and Execute the project in Linux with g++
-
-```bash
-chmod +x build.sh
-./build.sh
-cd build/linux
 .\lasd
 ```
 
