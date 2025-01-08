@@ -48,8 +48,6 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 
 ```bat
 make
-cd build/win
-.\lasd
 ```
 
 ## Upcoming Development
