@@ -341,6 +341,135 @@ namespace lasd {
         }
     }
 
+    // ++++++++++ MAP
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrderVisit(const Data& u,
+        std::function<void(const Data&, void*)> visit, void* other) {
+        Nodes[u].color = Color::Gray;
+
+        for (const Edge<Data>& edge : Adj[u]) {
+            const Data& v = edge.to;
+            if (Nodes[v].color == Color::White) {
+                DfsPostOrderVisit(v, visit, other);
+            }
+        }
+
+        visit(u, other);
+        Nodes[u].color = Color::Black;
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrder(std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+        for (auto& pair : Nodes) {
+            if (pair.second.color == Color::White)
+                DfsPostOrderVisit(pair.first, visit, other);
+        }
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrder(const Data& start, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+        DfsPostOrderVisit(start, visit, other);
+    }
+
+    // ++++++++++ FOLD
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrderVisit(const Data& u,
+        std::function<void(const Data&, const void*, void*)> fold,
+        const void* par, void* acc) {
+        Nodes[u].color = Color::Gray;
+        for (const Edge<Data>& edge : Adj[u]) {
+            const Data& v = edge.to;
+            if (Nodes[v].color == Color::White)
+                DfsPostOrderVisit(v, fold, par, acc);
+        }
+        fold(u, par, acc);
+        Nodes[u].color = Color::Black;
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrder(std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept {
+        Init();
+        for (auto& pair : Nodes) {
+            if (pair.second.color == Color::White)
+                DfsPostOrderVisit(pair.first, fold, par, acc);
+        }
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::DfsPostOrder(const Data& start, std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept {
+        Init();
+        DfsPostOrderVisit(start, fold, par, acc);
+    }
+
+    // ++++++++++ BFS MAP AND FOLD
+    template <typename Data>
+    void DirectedGraph<Data>::BfsPostOrder(const Data& start, std::function<void(const Data&, void*)> visit, void* other) noexcept {
+        Init();
+
+        std::queue<Data> q;
+        std::vector<Data> order;
+        Nodes[start].setDistance(0);
+
+        Nodes[start].color = Color::Gray;
+        q.push(start);
+
+        while (!q.empty()) {
+            Data cur = q.front();
+            q.pop();
+            order.push_back(cur);
+
+            for (const Edge<Data>& edge : Adj[cur]) {
+                const Data& v = edge.to;
+                if (Nodes[v].color == Color::White) {
+                    Nodes[v].color = Color::Gray;
+                    Nodes[v].setDistance(Nodes[cur].getDistance() + 1);
+                    q.push(v);
+                }
+            }
+            Nodes[cur].color = Color::Black;
+        }
+
+        std::reverse(order.begin(), order.end());
+        for (const Data& node : order) {
+            visit(node, other);
+        }
+    }
+
+    template <typename Data>
+    void DirectedGraph<Data>::BfsPostOrder(const Data& start, std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept {
+        Init();
+
+        std::queue<Data> q;
+        std::vector<Data> order;
+
+        Nodes[start].setDistance(0);
+        Nodes[start].color = Color::Gray;
+        q.push(start);
+
+        while (!q.empty()) {
+            Data cur = q.front();
+            q.pop();
+            order.push_back(cur);
+
+            for (const Edge<Data>& edge : Adj[cur]) {
+                const Data& v = edge.to;
+                if (Nodes[v].color == Color::White) {
+                    Nodes[v].color = Color::Gray;
+                    Nodes[v].setDistance(Nodes[cur].getDistance() + 1);
+                    q.push(v);
+                }
+            }
+            Nodes[cur].color = Color::Black;
+        }
+
+        std::reverse(order.begin(), order.end());
+        for (const Data& node : order) {
+            fold(node, par, acc);
+        }
+    }
+
     template <typename Data>
     void DirectedGraph<Data>::Transpose() {
         std::map<Data, std::vector<Edge<Data>>> newAdj;

@@ -5,11 +5,6 @@ What I have focused my work on the most is the __Weigthed and Oriented Graph dat
 Also, I used this library for the examination of `algorithms and data structures`, and many other applications!. <br />
 __Disclaimer:__ The usage of __non-primitive data types__ need more testing.
 
-Future additions for the Graph:
-
-- A* Search Algorithm for std::pair<>
-- PostOrder Map() and Fold() (both Bfs and Dfs)
-
 New Data Structures I want to add:
 
 - Doubly Linked List
@@ -20,7 +15,8 @@ New Data Structures I want to add:
 Todo:
 
 - Provide documentation also for the `LinkedList` library
-- For now, the library does not Init() the Graph before applying the A* Search
+- `Create unit test` for PostOrder Map and Fold (both for Bfs and Dfs)
+- Use `make` to compile and run NeuraNova
 
 ## Requirements
 
@@ -44,7 +40,7 @@ Your code has to be written inside the namespace at __test/test.cpp__. <br />
 You can use the test code as a way to learn how to use the library. <br />
 I don't forbid you from doing otherwise, but if you want to quickly test things you can do it this way. Have fun! <br />
 
-### Compile and Execute
+### Compile and Execute Graph API
 
 ```bat
 make
@@ -52,10 +48,17 @@ make
 
 ## Upcoming Development
 
-I am developing a __Fully-Connected Multi-Layer Neural Network__! <br />
+I am re-creating in C++, from scratch, [__NeuraNova__](https://github.com/SimDeveloper-cripto/neura_nova.git) (also from scratch but built in python)  <br />
 That's a work in progress so, at the moment, It is not usable and I recommend not to do It. <br />
 I'll start working on it once finished the examination of NeuralNetworks (__DeepLearning Module__).  <br />
-You can find the description in __test/NeuralNetwork/neural_network.hpp__. <br />
+
+### Compile and Execute NeuraNova
+
+```bat
+cd NeuraNova\test
+.\build.bat
+.\neura_nova
+```
 
 ## LICENSE
 

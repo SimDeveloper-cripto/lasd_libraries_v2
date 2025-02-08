@@ -141,6 +141,9 @@ namespace lasd {
             return false;
         }
 
+        void DfsPostOrderVisit(const Data& u, std::function<void(const Data&, void*)> visit, void* other);
+        void DfsPostOrderVisit(const Data& u, std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc);
+
     public:
         DirectedGraph() = default;
         DirectedGraph(const DirectedGraph&);           // Copy Constructor
@@ -201,6 +204,18 @@ namespace lasd {
         // SET RELATED DFS (MAP & FOLD)
         void DfsFromSet(const std::set<Data>&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
         void DfsFromSet(const std::set<Data>&, FoldFunctor, const void*, void*) noexcept;
+
+        // DFS POST-ORDER MAP
+        void DfsPostOrder(std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        void DfsPostOrder(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+
+        // DFS POST-ORDER FOLD
+        void DfsPostOrder(std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept;
+        void DfsPostOrder(const Data&, std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept;
+
+        // BFS POST-ORDER MAP AND FOLD
+        void BfsPostOrder(const Data&, std::function<void(const Data&, void*)> visit, void* other) noexcept;
+        void BfsPostOrder(const Data&, std::function<void(const Data&, const void*, void*)> fold, const void* par, void* acc) noexcept;
 
         // GET THE TRANSPOSED GRAPH: returns a new instance of the Graph, but Transposed
         void Transpose();

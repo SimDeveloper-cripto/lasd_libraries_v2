@@ -32,7 +32,7 @@ namespace NNDL {
             } std::cout << "}" << std::endl;
         }
 
-        // Compute [WX + B]
+        // Compute [WX + B] [XW^T + B]
         // TODO: CHECK #1: Do I need to Transpose W matrix?
         for (size_t j = 0; j < inputs[0].size(); ++j) {
             double sum = bias;

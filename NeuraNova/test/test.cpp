@@ -1,4 +1,4 @@
-#include "nn_test.hpp"
+#include "test.hpp"
 
 using namespace NNDL;
 

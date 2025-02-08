@@ -1,6 +1,8 @@
 #include "neural_network.hpp"
 #include <utility>
 
+// THIS IMPLEMENTATION IS FOR A FEED-FORWARD MODEL
+
 namespace NNDL {
     NeuralNetwork::NeuralNetwork(const std::vector<std::vector<Neuron>>& neurons_per_layer) {
         for (const auto& neurons : neurons_per_layer) {

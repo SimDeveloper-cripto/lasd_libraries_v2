@@ -329,7 +329,7 @@ namespace lasdtest {
 
         std::vector<std::pair<int, double>> expectedPath = {{0, 5}, {4, 2.7}, {5, 4.7}};
         assert(path == expectedPath && "--> [INFO] TEST #16 'A* SEARCH' STATUS: FAILED\n");
-        std::cout << "--> [INFO] TEST " << test_step++ << " 'A* SEARCH' STATUS: PASSED" << std::endl;
+        std::cout << "--> [INFO] TEST #" << test_step++ << " 'A* SEARCH' STATUS: PASSED" << std::endl;
 
         // Test #17
         DirectedGraph<int> new_g3;
