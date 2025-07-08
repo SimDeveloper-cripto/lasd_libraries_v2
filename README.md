@@ -1,8 +1,8 @@
 # Overview
 
 This is a continuation and completion of lasd_libraries: <https://github.com/SimDeveloper-cripto/lasd_libraries>. <br />
-What I have focused my work on the most is the __Weigthed and Oriented Graph data structure, which is implemented by adjacency lists__. <br />
-Also, I used this library for the examination of `algorithms and data structures`, and many other applications!. <br />
+What I have focused my work on the most is the __Weigthed and Oriented Graph data structure, which is implemented by adjacency lists__ and my __Feed-Forward Neural Network__. <br />
+Also, I used this library for the examination of `algorithms and data structures` and `machine learning (deep learning)`, and many other applications!. <br />
 __Disclaimer:__ The usage of __non-primitive data types__ need more testing.
 
 New Data Structures I want to add:
@@ -15,14 +15,19 @@ New Data Structures I want to add:
 Todo:
 
 - Provide documentation also for the `LinkedList` library
-- `Create unit test` for PostOrder Map and Fold (both for Bfs and Dfs)
-- Use `make` to compile and run NeuraNova
+- `Create unit tests` for PostOrder Map and Fold (both for Bfs and Dfs)
 
 ## Requirements
 
 - make
+- cmake
 - gcc/g++ __v13.2.0__ or higher
 - clang/clang++ __v17.0.4__ or higher
+
+```sh
+# on Linux
+sudo apt install nlohmann-json3-dev
+```
 
 ## Graph API
 
@@ -43,21 +48,22 @@ I don't forbid you from doing otherwise, but if you want to quickly test things 
 ### Compile and Execute Graph API
 
 ```bat
+cd ~/lasd_libraries_v2
 make
 ```
 
 ## Upcoming Development
 
-I am re-creating in C++, from scratch, [__NeuraNova__](https://github.com/SimDeveloper-cripto/neura_nova.git) (also from scratch but built in python)  <br />
-That's a work in progress so, at the moment, It is not usable and I recommend not to do It. <br />
-I'll start working on it once finished the examination of NeuralNetworks (__DeepLearning Module__).  <br />
+I am re-creating in C++ what I've built before, from scratch, [__NeuraNova__](https://github.com/SimDeveloper-cripto/neura_nova.git) (also from scratch but in python3).  <br />
+It is recommended to look up that repository 'cause you'll find also a __Convolutional Neural Network__ implementation. <br>
+For more details, have a look at __NeuraNova/README.md__ file. <br />
 
 ### Compile and Execute NeuraNova
 
 ```bat
-cd NeuraNova\test
-.\build.bat
-.\neura_nova
+cd NeuraNova
+make all
+make run
 ```
 
 ## LICENSE

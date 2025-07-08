@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <cstdint>
 
 /**
  * Carica MNIST
@@ -14,6 +15,6 @@
 */
 std::pair<std::pair<std::vector<uint8_t>, std::vector<uint8_t>>,
           std::pair<std::vector<uint8_t>, std::vector<uint8_t>>>
-load_mnist(int train_limit, int test_limit, const std::string& path = "data/MNIST/raw");
+load_mnist(int train_limit, int test_limit, const std::string& path = "dataset/MNIST/raw");
 
 #endif // NEURANOVA_DATA_HPP

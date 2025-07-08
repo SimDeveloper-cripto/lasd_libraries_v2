@@ -17,4 +17,6 @@ file(GLOB SOURCES
 )
 
 add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+
+find_package(nlohmann_json REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
