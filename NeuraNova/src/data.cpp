@@ -32,8 +32,8 @@ static std::vector<uint8_t> load_images(const std::string& filename, int& total,
     c = __builtin_bswap32(c);
 
     total = n_images;
-    rows = r;
-    cols = c;
+    rows  = r;
+    cols  = c;
 
     std::vector<uint8_t> images(n_images * r * c);
     in.read(reinterpret_cast<char*>(images.data()), images.size());

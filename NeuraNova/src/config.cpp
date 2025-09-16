@@ -3,8 +3,8 @@
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
-
 #include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
 std::vector<FFConfig> load_ff_config(const std::string& file_path) {
@@ -20,7 +20,7 @@ std::vector<FFConfig> load_ff_config(const std::string& file_path) {
         FFConfig cfg;
         for (auto& l : item["layers"]) {
             LayerConfig lc;
-            lc.neurons = l["neurons"].get<int>();
+            lc.neurons    = l["neurons"].get<int>();
             lc.activation = l["activation"].get<std::string>();
             cfg.layers.push_back(lc);
         }
@@ -38,9 +38,10 @@ std::vector<FFConfig> load_ff_config(const std::string& file_path) {
     return configs;
 }
 
-void update_config_results(const std::vector<FFResult>& results,
-                           const std::string& filename) {
+void update_config_results(const std::vector<FFResult>& results, const std::string& filename) {
     json rootArray;
+
+    // Result for each configuration
     for (auto& r : results) {
         json jr;
         json jLayers = json::array();
@@ -56,7 +57,6 @@ void update_config_results(const std::vector<FFResult>& results,
         jr["epochs"]          = r.epochs;
         jr["batch_size"]      = r.batch_size;
         jr["test_accuracy"]   = r.test_accuracy;
-
         rootArray.push_back(jr);
     }
 
@@ -78,6 +78,7 @@ void update_config_results(const std::vector<FFResult>& results,
             float diff = a - meanAcc;
             sumVar += diff * diff;
         }
+
         float stdAcc = 0.f;
         if (accuracies.size() > 1) {
             stdAcc = std::sqrt(sumVar / float(accuracies.size()));

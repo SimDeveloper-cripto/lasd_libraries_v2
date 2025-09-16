@@ -11,10 +11,9 @@ float randn() {
     return dist(global_rng());
 }
 
-std::vector<float> matmul(const std::vector<float>& A, int rowsA, int colsA,
-                          const std::vector<float>& B, int rowsB, int colsB) {
+std::vector<float> matmul(const std::vector<float>& A, int rowsA, int colsA, const std::vector<float>& B, int rowsB, int colsB) {
     if (colsA != rowsB) {
-        throw std::runtime_error("Dimensioni non compatibili in matmul");
+        throw std::runtime_error("[ERROR] matmul(): mismatch of dimensions.");
     }
 
     std::vector<float> C(rowsA * colsB, 0.0f);
@@ -30,29 +29,23 @@ std::vector<float> matmul(const std::vector<float>& A, int rowsA, int colsA,
     return C;
 }
 
-std::vector<float> add_vectors(const std::vector<float>& A,
-                               const std::vector<float>& B) {
+std::vector<float> add_vectors(const std::vector<float>& A, const std::vector<float>& B) {
     if (A.size() != B.size()) {
-        throw std::runtime_error("Dimensioni non compatibili in add_vectors");
+        throw std::runtime_error("[ERROR] add_vectors(): mismatch of dimensions.");
     }
 
     std::vector<float> C(A.size());
-    for (size_t i = 0; i < A.size(); i++) {
-        C[i] = A[i] + B[i];
-    }
+    for (size_t i = 0; i < A.size(); i++) C[i] = A[i] + B[i];
     return C;
 }
 
-std::vector<float> mul_vectors(const std::vector<float>& A,
-                               const std::vector<float>& B) {
+std::vector<float> mul_vectors(const std::vector<float>& A, const std::vector<float>& B) {
     if (A.size() != B.size()) {
-        throw std::runtime_error("Dimensioni non compatibili in mul_vectors");
+        throw std::runtime_error("[ERROR] mul_vectors(): mismatch of dimensions.");
     }
 
     std::vector<float> C(A.size());
-    for (size_t i = 0; i < A.size(); i++) {
-        C[i] = A[i] * B[i];
-    }
+    for (size_t i = 0; i < A.size(); i++) C[i] = A[i] * B[i];
     return C;
 }
 
@@ -77,7 +70,5 @@ std::vector<float> sum_rows(const std::vector<float>& A, int rows, int cols) {
         }
         sums[r] = accum;
     }
-
-    // Risultato: shape (rows, 1)
-    return sums;
+    return sums; // Shape (rows, 1)
 }

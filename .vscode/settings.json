@@ -89,7 +89,12 @@
         "future": "cpp",
         "coroutine": "cpp",
         "resumable": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "any": "cpp",
+        "codecvt": "cpp",
+        "cstdarg": "cpp",
+        "forward_list": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

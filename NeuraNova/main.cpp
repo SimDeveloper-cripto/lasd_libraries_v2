@@ -5,9 +5,9 @@
 
 int main() {
     try {
-        run_ff_model();
+        launch();
     } catch (const std::exception& e) {
-        std::cerr << "[ERRORE] " << e.what() << std::endl;
+        std::cerr << "[ERROR] Could not run 'launch()' function!\n" << e.what() << std::endl;
         return 1;
     }
     return 0;

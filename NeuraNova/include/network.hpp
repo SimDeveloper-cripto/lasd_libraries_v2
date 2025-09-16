@@ -7,10 +7,9 @@ class Network {
 public:
     virtual ~Network() = default;
 
-    // Effettua forward su input_X [input_dim * batch_size]
-    // Restituisce logits [output_dim * batch_size]
-    virtual std::vector<float> predict(const std::vector<float>& input_X,
-                                       int input_dim, int batch_size) = 0;
+    // Forward pass on input_X [input_dim * batch_size]
+    // Returns logits [output_dim * batch_size]
+    virtual std::vector<float> predict(const std::vector<float>& input_X, int input_dim, int batch_size) = 0;
 
     virtual void train(const std::vector<float>& X, const std::vector<float>& y,
                        int input_dim, int num_samples,

@@ -7,9 +7,6 @@
 #include <string>
 #include <cstdint>
 
-/**
- * DenseLayer: (output_dim, input_dim) per weights e (output_dim, 1) per bias
-*/
 class DenseLayer {
 public:
     DenseLayer(int input_dim,
@@ -34,19 +31,16 @@ public:
     void set_weights(const LayerState& state);
 
     // Forward
-    // input_data         shape: (input_dim,  batch_size)
-    // Restituisce output shape: (output_dim, batch_size)
-    std::vector<float> forward(const std::vector<float>& input_data,
-                               int batch_size);
+    // input_data shape: (input_dim,  batch_size)
+    // output     shape: (output_dim, batch_size)
+    std::vector<float> forward(const std::vector<float>& input_data, int batch_size);
 
     // Backward + Adam
-    // grad_output            shape: (output_dim, batch_size)
-    // Restituisce grad_input shape: (input_dim,  batch_size)
-    std::vector<float> backward(const std::vector<float>& grad_output,
-                                int batch_size);
+    // grad_output shape: (output_dim, batch_size)
+    // grad_input  shape: (input_dim,  batch_size)
+    std::vector<float> backward(const std::vector<float>& grad_output, int batch_size);
 
     int getOutputDim() const { return _outputDim; }
-
 private:
     int _inputDim;
     int _outputDim;
@@ -58,22 +52,18 @@ private:
     float _epsilon;
     int _t;
 
-    // Pesi
     std::vector<float> _weights; // shape (output_dim * input_dim)
     std::vector<float> _bias;    // shape (output_dim)
 
-    // Momenti per Adam
     std::vector<float> _m_weights;
     std::vector<float> _v_weights;
     std::vector<float> _m_bias;
     std::vector<float> _v_bias;
 
-    // Cache
     std::vector<float> _input;            // shape (input_dim  * batch_size)
     std::vector<float> _output;           // shape (output_dim * batch_size)
     std::vector<float> _activation_cache; // shape (output_dim * batch_size)
 
-    // Funzioni attivazione
     void reluForward(std::vector<float>& z);
     void reluBackward(std::vector<float>& grad_z, const std::vector<float>& z);
 
@@ -83,7 +73,6 @@ private:
     void identityForward(std::vector<float>& z);
     void identityBackward(std::vector<float>& grad_z);
 
-    // Inizializzatori
     void initWeightsHe(int input_dim, int output_dim);
     void initWeightsGlorot(int input_dim, int output_dim);
 };

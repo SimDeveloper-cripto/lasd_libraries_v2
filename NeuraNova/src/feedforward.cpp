@@ -7,23 +7,16 @@
 #include <algorithm>
 
 FeedForward::FeedForward(LossFunction* loss_fn) : _lossFn(loss_fn) {}
-
 FeedForward::~FeedForward() {}
 
 void FeedForward::add_layer(const DenseLayer& layer) {
     _layers.push_back(layer);
 }
 
-std::vector<float> FeedForward::predict(const std::vector<float>& input_X,
-                                        int input_dim, int batch_size) {
+std::vector<float> FeedForward::predict(const std::vector<float>& input_X, int input_dim, int batch_size) {
     std::vector<float> output = input_X;
-    int current_dim = input_dim;
-
-    for (auto& layer : _layers) {
-        output = layer.forward(output, batch_size);
-        current_dim = layer.getOutputDim();
-    }
-    return output; // shape: (current_dim * batch_size)
+    for (auto& layer : _layers) output = layer.forward(output, batch_size);
+    return output;
 }
 
 void FeedForward::train(const std::vector<float>& X, const std::vector<float>& y,
@@ -55,12 +48,12 @@ void FeedForward::train(const std::vector<float>& X, const std::vector<float>& y
             int end = std::min(start + batch_size, num_samples);
             int current_batch_size = end - start;
 
-            // Preparo i batch X_batch, y_batch
-            // shape: X_batch => (input_dim,  current_batch_size)
+            // Shape: X_batch => (input_dim,  current_batch_size)
             //        y_batch => (output_dim, current_batch_size)
             std::vector<float> X_batch(input_dim * current_batch_size);
             std::vector<float> y_batch(_layers.back().getOutputDim() * current_batch_size);
 
+            // Get images from current batch
             for (int b = 0; b < current_batch_size; b++) {
                 int idx = indices[start + b];
 
@@ -74,20 +67,13 @@ void FeedForward::train(const std::vector<float>& X, const std::vector<float>& y
                 }
             }
 
-            // Forward
             auto logits = predict(X_batch, input_dim, current_batch_size);
+            float loss  = _lossFn->forward(logits, y_batch, _layers.back().getOutputDim(), current_batch_size);
+            epoch_loss  += loss * current_batch_size;
 
-            // Loss
-            float loss = _lossFn->forward(logits, y_batch,
-                                          _layers.back().getOutputDim(),
-                                          current_batch_size);
-            epoch_loss += loss * current_batch_size;
-
-            // Backward
             const auto& grad = _lossFn->backward();
-            auto grad_back = grad;
+            auto grad_back   = grad;
 
-            // BackPropagation
             for (int i = (int)_layers.size() - 1; i >= 0; i--) {
                 grad_back = _layers[i].backward(grad_back, current_batch_size);
             }
@@ -106,9 +92,7 @@ void FeedForward::train(const std::vector<float>& X, const std::vector<float>& y
             stopping_counter = 0;
 
             _bestWeights.clear();
-            for (auto& layer : _layers) {
-                _bestWeights.push_back(layer.get_weights());
-            }
+            for (auto& layer : _layers) { _bestWeights.push_back(layer.get_weights()); }
         } else {
             stopping_counter++;
         }
@@ -119,21 +103,18 @@ void FeedForward::train(const std::vector<float>& X, const std::vector<float>& y
         }
     }
 
-    for (size_t i = 0; i < _layers.size(); i++) {
-        _layers[i].set_weights(_bestWeights[i]);
-    }
+    for (size_t i = 0; i < _layers.size(); i++) { _layers[i].set_weights(_bestWeights[i]); }
 }
 
 float FeedForward::getAccuracy(const std::vector<float>& X_test,
                                const std::vector<float>& y_test_onehot,
                                int input_dim,
                                int test_samples) {
-    // Forward
     int batch_size = test_samples;
     auto logits    = predict(X_test, input_dim, batch_size);
 
     int output_dim = _layers.back().getOutputDim();
-    int correct = 0;
+    int correct    = 0;
     for (int b = 0; b < test_samples; b++) {
         float max_logit  = -99999999.f;
         int   pred_class = -1;
@@ -144,13 +125,13 @@ float FeedForward::getAccuracy(const std::vector<float>& X_test,
         for (int od = 0; od < output_dim; od++) {
             float l = logits[od * test_samples + b];
             if (l > max_logit) {
-                max_logit = l;
+                max_logit  = l;
                 pred_class = od;
             }
 
             float t = y_test_onehot[od * test_samples + b];
             if (t > max_label) {
-                max_label = t;
+                max_label  = t;
                 true_class = od;
             }
         }
@@ -167,12 +148,11 @@ float FeedForward::computeValidationLoss(const std::vector<float>& X_val,
                                          int input_dim,
                                          int val_samples,
                                          int batch_size) {
-    // Forward su X_val a batch
     float total_loss = 0.f;
     int output_dim   = _layers.back().getOutputDim();
 
     for (int start = 0; start < val_samples; start += batch_size) {
-        int end = std::min(start + batch_size, val_samples);
+        int end                = std::min(start + batch_size, val_samples);
         int current_batch_size = end - start;
 
         std::vector<float> X_batch(input_dim * current_batch_size);

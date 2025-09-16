@@ -16,6 +16,8 @@ Todo:
 
 - Provide documentation also for the `LinkedList` library
 - `Create unit tests` for PostOrder Map and Fold (both for Bfs and Dfs)
+- Provide `iterators`
+- Add possibility to save graph in formats like json or csv
 
 ## Requirements
 
@@ -54,14 +56,16 @@ make
 
 ## Feed-Forward API (NeuraNova)
 
-I am re-creating in C++ what I've built before, from scratch, [__NeuraNova__](https://github.com/SimDeveloper-cripto/neura_nova.git) (also from scratch but in python3).  <br />
+I have re-created in C++ what I've built before, from scratch, [__NeuraNova__](https://github.com/SimDeveloper-cripto/neura_nova.git) (also from scratch but in python3).  <br />
 It is recommended to look up that repository 'cause you'll find also a __Convolutional Neural Network__ implementation. <br>
-For more details, have a look at __NeuraNova/README.md__ file. <br />
+For more details, have a look at __NeuraNova/README.md__ file :) <br />
+There are 10 models provided in __config/ff_config.json__.
 
 ### Compile and Execute NeuraNova
 
 ```bat
 cd ~/lasd_libraries_v2/NeuraNova
+mkdir build
 make all
 make run
 ```

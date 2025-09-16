@@ -108,7 +108,7 @@ Represents the directed graph and provides all operations and algorithms.
 | `std::stack<Data> getTopologicalSort(bool print_message)`                                                                                            | Returns a topological order of the graph's nodes. Prints a message if parameter is true       |
 | `std::vector<Data> getTopologicalSortUsingIncomingGrade()`                                                                                           | Computes a topological sort of the graph using node in-degrees                                |
 | `std::vector<std::pair<Data, double>> AStar(const Data& source, const Data& destination, std::function<double(const Data&, const Data&)> Heuristic)` | Finds the shortest path between two nodes using the A* algorithm, incorporating a heuristic   |
-| `std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept`                                                                     | Identifies and returns all strongly connected components in the graph                         |
+| `std::vector<std::vector<Data>> CalculateStronglyConnectedComponents() noexcept`                                                                     | Identifies and returns all strongly connected components in the graph using Kosaraju's algorithm |
 
 ---
 

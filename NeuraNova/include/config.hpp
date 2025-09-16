@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+// Based on "config/ff_config.json"
+
 struct LayerConfig {
     int neurons;
     std::string activation;
@@ -32,8 +34,6 @@ struct FFResult {
 };
 
 std::vector<FFConfig> load_ff_config(const std::string& file_path);
-
-void update_config_results(const std::vector<FFResult>& results,
-                           const std::string& filename);
+void update_config_results(const std::vector<FFResult>& results, const std::string& filename);
 
 #endif // NEURANOVA_CONFIG_HPP

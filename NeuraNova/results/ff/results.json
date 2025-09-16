@@ -1,0 +1,194 @@
+[
+    [
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "relu",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "96.92",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "relu",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "96.95",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "sigmoid",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "96.00",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "sigmoid",
+                    "neurons": 256
+                },
+                {
+                    "activation": "sigmoid",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.25",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 64,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "relu",
+                    "neurons": 256
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.68",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "sigmoid",
+                    "neurons": 128
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "96.85",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 64,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "sigmoid",
+                    "neurons": 256
+                },
+                {
+                    "activation": "sigmoid",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.60",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 128,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "relu",
+                    "neurons": 256
+                },
+                {
+                    "activation": "relu",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.28",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 64,
+            "epochs": 15,
+            "layers": [
+                {
+                    "activation": "sigmoid",
+                    "neurons": 256
+                },
+                {
+                    "activation": "sigmoid",
+                    "neurons": 64
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.69",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "batch_size": 64,
+            "epochs": 20,
+            "layers": [
+                {
+                    "activation": "relu",
+                    "neurons": 128
+                },
+                {
+                    "activation": "identity",
+                    "neurons": 10
+                }
+            ],
+            "test_accuracy": "97.17",
+            "test_dimension": 10000,
+            "train_dimension": 60000
+        },
+        {
+            "ar_mean": "97.138992",
+            "std_deviation": "0.480260"
+        }
+    ]
+]

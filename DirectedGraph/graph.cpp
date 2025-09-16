@@ -607,6 +607,7 @@ namespace lasd {
         return {}; // If no path is found, return an empty vector.
     }
 
+    // Kosaraju's Algorithm
     template <typename Data>
     std::vector<std::vector<Data>> DirectedGraph<Data>::CalculateStronglyConnectedComponents() noexcept {
         std::stack<Data> stack;

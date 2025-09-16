@@ -13,8 +13,7 @@ public:
 
     void add_layer(const DenseLayer& layer);
 
-    std::vector<float> predict(const std::vector<float>& input_X,
-                               int input_dim, int batch_size) override;
+    std::vector<float> predict(const std::vector<float>& input_X, int input_dim, int batch_size) override;
 
     void train(const std::vector<float>& X, const std::vector<float>& y,
                int input_dim, int num_samples,

@@ -23,7 +23,7 @@ namespace lasd {
     template <typename Data>
     class Node {
     private:
-        unsigned long distance;
+        unsigned long distance = 0;
         std::vector<Node*> predecessors;
 
     public:

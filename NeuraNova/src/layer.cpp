@@ -40,10 +40,10 @@ void DenseLayer::initWeightsHe(int input_dim, int output_dim) {
 }
 
 void DenseLayer::initWeightsGlorot(int input_dim, int output_dim) {
+    // uniform in [-limit, limit]
     _weights.resize(output_dim * input_dim);
     float limit = std::sqrt(6.f / float(input_dim + output_dim));
     for (auto &w : _weights) {
-        // uniform in [-limit, limit]
         float r = (float)rand() / (float)RAND_MAX; // [0,1]
         w = (2.f * r - 1.f) * limit;
     }
@@ -86,14 +86,12 @@ void DenseLayer::sigmoidForward(std::vector<float>& z) {
 void DenseLayer::identityForward(std::vector<float>& z) {}
 
 void DenseLayer::reluBackward(std::vector<float>& grad_z, const std::vector<float>& z) {
-    // grad_z[i] *= (z[i] > 0)
     for (size_t i = 0; i < grad_z.size(); i++) {
         grad_z[i] = (z[i] > 0.f) ? grad_z[i] : 0.f;
     }
 }
 
 void DenseLayer::sigmoidBackward(std::vector<float>& grad_z, const std::vector<float>& out) {
-    // grad_z[i] *= out[i] * (1 - out[i])
     for (size_t i = 0; i < grad_z.size(); i++) {
         grad_z[i] *= out[i] * (1.f - out[i]);
     }
@@ -102,9 +100,8 @@ void DenseLayer::sigmoidBackward(std::vector<float>& grad_z, const std::vector<f
 void DenseLayer::identityBackward(std::vector<float>& grad_z) {}
 
 // Forward
-std::vector<float> DenseLayer::forward(const std::vector<float>& input_data,
-                                       int batch_size) {
-    _input = input_data; // shape (inputDim * batch_size)
+std::vector<float> DenseLayer::forward(const std::vector<float>& input_data, int batch_size) {
+    _input = input_data;
 
     // Z = W * X + B
     // W shape: (outputDim, inputDim)
@@ -134,9 +131,8 @@ std::vector<float> DenseLayer::forward(const std::vector<float>& input_data,
 }
 
 // Backward
-std::vector<float> DenseLayer::backward(const std::vector<float>& grad_output,
-                                        int batch_size) {
-    // grad_output shape: (outputDim, batch_size)
+// grad_output shape: (outputDim, batch_size)
+std::vector<float> DenseLayer::backward(const std::vector<float>& grad_output, int batch_size) {
     _t += 1;
 
     std::vector<float> grad_z = grad_output;
@@ -154,18 +150,16 @@ std::vector<float> DenseLayer::backward(const std::vector<float>& grad_output,
     // grad_z     shape: (outputDim, batch_size)
     // grad_input shape: (inputDim,  batch_size)
 
-    // Per matmul vogliamo W^T shape: (inputDim, outputDim)
-    auto W_T = transpose(_weights, _outputDim, _inputDim);
-    auto grad_input = matmul(W_T, _inputDim, _outputDim,
-                             grad_z, _outputDim, batch_size);
+    // For matmul we want W^T shape: (inputDim, outputDim)
+    auto W_T        = transpose(_weights, _outputDim, _inputDim);
+    auto grad_input = matmul(W_T, _inputDim, _outputDim, grad_z, _outputDim, batch_size);
 
     // grad_weights = grad_z @ input^T
     // grad_z  shape: (outputDim, batch_size)
     // input^T shape: (batch_size, inputDim)
     // => (outputDim, inputDim)
-    auto input_T = transpose(_input, _inputDim, batch_size);
-    auto grad_weights = matmul(grad_z, _outputDim, batch_size,
-                               input_T, batch_size, _inputDim);
+    auto input_T      = transpose(_input, _inputDim, batch_size);
+    auto grad_weights = matmul(grad_z, _outputDim, batch_size, input_T, batch_size, _inputDim);
 
     auto sum_gb = sum_rows(grad_z, _outputDim, batch_size);
 
@@ -194,6 +188,5 @@ std::vector<float> DenseLayer::backward(const std::vector<float>& grad_output,
         float v_hat = _v_bias[i] / bias_correction2;
         _bias[i] -= _learningRate * m_hat / (std::sqrt(v_hat) + _epsilon);
     }
-
     return grad_input;
 }

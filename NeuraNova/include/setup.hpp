@@ -18,13 +18,9 @@ struct FFDataSet {
 };
 
 std::vector<float> one_hot_encode(const std::vector<uint8_t>& labels, int num_classes);
-
-FFDataSet load_and_preprocess_data_for_ff(int train_limit,
-                                          int test_limit,
-                                          int validation_limit);
-
+FFDataSet load_and_preprocess_data_for_ff(int train_limit, int test_limit, int validation_limit);
 FFResult build_and_train_ff_model_with_config(const FFConfig& config);
 
-void run_ff_model();
+void launch();
 
 #endif // NEURANOVA_SETUP_HPP

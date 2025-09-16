@@ -7,7 +7,7 @@
 #include <cstdint>
 
 /**
- * Carica MNIST
+ * LOAD MNIST
  *  - X_train: shape (train_limit, 28, 28)
  *  - y_train: shape (train_limit)
  *  - X_test : shape (test_limit, 28, 28)
