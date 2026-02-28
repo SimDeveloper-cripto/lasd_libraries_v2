@@ -13,7 +13,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "96.92",
+            "test_accuracy": "97.02",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -30,7 +30,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "96.95",
+            "test_accuracy": "96.73",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -47,7 +47,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "96.00",
+            "test_accuracy": "95.86",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -68,7 +68,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.25",
+            "test_accuracy": "97.08",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -85,7 +85,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.68",
+            "test_accuracy": "97.60",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -102,7 +102,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "96.85",
+            "test_accuracy": "96.83",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -123,7 +123,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.60",
+            "test_accuracy": "97.46",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -144,7 +144,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.28",
+            "test_accuracy": "97.41",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -165,7 +165,7 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.69",
+            "test_accuracy": "97.71",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
@@ -182,13 +182,13 @@
                     "neurons": 10
                 }
             ],
-            "test_accuracy": "97.17",
+            "test_accuracy": "97.27",
             "test_dimension": 10000,
             "train_dimension": 60000
         },
         {
-            "ar_mean": "97.138992",
-            "std_deviation": "0.480260"
+            "ar_mean": "97.097000",
+            "std_deviation": "0.512914"
         }
     ]
 ]

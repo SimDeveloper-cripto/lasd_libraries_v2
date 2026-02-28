@@ -5,7 +5,7 @@ all: $(BUILD_DIR)/$(PROJECT_NAME)
 
 $(BUILD_DIR)/$(PROJECT_NAME):
 	@mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake .. && make
+	@cd $(BUILD_DIR) && cmake .. > /dev/null && make --no-print-directory
 
 run: all
 	./$(BUILD_DIR)/$(PROJECT_NAME)
@@ -14,3 +14,5 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .PHONY: all clean run
+
+# make clean && make

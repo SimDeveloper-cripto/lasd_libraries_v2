@@ -65,9 +65,8 @@ There are 10 models provided in __config/ff_config.json__.
 
 ```bat
 cd ~/lasd_libraries_v2/NeuraNova
-mkdir build
-make all
-make run
+make clean && make
+./build/NeuraNova
 ```
 
 ## LICENSE

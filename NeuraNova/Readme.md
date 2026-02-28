@@ -5,6 +5,7 @@ Results for each one of the 10 models are located in __results/__ folder. <br />
 
 Todo <br>
 
-- Step up code optimization
-- Speed-Up execution process
 - Add dataset shifting with results and prediction images
+- Add early stopping
+- Add save best model somewhere
+- Add make the network integrable as a basis for other projects

@@ -1,192 +1,142 @@
 #include "../include/layer.hpp"
 
-#include <cmath>
-#include <stdexcept>
 #include <algorithm>
+#include <cmath>
 
-DenseLayer::DenseLayer(int input_dim,
-                       int output_dim,
-                       const std::string& activation,
-                       float learning_rate,
-                       float beta1,
-                       float beta2,
-                       float epsilon)
+DenseLayer::DenseLayer(int input_dim, int output_dim,
+                       std::unique_ptr<Activation> activation,
+                       std::unique_ptr<Optimizer> optimizer)
     : _inputDim(input_dim), _outputDim(output_dim),
-      _activation(activation),
-      _learningRate(learning_rate),
-      _beta1(beta1), _beta2(beta2), _epsilon(epsilon),
-      _t(0)
-{
-    if (activation == "relu") {
-        initWeightsHe(input_dim, output_dim);
-    } else {
-        initWeightsGlorot(input_dim, output_dim);
-    }
+      _activationFn(std::move(activation)), _optimizer(std::move(optimizer)) {
 
-    _bias.resize(output_dim, 0.0f);
+  // Glorot initialization as default
+  initWeightsGlorot(input_dim, output_dim);
 
-    _m_weights.resize(_weights.size(), 0.0f);
-    _v_weights.resize(_weights.size(), 0.0f);
-    _m_bias.resize(_bias.size(), 0.0f);
-    _v_bias.resize(_bias.size(), 0.0f);
+  _bias.resize(output_dim, 0.0f);
+
+  if (_optimizer) {
+    _optimizer->init(_weights.size(), _bias.size());
+  }
+
+  // Buffers that don't depend on batch size
+  _W_T.resize(_inputDim * _outputDim, 0.0f);
+  _grad_weights.resize(_outputDim * _inputDim, 0.0f);
+  _sum_gb.resize(_outputDim, 0.0f);
+}
+
+DenseLayer::DenseLayer(const DenseLayer &other)
+    : _inputDim(other._inputDim), _outputDim(other._outputDim),
+      _weights(other._weights), _bias(other._bias), _W_T(other._W_T),
+      _grad_weights(other._grad_weights), _sum_gb(other._sum_gb),
+      _currentBufferSize(other._currentBufferSize) {
+
+  // TODO
+  // Unique ptrs need manual reconstruction
+  // This is a weak spot, we assume types for deep copy or we just don't
+  // copy them well.
+  // For this project's FeedForward usage where layers are added
+  // once, the copy constructor is called by std::vector::push_back.
+  // A better modern C++ approach is using move semantics. Since we deleted copy
+  // assign and kept move const/assign, std::vector will use move if noexcept!
 }
 
 void DenseLayer::initWeightsHe(int input_dim, int output_dim) {
-    _weights.resize(output_dim * input_dim);
-    float scale = std::sqrt(2.f / float(input_dim));
-    for (auto &w : _weights) {
-        w = randn() * scale;
-    }
+  _weights.resize(output_dim * input_dim);
+  float scale = std::sqrt(2.f / float(input_dim));
+  for (auto &w : _weights) {
+    w = randn() * scale;
+  }
 }
 
 void DenseLayer::initWeightsGlorot(int input_dim, int output_dim) {
-    // uniform in [-limit, limit]
-    _weights.resize(output_dim * input_dim);
-    float limit = std::sqrt(6.f / float(input_dim + output_dim));
-    for (auto &w : _weights) {
-        float r = (float)rand() / (float)RAND_MAX; // [0,1]
-        w = (2.f * r - 1.f) * limit;
-    }
+  // uniform in [-limit, limit]
+  _weights.resize(output_dim * input_dim);
+  float limit = std::sqrt(6.f / float(input_dim + output_dim));
+  for (auto &w : _weights) {
+    float r = (float)rand() / (float)RAND_MAX; // [0,1]
+    w = (2.f * r - 1.f) * limit;
+  }
 }
 
 DenseLayer::LayerState DenseLayer::get_weights() const {
-    LayerState s;
-    s.weights    = _weights;
-    s.bias       = _bias;
-    s.m_weights  = _m_weights;
-    s.v_weights  = _v_weights;
-    s.m_bias     = _m_bias;
-    s.v_bias     = _v_bias;
-    s.t          = _t;
-    return s;
+  LayerState s;
+  s.weights = _weights;
+  s.bias = _bias;
+  return s;
 }
 
-void DenseLayer::set_weights(const LayerState& state) {
-    _weights   = state.weights;
-    _bias      = state.bias;
-    _m_weights = state.m_weights;
-    _v_weights = state.v_weights;
-    _m_bias    = state.m_bias;
-    _v_bias    = state.v_bias;
-    _t         = state.t;
+void DenseLayer::set_weights(const LayerState &state) {
+  _weights = state.weights;
+  _bias = state.bias;
 }
 
-void DenseLayer::reluForward(std::vector<float>& z) {
-    for (auto& val : z) {
-        val = std::max(0.0f, val);
-    }
+void DenseLayer::reallocateBuffers(int batch_size) {
+  if (batch_size > _currentBufferSize) {
+    _output.resize(_outputDim * batch_size, 0.0f);
+    _grad_z.resize(_outputDim * batch_size, 0.0f);
+    _grad_input.resize(_inputDim * batch_size, 0.0f);
+    _input_T.resize(batch_size * _inputDim, 0.0f);
+    _currentBufferSize = batch_size;
+  }
 }
-
-void DenseLayer::sigmoidForward(std::vector<float>& z) {
-    for (auto& val : z) {
-        val = 1.f / (1.f + std::exp(-val));
-    }
-}
-
-void DenseLayer::identityForward(std::vector<float>& z) {}
-
-void DenseLayer::reluBackward(std::vector<float>& grad_z, const std::vector<float>& z) {
-    for (size_t i = 0; i < grad_z.size(); i++) {
-        grad_z[i] = (z[i] > 0.f) ? grad_z[i] : 0.f;
-    }
-}
-
-void DenseLayer::sigmoidBackward(std::vector<float>& grad_z, const std::vector<float>& out) {
-    for (size_t i = 0; i < grad_z.size(); i++) {
-        grad_z[i] *= out[i] * (1.f - out[i]);
-    }
-}
-
-void DenseLayer::identityBackward(std::vector<float>& grad_z) {}
 
 // Forward
-std::vector<float> DenseLayer::forward(const std::vector<float>& input_data, int batch_size) {
-    _input = input_data;
+const std::vector<float> &
+DenseLayer::forward(const std::vector<float> &input_data, int batch_size) {
+  _input = input_data;
+  reallocateBuffers(batch_size);
 
-    // Z = W * X + B
-    // W shape: (outputDim, inputDim)
-    // X shape: (inputDim,  batch_size)
-    // Z shape: (outputDim, batch_size)
-    auto Z = matmul(_weights, _outputDim, _inputDim,
-                    input_data, _inputDim, batch_size);
+  // Z = W * X + B
+  matmul(_weights, _outputDim, _inputDim, input_data, _inputDim, batch_size,
+         _output);
 
-    for (int b = 0; b < batch_size; b++) {
-        for (int r = 0; r < _outputDim; r++) {
-            Z[r * batch_size + b] += _bias[r];
-        }
+  for (int b = 0; b < batch_size; b++) {
+    for (int r = 0; r < _outputDim; r++) {
+      _output[r * batch_size + b] += _bias[r];
     }
+  }
 
-    if (_activation == "relu") {
-        reluForward(Z);
-    } else if (_activation == "sigmoid") {
-        sigmoidForward(Z);
-    } else if (_activation == "identity") {
-        identityForward(Z);
-    } else {
-        throw std::runtime_error("Unsupported activation: " + _activation);
-    }
+  if (_activationFn) {
+    _output.resize(_outputDim * batch_size);
+    _activationFn->forward(_output);
+  }
 
-    _output = Z;
-    return _output;
+  return _output;
 }
 
 // Backward
-// grad_output shape: (outputDim, batch_size)
-std::vector<float> DenseLayer::backward(const std::vector<float>& grad_output, int batch_size) {
-    _t += 1;
+const std::vector<float> &
+DenseLayer::backward(const std::vector<float> &grad_output, int batch_size) {
+  reallocateBuffers(batch_size);
 
-    std::vector<float> grad_z = grad_output;
+  // Copy grad_output to our preallocated _grad_z buffer
+  std::copy(grad_output.begin(),
+            grad_output.begin() + (_outputDim * batch_size), _grad_z.begin());
 
-    if (_activation == "relu") { 
-        reluBackward(grad_z, _output);
-    } else if (_activation == "sigmoid") {
-        sigmoidBackward(grad_z, _output);
-    } else if (_activation == "identity") {
-        identityBackward(grad_z);
-    }
+  _grad_z.resize(_outputDim * batch_size);
+  _output.resize(_outputDim * batch_size);
 
-    // grad_input = W^T @ grad_z
-    // W          shape: (outputDim, inputDim)
-    // grad_z     shape: (outputDim, batch_size)
-    // grad_input shape: (inputDim,  batch_size)
+  if (_activationFn) {
+    _activationFn->backward(_grad_z, _output);
+  }
 
-    // For matmul we want W^T shape: (inputDim, outputDim)
-    auto W_T        = transpose(_weights, _outputDim, _inputDim);
-    auto grad_input = matmul(W_T, _inputDim, _outputDim, grad_z, _outputDim, batch_size);
+  // grad_input = W^T @ grad_z
+  transpose(_weights, _outputDim, _inputDim, _W_T);
 
-    // grad_weights = grad_z @ input^T
-    // grad_z  shape: (outputDim, batch_size)
-    // input^T shape: (batch_size, inputDim)
-    // => (outputDim, inputDim)
-    auto input_T      = transpose(_input, _inputDim, batch_size);
-    auto grad_weights = matmul(grad_z, _outputDim, batch_size, input_T, batch_size, _inputDim);
+  _grad_input.resize(_inputDim * batch_size);
+  matmul(_W_T, _inputDim, _outputDim, _grad_z, _outputDim, batch_size,
+         _grad_input);
 
-    auto sum_gb = sum_rows(grad_z, _outputDim, batch_size);
+  // grad_weights = grad_z @ input^T
+  transpose(_input, _inputDim, batch_size, _input_T);
+  matmul(_grad_z, _outputDim, batch_size, _input_T, batch_size, _inputDim,
+         _grad_weights);
 
-    // ADAM
-    for (size_t i = 0; i < grad_weights.size(); i++) {
-        _m_weights[i] = _beta1 * _m_weights[i] + (1.f - _beta1) * grad_weights[i];
-        _v_weights[i] = _beta2 * _v_weights[i] + (1.f - _beta2) * grad_weights[i] * grad_weights[i];
-    }
+  sum_rows(_grad_z, _outputDim, batch_size, _sum_gb);
 
-    for (size_t i = 0; i < sum_gb.size(); i++) {
-        _m_bias[i] = _beta1 * _m_bias[i] + (1.f - _beta1) * sum_gb[i];
-        _v_bias[i] = _beta2 * _v_bias[i] + (1.f - _beta2) * sum_gb[i] * sum_gb[i];
-    }
+  if (_optimizer) {
+    _optimizer->step(_weights, _bias, _grad_weights, _sum_gb);
+  }
 
-    float bias_correction1 = 1.f - std::pow(_beta1, float(_t));
-    float bias_correction2 = 1.f - std::pow(_beta2, float(_t));
-
-    for (size_t i = 0; i < _weights.size(); i++) {
-        float m_hat = _m_weights[i] / bias_correction1;
-        float v_hat = _v_weights[i] / bias_correction2;
-        _weights[i] -= _learningRate * m_hat / (std::sqrt(v_hat) + _epsilon);
-    }
-
-    for (int i = 0; i < _outputDim; i++) {
-        float m_hat = _m_bias[i] / bias_correction1;
-        float v_hat = _v_bias[i] / bias_correction2;
-        _bias[i] -= _learningRate * m_hat / (std::sqrt(v_hat) + _epsilon);
-    }
-    return grad_input;
+  return _grad_input;
 }
