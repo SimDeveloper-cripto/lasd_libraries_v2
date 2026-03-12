@@ -71,8 +71,6 @@ make clean && make
 
 ## Bayesian Network API
 
-dada
-
 ### Compile and Execute
 
 ```bat
