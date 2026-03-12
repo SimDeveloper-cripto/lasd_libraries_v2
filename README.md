@@ -69,6 +69,17 @@ make clean && make
 ./build/NeuraNova
 ```
 
+## Bayesian Network API
+
+dada
+
+### Compile and Execute
+
+```bat
+cd ~/lasd_libraries_v2/BayesianNetwork
+g++ -std=c++20 test.cpp ../DirectedGraph/graph.cpp -o test_bn && ./test_bn
+```
+
 ## LICENSE
 
 [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
